@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title> VCommute - Login page </title>
+    <link rel='stylesheet' type='text/css' href='/stylesheets/bootstrap.min.css'>
+</head>
+<body>
+	<br>
+    <br>
+    <br>
+	<div class='container'>
+    <table align='center'>
+        <tr>
+            <td>
+                 <form class="form-horizontal well" method="POST" action="/login"> 
+                		<legend>VCommute</legend>
+                        <table>
+                            <tr>
+                                <div class="control-group">
+                                <td>
+                                    <label class="control-label" id="username" for="user">Username:</label>
+                                </td>
+                               
+                                <td>
+                                     <input type="text" id="email" name="user"></input>
+
+                                 </td>
+                                  
+                                 <td>
+                                     <label for="user">@vmware.com</label>
+                                 </td>
+                             </div>
+                            </tr>
+                        </table>
+                        <br>
+					    <div class="control-group">
+                            <label class="control-label" for="password">Password:</label>
+                                <input type="password" id="password" name="password"></input>
+				        </div>
+				        <div class="control-group">
+                                <div class="controls">
+                                    <input type="submit" class="btn btn-primary" id="login" value="Login"></input>
+                                </div>
+                        </div>
+                        <br>   
+                       <fieldset>
+                            <div class="control-group error">
+                                <label id="lblMessage"><strong> <%= message %> </strong></label>
+                            </div>
+                        </fieldset>                       
+                </form>
+                <br>
+                
+                <form class="form-horizontal well" method="GET" action="/signup">
+                    <div class="control-group">
+                        <label class="control-label" for="Signup">Are you a first time user? Sign up here </label>
+                        <div class="controls">
+                             <input type="submit" class="btn btn-primary" id="signup" value="Sign up"></input>
+                    	 </div>
+                 	</div>
+                </form>       
+				   
+			</td>
+		</tr>
+	</table>
+</div>
+</body>
+</html>

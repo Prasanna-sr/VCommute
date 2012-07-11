@@ -1,0 +1,495 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>
+    </title>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css"/>
+    <link rel="stylesheet" href="stylesheets/my.css"/>
+    <style>
+            /* App custom styles */
+    </style>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js">
+    </script>
+    <script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js">
+    </script>
+    <!--<script src="javascripts/jquerymobile.js">-->
+    <!--</script>-->
+
+
+
+</head>
+
+
+<body>
+
+<div data-role="page" id="page-login">
+    <script src="javascripts/login.js"></script>
+    <div data-theme="a" data-role="header">
+        <h3>
+            VCommute
+        </h3>
+    </div>
+    <div data-role="content" style="padding: 15px">
+        <div data-role="fieldcontain">
+            <fieldset data-role="controlgroup">
+                <label for="txtUser">
+                    User Name
+                </label>
+                <input id="txtUser"  placeholder="" name="user" value=""/>
+            </fieldset>
+        </div>
+        <div data-role="fieldcontain">
+            <fieldset data-role="controlgroup">
+                <label for="txtPassword">
+                    Password
+                </label>
+                <input id="txtPassword" placeholder="" name="password" value="" type="password"/>
+            </fieldset>
+        </div>
+        <input type="submit" class="btn btn-primary"  id="btnlogin" value="Login"/>
+    </div>
+    <div data-theme="a" data-role="footer" data-position="fixed">
+        <h3>
+            VCommute
+        </h3>
+    </div>
+</div>   <!-- page login -->
+
+<div data-role="page" id="page-profile">
+
+    <script src="javascripts/profile.js"></script>
+
+    <div data-theme="a" data-role="header">
+        <h3>
+            VCommute
+        </h3>
+    </div>
+    <div data-role="content" style="padding: 15px">
+        <div class="content-primary">
+            <h1>Profile</h1>
+            <div data-role="fieldcontain">
+                <table>
+                    <tr>
+                        <td rowspan="3">
+                            <img id="profile-picture" />
+
+                        </td>
+                        <td>
+                            <label class="select" name="profileName" id="profile-name"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="select" name="" id="profile-title"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="select" name="location" id="profile-base-location"></label>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <h3>Onward Journey</h3>
+            <form id='formProfile' method="#">
+
+                <div data-role="fieldcontain">
+                    <label for="from-location" class="select">From Location:</label>
+                    <select name="fromLocation1" data-native-menu="false" id="from-location">
+                    </select>
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="to-location" class="select">To Location:</label>
+                    <select name="toLocation1" data-native-menu="false" id="to-location">
+                    </select>
+                </div>
+
+                <div data-role="fieldcontain">
+                    <label for="start-time" class="select">Start Time:</label>
+                    <select name="startTime" data-native-menu="false" id="start-time">
+                    </select>
+                </div>
+
+                <h3>Return Journey</h3>
+
+
+                <div data-role="fieldcontain">
+                    <label for="from-location-2" class="select">From Location:</label>
+                    <select name="fromLocation2" data-native-menu="false" id="from-location-2">
+                    </select>
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="to-location-2" class="select">To Location:</label>
+                    <select name="toLocation2" data-native-menu="false" id="to-location-2">
+                    </select>
+                </div>
+
+                <div data-role="fieldcontain">
+                    <label for="return-time" class="select">Return Time:</label>
+                    <select name="returnTime" data-native-menu="false" id="return-time">
+
+                    </select>
+                </div>
+
+                <div data-role="fieldcontain">
+                    <fieldset data-role="controlgroup">
+                        <legend>Choose your Preferences:</legend>
+                        <input type="checkbox" name="Car" id="Car" value="car" class="custom" />
+                        <label for="Car">I will drive my car</label>
+
+                        <input type="checkbox" name="Nocar" id="Nocar" value="nocar" class="custom" />
+                        <label for="Nocar">I m a passenger</label>
+
+                        <input type="checkbox" name="DriveDays" id="DriveDays" value="gas" class="custom" />
+                        <label for="DriveDays">I will pay for gas & won't drive</label>
+
+                        <input type="checkbox" name="DriveWeek" id="DriveWeek" value="days/weeks" class="custom" />
+                        <label for="DriveWeek">I will drive alternate days/weeks</label>
+                    </fieldset>
+                </div>
+
+                <fieldset data-role="controlgroup">
+                    <div data-role="fieldcontain">
+                        <label for="profile-mobile">Mobile Number:</label>
+                        <input type="text" name="mobile" id="profile-mobile" value=""  />
+                    </div>
+                    <div data-role="fieldcontain">
+                        <label for="landmark">Nearest Landmark/Business Area:</label>
+                        <input type="text" name="landmark" id="landmark" value=""  />
+                    </div>
+                    <div data-role="fieldcontain">
+                        <label for="car-desc">Car Description:</label>
+                        <textarea cols="40" rows="8" name="carDesc" id="car-desc"></textarea>
+                    </div>
+                    <div data-role="fieldcontain">
+                        <label for="preference">Additional Preference:</label>
+                        <textarea cols="40" rows="8" name="preference" id="preference"></textarea>
+                    </div>
+                    <div data-role="fieldcontain">
+                        <input type="hidden" id="txtTemp" name="temp"/>
+                        <input type="hidden" id="txtTemptime" name="temptime"/>
+                        <input type="hidden" id="txtEmail" name="txtEmail"/>
+
+                    </div>
+                </fieldset>
+            </form>
+            <h1>Settings</h1>
+            <div data-role="fieldcontain">
+                <fieldset data-role="controlgroup">
+                    <input type="checkbox" name="hide" id="hide" value="hide" class="custom" />
+                    <label for="hide">Hide me from search results</label>
+
+                    <input type="checkbox" name="notification" id="notification" value="notification" class="custom" />
+                    <label for="notification">Turn off notification</label>
+
+                    <input type="checkbox" name="log_out" checked="true" id="log_out" value="log_out" class="custom" />
+                    <label for="log_out">Keep me logged in</label>
+
+                </fieldset>
+            </div>
+            <input type="submit" id="btnSubmit" value="Save and Continue"/>
+        </div>
+    </div>
+
+    <div data-theme="a" data-role="footer" data-position="fixed">
+        <div data-role="controlgroup" data-type="horizontal">
+
+
+            <a href="/index.html#page-profile" data-icon="gear" data-role="button" data-theme="a" data-inline="true">Profile</a>
+
+            <a href="/index.html#page-notification" data-icon="info" data-role="button" data-theme="a" data-inline="true">Notification</a>
+
+            <a href="/index.html#page-home" data-icon="home" data-role="button" data-theme="a" data-inline="true">Home</a>
+
+        </div>
+    </div>
+</div>      <!-- page profile -->
+
+
+<div data-role="page" class="type-interior" id="page-home">
+
+    <script src="javascripts/home.js"></script>
+
+
+    <div data-role="header" data-theme="a">
+        <h1>VCommute</h1>
+    </div><!-- /header -->
+
+
+    <div data-role="content" style="padding: 15px">
+
+
+        <fieldset data-role="controlgroup" data-type="horizontal">
+            <legend>Journey:</legend>
+            <input type="radio" name="radio-choice-b" id="radio-choice-a" value="on" checked="checked" />
+            <label for="radio-choice-a">Onward Journey</label>
+            <input type="radio" name="radio-choice-b" id="radio-choice-b" value="off" />
+            <label for="radio-choice-b">Return Journey</label>
+
+        </fieldset>
+
+
+        <div data-role="fieldcontain">
+            <label for="from-location-1" class="select">Registered From Locations:</label>
+            <select name="fromLocation1" id="from-location-1">
+            </select>
+        </div>
+
+        <div data-role="fieldcontain">
+            <label for="to-location-1" class="select">Registered To Locations:</label>
+            <select name="toLocation1" id="to-location-1">
+            </select>
+        </div>
+
+        <div data-role="fieldcontain">
+            <label for="time" class="select">Time:</label>
+            <select name="time" id="time" data-native-menu="false">
+            </select>
+        </div>
+        <br>
+        <br>
+        <ul data-role="listview"  id="list1">
+
+        </ul>
+        <br>
+        <br>
+    </div><!-- /content -->
+
+    <div data-theme="a" data-role="footer" data-position="fixed">
+        <div data-role="controlgroup" data-type="horizontal">
+
+
+            <a href="/index.html#page-profile" data-icon="gear" data-corners="false" data-role="button" data-theme="a" data-inline="true">Profile</a>
+
+            <a href="/index.html#page-notification" data-icon="info" data-corners="false" data-role="button" data-theme="a" data-inline="true">Notification</a>
+
+            <a href="/index.html#page-home" data-icon="home" data-role="button" data-corners="false" data-theme="a" data-inline="true">Home</a>
+
+        </div>
+
+    </div> <!-- /footer -->
+
+
+</div><!-- /page home-->
+
+<div data-role="page" id="page-details">
+
+    <div data-role="header" data-theme="d">
+
+        <h1>VCommmute</h1>
+
+    </div>
+
+    <div data-role="content" data-theme="c">
+
+        <div data-role="fieldcontain">
+            <ul data-role="listview">
+                <li>
+                    <img id="picture" width="150" height="100"/>
+                    <h3><label class="select" name="profileName" id="details-name"></label></h3>
+                    <p><label class="select" name="" id="title"></label></p>
+                </li>
+            </ul>
+
+
+            <p><label class="select" id="action">Action</label></p>
+
+            <ul data-role="listview">
+                <li>
+                    <img id="picture1" width="50" height="50"/>
+                    Call Mobile <br>
+                    <label class="select" name="mobile" id="mobile"></label>
+                </li>
+                <li>
+                    <img id="picture2" width="50" height="50"/>
+                    Send Email  <br>
+                    <label class="select" name="email" id="email"></label></label>
+                </li>
+
+            </ul>
+        </div>
+        <br>
+        <a id="contact" data-role="button" data-rel="dialog" href="index.html#page-comment">Contact</a>
+        <!--<a data-role="button" data-rel="back" data-theme="c">Back</a>-->
+    </div>
+
+    <div data-theme="a" data-role="footer" data-position="fixed">
+        <div data-role="controlgroup" data-type="horizontal">
+
+
+            <a href="/index.html#page-profile" data-icon="gear" data-role="button" data-theme="a" data-inline="true">Profile</a>
+
+            <a href="/index.html#page-notification" data-icon="info" data-role="button" data-theme="a" data-inline="true">Notification</a>
+
+            <a href="/index.html#page-home" data-icon="home" data-role="button" data-theme="a" data-inline="true">Home</a>
+
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+        $("#page-details").bind('pageinit', function() {
+
+            temp =   localStorage.getItem('to_email').split(",");
+            var email = localStorage.getItem('to_email');
+
+            $.post('/getuserinfo',{"email":email},function(userObj){
+                $('#details-name').text(userObj[0].name);
+                $('#email').text(userObj[0].contact_info.email);
+                $('#mobile').text(userObj[0].contact_info.cell_phone);
+                $('#picture').attr("src",userObj[0].avatars.square140);
+                $('#title').text(userObj[0].title);
+                $('#base-location').text(userObj[0].contact_info.location);
+                $('#base-location').text(userObj[0].contact_info.location);
+
+
+            });
+
+        });
+
+    </script>
+
+</div><!-- /page details -->
+
+<div data-role="page" id="page-notification">
+
+
+    <div data-theme="a" data-role="header">
+        <h3>
+            VCommute
+        </h3>
+    </div>
+
+
+    <div data-role="content" style="padding: 15px">
+
+        <ul id="list-notifications" data-role="listview">
+        </ul>
+
+        <input type="hidden" id="notification-email" name="email"/>
+        <input type="hidden" id="notification-message" name="message"/>
+        <script src="javascripts/notifications.js"></script>
+    </div>
+
+    <div data-theme="a" data-role="footer" data-position="fixed">
+        <div data-role="controlgroup" data-type="horizontal">
+
+
+            <a href="/index.html#page-profile" data-icon="gear" data-role="button" data-theme="a" data-inline="true">Profile</a>
+
+            <a href="/index.html#page-notification" data-icon="info" data-role="button" data-theme="a" data-inline="true">Notification</a>
+
+            <a href="/index.html#page-home" data-icon="home" data-role="button" data-theme="a" data-inline="true">Home</a>
+
+        </div>
+    </div>
+</div>  <!-- /page notification -->
+
+<!--<div data-role="dialog" data-dom-cache="false" id="page-comment">-->
+<div data-role="page"  id="page-comment" >
+
+    <!--<div data-role="dialog">-->
+
+        <script src="javascripts/comment.js"></script>
+
+        <div data-role="header" data-theme="d">
+
+            <h1>VComment</h1>
+
+        </div>
+
+        <div data-role="content" data-theme="c">
+            <h1>Message Page</h1>
+            <label for="txtMessage">Enter Message:</label>
+            <textarea name="textarea" id="txtMessage">
+            </textarea>
+
+            <a href="#" data-role="button" id="btnsendMessage" data-theme="b">Send</a>
+            <a data-role="button" data-rel="back" data-theme="c">Cancel</a>
+        </div>
+    <!--</div>-->
+
+</div>  <!-- /page comment -->
+
+<div data-role="dialog" id="page-info">
+
+    <div data-role="header" data-theme="d">
+
+        <h1>VCommute</h1>
+
+    </div>
+
+    <div data-role="content" data-theme="c">
+        <h2>User Info</h2>
+
+        <div data-role="fieldcontain">
+            <script type="text/javascript">
+
+                $("#page-info").bind('pageinit', function() {
+                    var details = localStorage.getItem('details');
+                    var temp = new Array();
+                    temp = details.split(',');
+                    $.post('/getuserinfo',{"email":temp[0]},function(userObj){
+                        $('#profile_name').text(userObj[0].name);
+                        $('#email_ID').text(userObj[0].contact_info.email);
+                        $('#mobile_Number').text(userObj[0].contact_info.cell_phone);
+                        $('#pic').attr("src",userObj[0].avatars.square140);
+                        $('#title_name').text(userObj[0].title);
+                        $('#base-location').text(userObj[0].contact_info.location);
+                        // $('#base-location').text(userObj[0].contact_info.location);
+                    });
+                    $('#message').text(temp[1]);
+                });
+            </script>
+            <table>
+                <tr>
+                    <td rowspan="5">
+                        <img id="pic" width="150" height="100"/>
+
+                    </td>
+                    <td>
+                        <label class="select" name="profileName" id="profile_name"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="select" name="" id="title_name"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="select" name="location" id="base-location"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="select" name="mobile" id="mobile_Number"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="select" name="email" id="email_ID"></label>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div data-role="fieldcontain">
+            <label for="message">Message:</label>
+            <label id="message"></label>
+        </div>
+
+        <a data-role="button" data-rel="back" data-theme="c">Ok</a>
+    </div>
+
+</div>   <!-- /page info -->
+
+
+
+
+
+</body>
+</html>

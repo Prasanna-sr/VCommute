@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Comment</title>
+
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css"/>
+    <link rel="stylesheet" href="stylesheets/my.css"/>
+
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+
+    <script src="javascripts/comment.js"></script>
+
+
+</head>
+<body>
+
+<div data-role="dialog" id="pageComment">
+
+    <div data-role="header" data-theme="d">
+
+        <h1>VComment</h1>
+
+    </div>
+
+    <div data-role="content" data-theme="c">
+        <h1>Message Page</h1>
+        <label for="txtMessage">Enter Message:</label>
+        <textarea name="textarea" id="txtMessage">
+        </textarea>
+        <a href="#" data-role="button" id="btnsendMessage" data-theme="b">Send</a>
+        <a data-role="button" data-rel="back" data-theme="c">Cancel</a>
+    </div>
+
+    <script type="text/javascript">
+
+
+//        $('#btnsendMessage').live('click', function() {
+//            var temp = new Array();
+//            temp =   localStorage.getItem('toemail').split(",");
+//            $.post(url+'/saveNotifications',{"fromEmail": localStorage.getItem('from_email'),"fromName":localStorage.getItem('name'),"toEmail":temp[0],"toName":temp[1], "message" : $('#txtMessage').val()},function(data)
+//            {
+//                alert(data);
+//            });
+//        });
+
+
+
+
+    </script>
+
+</div>  <!-- /page comment -->
+
+</body>
+</html>
+
+

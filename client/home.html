@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>
+    </title>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css"/>
+    <link rel="stylesheet" href="stylesheets/my.css"/>
+    <style>
+            /* App custom styles */
+    </style>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js">
+    </script>
+    <script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js">
+    </script>
+    <script src="javascripts/jquerymobile.js">
+    </script>
+
+
+
+</head>
+
+<script type="text/javascript">
+
+    $("a[href='home.html#page-details']").live('click', function() {
+        // alert('title is '+$(this).attr("title"));
+        localStorage.setItem('toemail',$(this).attr("title"));
+
+    });
+
+
+</script>
+<body>
+
+<div data-role="page" class="type-interior" id="page-home">
+
+    <script src="javascripts/home.js"></script>
+
+
+    <div data-role="header" data-theme="a">
+        <h1>VCommute</h1>
+    </div><!-- /header -->
+
+
+    <div data-role="content" style="padding: 15px">
+
+            <div data-role="fieldcontain">
+                <label for="from-location-1" class="select">Registered From Locations:</label>
+                <select name="fromLocation1" id="from-location-1">
+                </select>
+            </div>
+
+            <div data-role="fieldcontain">
+                <label for="to-location-1" class="select">Registered To Locations:</label>
+                <select name="toLocation1" id="to-location-1">
+                </select>
+            </div>
+
+            <div data-role="fieldcontain">
+                <label for="time" class="select">Time:</label>
+                <select name="time" id="time" data-native-menu="false">
+                </select>
+            </div>
+            <br>
+            <br>
+            <ul data-role="listview"  id="list1">
+
+            </ul>
+        <br>
+        <br>
+    </div><!-- /content -->
+
+
+    <div data-role="footer" class="footer-docs" data-theme="a">
+            <a href="/profile.html" data-icon="gear" data-role="button" data-theme="a" data-inline="true">Profile</a>
+
+            <a href="/notifications.html" data-icon="info" data-role="button" data-theme="a" data-inline="true">Notification</a>
+
+            <a href="/home.html" data-icon="home" data-role="button" data-theme="a" data-inline="true">Home</a>
+    </div> <!-- /footer -->
+
+
+</div><!-- /page -->
+
+<div id="page-details">
+
+    <div data-role="header" data-theme="d">
+
+        <h1>VCommmute</h1>
+
+    </div>
+
+    <div data-role="content" data-theme="c">
+
+        <div data-role="fieldcontain">
+                    <ul data-role="listview">
+                        <li>
+                            <img id="picture" width="150" height="100"/>
+                            <h3><label class="select" name="profileName" id="profile-name"></label></h3>
+                            <p><label class="select" name="" id="title"></label></p>
+                        </li>
+                     </ul>
+
+
+            <p><label class="select" id="action">Action</label></p>
+
+            <ul data-role="listview">
+                <li>
+                    <img id="picture1" width="50" height="50"/>
+                    Call Mobile <br>
+                    <label class="select" name="mobile" id="mobile"></label>
+                </li>
+                <li>
+                    <img id="picture2" width="50" height="50"/>
+                    Send Email  <br>
+                    <label class="select" name="email" id="email"></label></label>
+                </li>
+
+            </ul>
+        </div>
+        <br>
+        <a id="contact" data-role="button" href="comment.html">Contact</a>
+        <!--<a data-role="button" data-rel="back" data-theme="c">Back</a>-->
+    </div>
+
+    <script type="text/javascript">
+
+        $("#page-details").bind('pageinit', function() {
+
+            temp =   localStorage.getItem('toemail').split(",");
+
+            var email = temp[0];
+
+
+            $.post('/getuserinfo',{"email":email},function(data){
+                $('#profile-name').text(data.bind[0].name);
+                $('#email').text(data.bind[0].contact_info.email);
+                $('#mobile').text(data.bind[0].contact_info.cell_phone);
+                $('#picture').attr("src",data.bind[0].avatars.square140);
+                $('#title').text(data.bind[0].title);
+                $('#base-location').text(data.bind[0].contact_info.location);
+                $('#base-location').text(data.bind[0].contact_info.location);
+
+            });
+
+        });
+
+        $('#btnsend').live('click', function() {
+            var temp = new Array();
+            temp =   localStorage.getItem('toemail').split(",");
+            $.post(url+'/saveNotifications',{"fromEmail": localStorage.getItem('myKey1'),"fromName":localStorage.getItem('name'),"toEmail":temp[0],"toName":temp[1], "message" : $('#txtMessage').val()},function(data)
+            {
+                alert(data);
+            });
+        });
+
+    </script>
+
+</div><!-- /page details -->
+
+
+</body>
+</html>
