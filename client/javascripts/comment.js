@@ -8,11 +8,12 @@
 
 
 var url="http://localhost:3000";
+//var url="http://vcommute.cloudfoundry.com";
 
 $("#page-comment").bind('pageinit', function() {
     $('#btnsendMessage').live('click', function() {
         $.post(url+'/saveNotifications',{"fromEmail": localStorage.getItem('from_email'),"fromName":localStorage.getItem('name'),"toEmail":localStorage.getItem('to_email'),"toName":$('#details-name').text(), "message" : $('#txtMessage').val()},function(data){
-            alert('result : '+data);
+            //alert('result : '+data);
         });
     });
 });

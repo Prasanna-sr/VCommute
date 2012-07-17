@@ -6,14 +6,17 @@
  * To change this template use File | Settings | File Templates.
  */
 
-$(document).ready(function () {
+//var url="http://vcommute.cloudfoundry.com";
+var url="localhost:3000";
+
+$("#page-login").bind('pageinit', function() {
+    $.support.cors=true;
+    $.mobile.allowCrossDomainPages=true;
     $("#btnlogin").click(function () {
         if($('#txtUser').val()!="" && $('#txtPassword').val()!="") {
             var user = $('#txtUser').val();
             var password = $('#txtPassword').val();
-
-            $.post('http://localhost:3000/login', { "user": user, "password": password }, function (data) {
-
+            $.post(url+'/login', { "user": user, "password": password }, function (data) {
                 if(data=='0') {
                     localStorage.setItem('from_email', user+'@vmware.com');
                     location.replace("index.html#page-profile");

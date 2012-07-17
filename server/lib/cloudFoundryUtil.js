@@ -2,19 +2,22 @@
 //todo need to refactor
 
 var cloudfoundry = require('cloudfoundry');
-var mongodb = require('mongodb').Db;
+var mongodb = require('mongoskin');
+
 
 module.exports = {
     connect: function(dbType, dbServiceName, callback) {
         if (dbType == 'mongodb') {
-            mongodb.connect(getMongoUrl(dbServiceName),
-            function(err, conn) {
-                if (err) {
-                    callback(err);
-                } else {
-                    callback('', conn);
-                }
-            });
+            db = mongodb.db(getMongoUrl(dbServiceName),
+                function(err, conn) {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        callback('', conn);
+                    }
+                });
+            console.log("db==="+db);
+            return db;
         }
     },
 	getMongoUrl: getMongoUrl,

@@ -23,9 +23,7 @@ exports.configure = function(app) {
             layout: false
         });
 
-       // app.use(express.static(__dirname + '/../public'));
-        app.use(express.static('/Users/prasannasr/Documents/node.js/VCommute/V5/client'));
-       //app.use(express.static(__dirname + '../../client'));
+      app.use(express.static('/Users/prasannasr/Documents/node.js/VCommute/V6/client'));
         app.use(express.bodyParser());
     });
 
