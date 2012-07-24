@@ -2,7 +2,7 @@
 
 var mongoLib = require('./mongoLib');
 var request = require('request');
-var socketio = require('socket.io');
+//var socketio = require('socket.io');
 
 mongoLib.connect('mongodb-1');
 
@@ -29,7 +29,7 @@ module.exports = function routes(app) {
                                     persistData(JSON.parse(body));
 
                                     //todo remove this in production
-                                    res.header('Access-Control-Allow-Origin', '*');
+                                   res.header('Access-Control-Allow-Origin', '*');
                                     res.send('0');
                                 }
                                 else if (userObj[0].profile == 1) {
@@ -148,8 +148,8 @@ module.exports = function routes(app) {
         });
 
     });
-    app.post('/updateNotifications', function (req, res) {
-        mongoLib.updateNotifications(req.body, function (err, json) {
+    app.post('/getNotificationbyID', function (req, res) {
+        mongoLib.getNotificationbyID(req.body, function (err, json) {
             if (err) {
                 console.log(err);
             }
@@ -157,18 +157,33 @@ module.exports = function routes(app) {
                 //todo remove this in production
                 res.header('Access-Control-Allow-Origin', '*');
                 res.send(json);
-
             }
-
         });
 
     });
 
-    app.get('/fromLocationdetails',
+    //unread
+//    app.post('/updateNotifications', function (req, res) {
+//        mongoLib.updateNotifications(req.body, function (err, json) {
+//            if (err) {
+//                console.log(err);
+//            }
+//            else {
+//                //todo remove this in production
+//                res.header('Access-Control-Allow-Origin', '*');
+//                res.send(json);
+//
+//            }
+//
+//        });
+//
+//    });
+
+    app.post('/fromLocationdetails',
         function (req, res) {
             getfromLocationdetails(req, res);
         });
-    app.get('/toLocationdetails',
+    app.post('/toLocationdetails',
         function (req, res) {
             gettoLocationdetails(req, res);
         });
@@ -214,14 +229,14 @@ module.exports = function routes(app) {
                 }
             });
         });
-    app.post('/insertdata',
-        function (req, res) {
+    app.post('/insertdata',function (req, res) {
             mongoLib.insertData(req.body,function (err, json) {
                 if (err) {
                     console.log(err);
                 }
                 else {
-                    console.log('Data persisted successfully !');
+                    res.header('Access-Control-Allow-Origin', '*');
+                    res.send(JSON.stringify(json));
 
                 }
             });
@@ -234,8 +249,11 @@ module.exports = function routes(app) {
                 }
                 else {
                     console.log('Data deleted successfully !');
+                    res.header('Access-Control-Allow-Origin', '*');
+                    res.send(JSON.stringify(json));
 
                 }
+
             });
         });
 
@@ -336,39 +354,100 @@ module.exports = function routes(app) {
         }
     }
 
-    function getfromLocationdetails(req, res) {
-        mongoLib.getfromLocation(req, function (err, fromLocObj) {
+
+
+        function getfromLocationdetails(req, res) {
+        mongoLib.getLocation(req, function (err, fromLocObj) {
             if (err) {
                 console.log(err);
             }
             else {
                 if (fromLocObj!="") {
-                    //todo remove this in production
-                    res.header('Access-Control-Allow-Origin', '*');
-                    res.send(fromLocObj);
+                    if(req.body.journey==0){
+                        var temp = new Array();
+                        temp = fromLocObj[0].Loc1.split(",");
+                        //todo remove this in production
+                        res.header('Access-Control-Allow-Origin', '*');
+                        res.send(temp);
+
+                    }else{
+                        var temp = new Array();
+                        temp = fromLocObj[0].Loc.split(",");
+                        //todo remove this in production
+                        res.header('Access-Control-Allow-Origin', '*');
+                        res.send(temp);
+
+                    }
+
                 }
             }
         });
 
 
     }
-
     function gettoLocationdetails(req, res) {
-        mongoLib.gettoLocation(req, function (err, toLocObj) {
+        mongoLib.getLocation(req, function (err, fromLocObj) {
             if (err) {
                 console.log(err);
             }
             else {
-                if (toLocObj!="") {
-                    //todo remove this in production
-                    res.header('Access-Control-Allow-Origin', '*');
-                    res.send(toLocObj);
-                }
+                if (fromLocObj!="") {
+                    if (fromLocObj!="") {
+                        if(req.body.journey==0){
+                            var temp = new Array();
+                            temp = fromLocObj[0].Loc.split(",");
+                            //todo remove this in production
+                            res.header('Access-Control-Allow-Origin', '*');
+                            res.send(temp);
+
+                        }else{
+                            var temp = new Array();
+                            temp = fromLocObj[0].Loc1.split(",");
+                            //todo remove this in production
+                            res.header('Access-Control-Allow-Origin', '*');
+                            res.send(temp);;
+
+                        }
+
+                    }
             }
-        });
+        }});
 
+        }
 
-    }
+//    function getfromLocationdetails(req, res) {
+//        mongoLib.getfromLocation(req, function (err, fromLocObj) {
+//            if (err) {
+//                console.log(err);
+//            }
+//            else {
+//                if (fromLocObj!="") {
+//                    //todo remove this in production
+//                    res.header('Access-Control-Allow-Origin', '*');
+//                    res.send(fromLocObj);
+//                }
+//            }
+//        });
+//
+//
+//    }
+//
+//    function gettoLocationdetails(req, res) {
+//        mongoLib.gettoLocation(req, function (err, toLocObj) {
+//            if (err) {
+//                console.log(err);
+//            }
+//            else {
+//                if (toLocObj!="") {
+//                    //todo remove this in production
+//                    res.header('Access-Control-Allow-Origin', '*');
+//                    res.send(toLocObj);
+//                }
+//            }
+//        });
+//
+//
+//    }
 
     function persistData(data) {
         mongoLib.persistUserprofiledata(data, function (err, json) {

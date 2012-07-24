@@ -6,57 +6,39 @@
  * To change this template use File | Settings | File Templates.
  */
 
-//var url="http://vcommute.cloudfoundry.com";
-var url="localhost:3000";
+$("#page-profile").bind('pagebeforeshow', function() {
 
-$("#page-profile").bind('pageinit', function() {
     var loc = new Array();
     var loc1 = new Array();
     var startTime = new Array();
-    //logged in user
     $('#txtEmail').attr('value',localStorage.getItem('from_email'));
-    $.get(url+'/getlocationtimedata',function(data){
+    $.get(VC.geturl()+'/getlocationtimedata',function(data){
         loc = data[0].Loc.split(',');
         loc1 = data[0].Loc1.split(',');
         startTime = data[0].FromTime.split(',');
         returnTime = data[0].ToTime.split(',');
-        $('#to-location > option').remove();
-        $('#from-location-2 > option').remove();
-        for(var i=0;i<loc.length;i++){
-            $('#to-location').append(new Option(loc[i],loc[i]));
-            $('#from-location-2').append(new Option(loc[i],loc[i]));
-            $('#to-location').selectmenu("refresh");
-            $('#from-location-2').selectmenu("refresh");
-        }
-        $('#to-location-2 > option').remove();
-        $('#from-location > option').remove();
-        for(var i=0;i<loc1.length;i++){
-            $('#to-location-2').append(new Option(loc1[i],loc1[i]));
-            $('#from-location').append(new Option(loc1[i],loc1[i]));
-            $('#to-location-2').selectmenu("refresh");
-            $('#from-location').selectmenu("refresh");
-        }
+        $('select >option').remove();
 
-        $('#start-time > option').remove();
-        for(var i=0;i<startTime.length;i++){
-            $('#start-time').append(new Option(startTime[i],startTime[i]));
-            $('#start-time').val('08:00AM');
-            $('#start-time').selectmenu("refresh");
-        }
-        $('#return-time > option').remove();
-        for(var i=0;i<returnTime.length;i++) {
-            $('#return-time').append(new Option(returnTime[i],returnTime[i]));
-            $('#return-time').val('05:00PM');
-            $('#return-time').selectmenu("refresh");
-        }
+        loaddropdown("#to-location",loc);
+        loaddropdown("#from-location-2",loc);
+        loaddropdown("#to-location-2",loc1);
+        loaddropdown("#from-location",loc1);
+        loaddropdown("#start-time",startTime);
+        loaddropdown("#return-time",returnTime);
 
-        $.post(url+'/getuserInfo',{"email":localStorage.getItem('from_email')},function(user){
+        function loaddropdown(id,value){
+            for(var i=0;i<value.length;i++){
+                $(id).append(new Option(value[i],value[i]));
+            }
+        }
+        $('#start-time').val('08:00AM');
+        $('#return-time').val('05:00PM');
+
+        $.post(VC.geturl()+'/getuserInfo',{"email":localStorage.getItem('from_email')},function(user){
             var ll= user[0].contact_info.location;
             if((ll).indexOf("San Francisco")!=-1) {
                 $('#to-location').val("San Francisco Stevenson Street");
                 $('#from-location-2').val("San Francisco Stevenson Street");
-                $('#to-location').selectmenu("refresh");
-                $('#from-location-2').selectmenu("refresh");
             }
             $('#profile-name').text(user[0].name);
             $('#profile-mobile').val(user[0].contact_info.cell_phone);
@@ -75,39 +57,35 @@ $("#page-profile").bind('pageinit', function() {
                 $('#to-location-2').val(user[0].toLocation2);
                 $('#start-time').val(user[0].startTime);
                 $('#return-time').val(user[0].departTime);
-                $('#to-location').selectmenu("refresh");
-                $('#from-location-2').selectmenu("refresh");
-                $('#to-location-2').selectmenu("refresh");
-                $('#from-location').selectmenu("refresh");
-                $('#start-time').selectmenu("refresh");
-                $('#return-time').selectmenu("refresh");
                 $('#txtTemp').attr("value",user[0].fromLocation1+"_"+user[0].toLocation1+","+user[0].fromLocation2+"_"+user[0].toLocation2);
                 $('#txtTemptime').attr("value",user[0].startTime+","+user[0].departTime);
                 if(user[0].Car!=null){
-                    $('#Car').attr("checked",true).checkboxradio("refresh");
+                    $('#Car').attr("checked",true);
                 }
                 if(user[0].NoCar!=null){
-                    $('#Nocar').attr("checked",true).checkboxradio("refresh");
+                    $('#Nocar').attr("checked",true);
                 }
                 if(user[0].DriveDays!=null){
-                    $('#DriveDays').attr("checked",true).checkboxradio("refresh");
+                    $('#DriveDays').attr("checked",true);
                 }
                 if(user[0].DriveWeek!=null){
-                    $('#DriveWeek').attr("checked",true).checkboxradio("refresh");
+                    $('#DriveWeek').attr("checked",true);
                 }
                 if(user[0].hide!=null){
-                    $('#hide').attr("checked",true).checkboxradio("refresh");
+                    $('#hide').attr("checked",true);
                 }
             }
+           $("input[type='checkbox']").checkboxradio("refresh");
+            $('select').selectmenu("refresh");
         });
     });
 
-    $('#btnSubmit').live('click', function() {
+    $('#btnSubmit').off('click').on('click', function() {
         var expression = /[^0-9\s-]/;
         if($("#landmark").val()!=""){
             if ($("#profile-mobile").val() != "") {
                 if(!expression.test($("#profile-mobile").val())) {
-                    $.post(url+'/saveProfile',$("#formProfile").serialize(),function(data){
+                    $.post(VC.geturl()+'/saveProfile',$("#formProfile").serialize(),function(data){
                         location.replace('index.html#page-home');
                     });
                 } else{
@@ -123,12 +101,11 @@ $("#page-profile").bind('pageinit', function() {
         }
     });
 
-    $('#from-location').live('change', function() {
-       $("#to-location-2").val($("#from-location option:selected").text());
-       $('#to-location-2').selectmenu("refresh");
+    $('#from-location').off('click').on('change', function() {
+        $("#to-location-2").val($("#from-location option:selected").text());
+        $('#to-location-2').selectmenu("refresh");
     });
-
-       $('#to-location').live('change', function() {
+    $('#to-location').off('click').on('change', function() {
         $("#from-location-2").val($("#to-location option:selected").text());
         $('#from-location-2').selectmenu("refresh");
     });

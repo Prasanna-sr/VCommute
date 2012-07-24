@@ -7,19 +7,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>
     </title>
-    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css"/>
+    <link rel="stylesheet" href="stylesheets/jquery.mobile-1.1.0.min.css"/>
     <link rel="stylesheet" href="stylesheets/my.css"/>
-    <style>
-            /* App custom styles */
-    </style>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js">
-    </script>
-    <script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js">
-    </script>
+    <script src="javascripts/jquery-1.7.2.min.js"></script>
+    <script src="javascripts/jquery.mobile-1.0.1.min.js"></script>
+    <!--<script src="http://vcommute.cloudfoundry.com/socket.io/socket.io.js"></script>-->
+    <script src="http://localhost:3005/socket.io/socket.io.js"></script>
+
 </head>
 <body>
 
 <div data-role="page" id="page-login">
+    <!--<script src="http://localhost:3005/socket.io/socket.io.js"></script>-->
+
     <script type="text/javascript"  src="javascripts/login.js"></script>
     <div data-theme="a" data-role="header" data-position="fixed">
         <h3>
@@ -27,11 +27,12 @@
         </h3>
     </div>
     <div data-role="content" style="padding: 15px">
-            <fieldset data-role="controlgroup">
-                <label >
-                  <b> Login using your Social cast username and API password(different from sign on password)</b> <br>
-                </label>
-            </fieldset>
+        <fieldset data-role="controlgroup">
+            <label >
+                <b> Login using your Social cast username and API password(different from sign on password)</b> <br>
+            </label>
+
+        </fieldset>
 
         <div data-role="fieldcontain">
             <fieldset data-role="controlgroup">
@@ -76,65 +77,44 @@
     </div>
     <div data-role="content" style="padding: 15px">
         <div class="content-primary">
-            <h1>Profile</h1>
-            <div data-role="fieldcontain">
-                <table>
-                    <tr>
-                        <td rowspan="3">
-                            <img id="profile-picture" />
-                        </td>
-                        <td>
-                            <label class="select" name="profileName" id="profile-name"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="select" name="" id="profile-title"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="select" name="location" id="profile-base-location"></label>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <h3>Onward Journey</h3>
+            <!--<div data-role="fieldcontain">-->
+
+                <ul data-role="listview">
+                    <li>
+                        <img id="profile-picture" /> <h3> <label class="select" name="profileName" id="profile-name"></label></h3>
+                        <p> <label class="select" name="" id="profile-title"></label></p>  <p> <label class="select" name="location" id="profile-base-location"></label></p>
+                    </li>
+                </ul>
+
+            <h4>Onward Journey</h4>
             <form id='formProfile' method="#">
+                <ul data-role="listview" data-inset="true">
+                    <li><label for="from-location" class="select">From Location:</label>
+                        <select name="fromLocation1" data-mini="true" data-native-menu="false" id="from-location">
+                        </select></li>
+                    <li>  <label for="to-location" class="select">To Location:</label>
+                        <select name="toLocation1" data-mini="true" data-native-menu="false" id="to-location">
+                        </select></li>
+                    <li>
+                        <label for="start-time" class="select">Start Time:</label>
+                        <select name="startTime" data-mini="true" data-native-menu="false" id="start-time">
+                        </select></li>
+                </ul>
 
-                <div data-role="fieldcontain">
-                    <label for="from-location" class="select">From Location:</label>
-                    <select name="fromLocation1" data-native-menu="false" id="from-location">
-                    </select>
-                </div>
-                <div data-role="fieldcontain">
-                    <label for="to-location" class="select">To Location:</label>
-                    <select name="toLocation1" data-native-menu="false" id="to-location">
-                    </select>
-                </div>
 
-                <div data-role="fieldcontain">
-                    <label for="start-time" class="select">Start Time:</label>
-                    <select name="startTime" data-native-menu="false" id="start-time">
-                    </select>
-                </div>
-                <h3>Return Journey</h3>
-                <div data-role="fieldcontain">
-                    <label for="from-location-2" class="select">From Location:</label>
-                    <select name="fromLocation2" data-native-menu="false" id="from-location-2">
-                    </select>
-                </div>
-                <div data-role="fieldcontain">
-                    <label for="to-location-2" class="select">To Location:</label>
-                    <select name="toLocation2" data-native-menu="false" id="to-location-2">
-                    </select>
-                </div>
+                <h4>Return Journey</h4>
+                <ul data-role="listview" data-inset="true">
+                    <li> <label for="from-location-2" class="select">From Location:</label>
+                        <select name="fromLocation2" data-mini="true" data-native-menu="false" id="from-location-2">
+                        </select></li>
+                    <li><label for="to-location-2" class="select">To Location:</label>
+                        <select name="toLocation2" data-mini="true" data-native-menu="false" id="to-location-2">
+                        </select></li>
+                    <li><label for="return-time" class="select">Return Time:</label>
+                        <select name="returnTime" data-mini="true" data-native-menu="false" id="return-time">
+                        </select></li>
+                </ul>
 
-                <div data-role="fieldcontain">
-                    <label for="return-time" class="select">Return Time:</label>
-                    <select name="returnTime" data-native-menu="false" id="return-time">
-                    </select>
-                </div>
                 <div data-role="fieldcontain">
                     <fieldset data-role="controlgroup">
                         <legend>Choose your Preferences:</legend>
@@ -153,33 +133,26 @@
                 </div>
 
                 <fieldset data-role="controlgroup">
-                    <div data-role="fieldcontain">
                         <label for="profile-mobile">Mobile Number<b><font color="red">*</font></b>:</label>
                         <input type="text" name="mobile" id="profile-mobile" value=""  />
-                    </div>
-                    <div data-role="fieldcontain">
+
                         <label for="landmark">Nearest Landmark/Business Area<b><font color="red">*</font></b>:</label>
                         <input type="text" name="landmark" id="landmark" value=""  />
-                    </div>
-                    <div data-role="fieldcontain">
+
                         <label for="car-desc">Car Description:</label>
                         <textarea cols="40" rows="8" name="carDesc" id="car-desc"></textarea>
-                    </div>
-                    <div data-role="fieldcontain">
+
                         <label for="preference">Additional Preference:</label>
                         <textarea cols="40" rows="8" name="preference" id="preference"></textarea>
-                    </div>
-                    <div data-role="fieldcontain">
+
                         <input type="hidden" id="txtTemp" name="temp"/>
                         <input type="hidden" id="txtTemptime" name="temptime"/>
                         <input type="hidden" id="txtEmail" name="from_email"/>
 
-                    </div>
                 </fieldset>
             </form>
-            <h1>Settings</h1>
-            <div data-role="fieldcontain">
-                <fieldset data-role="controlgroup">
+            <h4>Settings</h4>
+
                     <input type="checkbox" name="hide" id="hide" value="hide" class="custom" />
                     <label for="hide">Hide me from search results</label>
 
@@ -189,8 +162,6 @@
                     <input type="checkbox" name="log_out" checked="true" id="log_out" value="log_out" class="custom" />
                     <label for="log_out">Keep me logged in</label>
 
-                </fieldset>
-            </div>
             <input type="submit" id="btnSubmit" value="Save and Continue"/>
         </div>
     </div>
@@ -198,9 +169,11 @@
     <div data-role="footer" class="nav-glyphish-example" data-position="fixed">
         <div data-role="navbar" class="nav-glyphish-example" class="ui-grid-b">
             <ul>
-                <li> <a href="/index.html#page-profile" data-icon="gear" >Profile</a></li>
-                <li><a href="/index.html#page-notification" data-icon="info">Notification</a>   </li>
+
                 <li><a href="/index.html#page-home" data-icon="home">Home</a> </li>
+                <li><a href="/index.html#page-notification" data-icon="info">Notification    <span class="notification"><label id="count-profile">0</label></span></a></li>
+                <li> <a href="/index.html#page-profile" data-icon="gear" >Profile</a></li>
+
             </ul>
 
         </div>
@@ -218,35 +191,38 @@
 
 
     <div data-role="content" style="padding: 15px">
-        <legend>Journey:</legend>
+
         <fieldset data-role="controlgroup" data-type="horizontal">
             <input type="radio" name="radio-choice-b" id="radio-choice-a" value="on" checked="checked" />
-            <label for="radio-choice-a">Onward Journey</label>
+            <label for="radio-choice-a">Onward</label>
             <input type="radio" name="radio-choice-b" id="radio-choice-b" value="off" />
-            <label for="radio-choice-b">Return Journey</label>
+            <label for="radio-choice-b">Return</label>
+
         </fieldset>
+
+
 
         <div data-role="fieldcontain">
             <label for="from-location-1" class="select">Registered From Locations:</label>
-            <select name="fromLocation1" data-native-menu="false" id="from-location-1">
+            <select name="fromLocation1"  data-inline="true"  data-native-menu="false" id="from-location-1">
             </select>
         </div>
 
         <div data-role="fieldcontain">
             <label for="to-location-1" class="select">Registered To Locations:</label>
-            <select name="toLocation1" data-native-menu="false" id="to-location-1">
+            <select name="toLocation1" data-inline="true" data-native-menu="false" id="to-location-1">
             </select>
         </div>
 
         <div data-role="fieldcontain">
             <label for="time" class="select">Time:</label>
-            <select name="time" id="time" data-native-menu="false">
+            <select name="time" id="time" data-inline="true" data-native-menu="false">
             </select>
         </div>
         <br>
         <br>
         <ul data-role="listview"  id="list1">
-        </ul>
+        </ul>               `
         <br>
         <br>
     </div><!-- /content -->
@@ -254,16 +230,16 @@
     <div data-role="footer" class="nav-glyphish-example" data-position="fixed">
         <div data-role="navbar" class="nav-glyphish-example" class="ui-grid-b" >
             <ul>
-                <li> <a href="/index.html#page-profile" data-icon="gear" >Profile</a></li>
-                <li><a href="/index.html#page-notification" data-icon="info">Notification</a>   </li>
                 <li><a href="/index.html#page-home" data-icon="home">Home</a> </li>
+                <li><a href="/index.html#page-notification" data-icon="info">Notification<span class="notification"><label id="count-home">0</label></span></a></li>
+                <li> <a href="/index.html#page-profile" data-icon="gear" >Profile</a></li>
             </ul>
 
         </div>
     </div> <!-- /footer -->
 
 
-</div><!-- /page home-->
+</div> <!-- /page home-->
 
 <div data-role="page" id="page-details">
 
@@ -285,8 +261,7 @@
                     <p><label class="select" name="" id="title"></label></p>
                 </li>
             </ul>
-
-              <br>
+            <br>
             <p><label class="select"><b>Details</b></label></p>
 
             <div data-role="fieldcontain">
@@ -310,7 +285,7 @@
                 </li>
                 <li>
                     <a id="aEmail"><img id="picture2" src="http://dowser.org/wp-content/uploads/2011/12/email-icon.jpg" width="50" height="50"/> Send Email
-                    <br><label class="select" name="email" id="email"></label>  </a>
+                        <br><label class="select" name="email" id="email"></label>  </a>
                 </li>
 
             </ul>
@@ -321,11 +296,12 @@
     </div>
 
     <div data-role="footer" class="nav-glyphish-example" data-position="fixed">
-        <div data-role="navbar" class="nav-glyphish-example" data-grid="d" class="ui-grid-b">
+        <div data-role="navbar" class="nav-glyphish-example" class="ui-grid-b">
             <ul>
-                <li> <a href="/index.html#page-profile" data-icon="gear" >Profile</a></li>
-                <li><a href="/index.html#page-notification" data-icon="info">Notification</a>   </li>
                 <li><a href="/index.html#page-home" data-icon="home">Home</a> </li>
+                <li><a href="/index.html#page-notification" data-icon="info">Notification    <span class="notification"><label id="count-details">0</label></span></a></li>
+                <li> <a href="/index.html#page-profile" data-icon="gear" >Profile</a></li>
+
             </ul>
 
         </div>
@@ -341,54 +317,49 @@
         </h3>
     </div>
 
-
     <div data-role="content" style="padding: 15px">
 
         <ul id="list-notifications" data-role="listview">
         </ul>
-
-        <input type="hidden" id="notification-email" name="email"/>
-        <input type="hidden" id="notification-message" name="message"/>
         <script type="text/javascript" src="javascripts/notifications.js"></script>
     </div>
-
     <div data-role="footer" class="nav-glyphish-example" data-position="fixed">
         <div data-role="navbar" class="nav-glyphish-example" class="ui-grid-b" >
             <ul>
-                <li> <a href="/index.html#page-profile" data-icon="gear" >Profile</a></li>
-                <li><a href="/index.html#page-notification" data-icon="info">Notification</a>   </li>
                 <li><a href="/index.html#page-home" data-icon="home">Home</a> </li>
+                <li><a  data-icon="info" data-icon="info">Notification    <span class="notification"><label id="count-notification">0</label></span></a></li>
+                <li> <a href="/index.html#page-profile" data-icon="gear" >Profile</a></li>
             </ul>
-
         </div>
     </div>
 </div>  <!-- /page notification -->
 
 <div data-role="page"  id="page-comment" >
 
-        <script type="text/javascript" src="javascripts/comment.js"></script>
+    <script type="text/javascript" src="javascripts/comment.js"></script>
 
-        <div data-role="header" data-theme="d">
+    <div data-role="header" data-theme="d">
 
-            <h1>VComment</h1>
+        <h1>VComment</h1>
 
-        </div>
+    </div>
 
-        <div data-role="content" data-theme="c">
-            <h1>Message Page</h1>
-            <label for="txtMessage">Enter Message:</label>
-            <textarea name="textarea" id="txtMessage">
-            </textarea>
+    <div data-role="content" data-theme="c">
+        <h1>Message Page</h1>
+        <label for="txtMessage">Enter Message:</label>
+        <textarea name="textarea" id="txtMessage">
+        </textarea>
 
-            <a href="#" data-role="button" data-rel="back" id="btnsendMessage" data-theme="b">Send</a>
-            <a data-role="button" data-rel="back" data-theme="c">Cancel</a>
-        </div>
+        <a href="#" data-role="button" data-rel="back" id="btnsendMessage" data-theme="b">Send</a>
+        <a data-role="button" data-rel="back" data-theme="c">Cancel</a>
+    </div>
     <!--</div>-->
 
 </div>  <!-- /page comment -->
 
 <div data-role="dialog" id="page-info">
 
+    <script type="text/javascript" src="javascripts/info.js"></script>
     <div data-role="header" data-theme="a">
 
         <h1>VCommute</h1>
@@ -398,26 +369,6 @@
     <div data-role="content" data-theme="c">
 
         <div data-role="fieldcontain">
-            <script type="text/javascript" src="javascripts/info.js"></script>
-
-            <!--<script type="text/javascript">-->
-
-                <!--$("#page-info").bind('pageinit', function() {-->
-                    <!--var details = localStorage.getItem('details');-->
-                    <!--var temp = new Array();-->
-                    <!--temp = details.split(',');-->
-                    <!--$.post('/getuserinfo',{"email":temp[0]},function(userObj){-->
-                        <!--$('#profile_name').text(userObj[0].name);-->
-                        <!--$('#email_ID').text(userObj[0].contact_info.email);-->
-                        <!--$('#mobile_Number').text(userObj[0].contact_info.cell_phone);-->
-                        <!--$('#pic').attr("src",userObj[0].avatars.square140);-->
-                        <!--$('#title_name').text(userObj[0].title);-->
-                        <!--$('#base-location').text(userObj[0].contact_info.location);-->
-                        <!--// $('#base-location').text(userObj[0].contact_info.location);-->
-                    <!--});-->
-                    <!--$('#message').text(temp[1]);-->
-                <!--});-->
-            <!--</script>-->
             <table>
                 <tr>
                     <td rowspan="7">
@@ -457,8 +408,7 @@
             </table>
         </div>
         <div data-role="fieldcontain">
-            <strong><label for="message">Message:</label></strong>
-            <label id="message"></label>
+            <label id="message"></label> <i><label id="timestamp"></label></i>
         </div>
 
         <a data-role="button" data-rel="back" data-theme="c">Ok</a>

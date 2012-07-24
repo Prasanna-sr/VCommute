@@ -7,13 +7,10 @@
  */
 
 
-var url="http://localhost:3000";
-//var url="http://vcommute.cloudfoundry.com";
-
-$("#page-details").bind('pageinit', function() {
+$("#page-details").bind('pagebeforeshow', function() {
     var preference=null;
     var email = localStorage.getItem('to_email');
-    $.post(url+'/getuserinfo',{"email":email},function(userObj){
+    $.post(VC.geturl()+'/getuserinfo',{"email":email},function(userObj){
 
         if(userObj[0].NoCar!=null){
             preference = userObj[0].NoCar;

@@ -7,13 +7,16 @@
  */
 
 
-var url="http://localhost:3000";
-//var url="http://vcommute.cloudfoundry.com";
-
-$("#page-comment").bind('pageinit', function() {
-    $('#btnsendMessage').live('click', function() {
-        $.post(url+'/saveNotifications',{"fromEmail": localStorage.getItem('from_email'),"fromName":localStorage.getItem('name'),"toEmail":localStorage.getItem('to_email'),"toName":$('#details-name').text(), "message" : $('#txtMessage').val()},function(data){
-            //alert('result : '+data);
+$("#page-comment").bind('pagebeforeshow', function () {
+    $('#btnsendMessage').off('click').on('click', function () {
+        $.post(VC.geturl() + '/saveNotifications', {"fromEmail":localStorage.getItem('from_email'), "fromName":localStorage.getItem('name'),
+            "toEmail":localStorage.getItem('to_email'), "toName":$('#details-name').text(), "message":$('#txtMessage').val()},
+            function (data) {
+            notify(localStorage.getItem('to_email'));
         });
     });
 });
+
+function notify(data) {
+    socket.emit('notify', data);
+}

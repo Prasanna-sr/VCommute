@@ -19,7 +19,9 @@ module.exports = {
         db.bind('locationtimedata');
         db.locationtimedata.insert({Loc:"Palo " +
                 "Alto Building A,Palo Alto Building B,Palo Alto Vmware deer creek,San Francisco Stevenson Street",
-                Loc1:"San Jose,San Mateo,Park Merced,SF Downtown,SunnyVale,Cupertino,Mountain View,Fremont,Red Wood City,Dally City",FromTime:"06:00AM,07:00AM,08:00AM,09:00AM,10:00AM,11:00AM,12:00PM,01:00PM",ToTime:"02:00PM,03:00PM,04:00PM,05:00PM,06:00PM,07:00PM,08:00PM"},
+                Loc1:"San Jose,San Mateo,Park Merced,SF Downtown,SunnyVale,Cupertino,Mountain View,Fremont," +
+                    "Red Wood City,Dally City",FromTime:"06:00AM,07:00AM,08:00AM,09:00AM,10:00AM,11:00AM,12:00PM,01:00PM",
+                ToTime:"02:00PM,03:00PM,04:00PM,05:00PM,06:00PM,07:00PM,08:00PM"},
             function(err) {
                 if(err) {
                     return console.log('insert error', err);
@@ -34,9 +36,10 @@ module.exports = {
         db.bind('locationtimedata');
         db.locationtimedata.find({},function(err, cursor) {
             if(err) {
-                return console.log('login details error:', err);
+                callback(err);
+            } else {
+                cursor.toArray(callback);
             }
-            cursor.toArray(callback);
         });
     },
 
@@ -176,28 +179,61 @@ module.exports = {
 
     },
 
-    getfromLocation : function(req,callback) {
-        db.collection('userdatabase');
-        db.bind('userdatabase');
-        db.userdatabase.distinct("fromLocation1",{"fromLocation1":{$exists:true}},function(err,cursor) {
-            if(err) {
-                return console.log('location error:', err);
-            }
-            callback(null,cursor);
-        });
 
-    },
-    gettoLocation : function(req,callback) {
-        db.collection('userdatabase');
-        db.bind('userdatabase');
-        db.userdatabase.distinct("toLocation1",{"toLocation1":{$exists:true}},function(err,cursor) {
-            if(err) {
-                return console.log('location error:', err);
-            }
-            callback(null,cursor);
-        });
 
+
+    getLocation : function(req,callback) {
+        db.collection('locationtimedata');
+        db.bind('locationtimedata');
+        db.locationtimedata.find({},{"Loc1":true,"Loc":true},function(err,cursor) {
+                if(err) {
+                    return console.log('location error:', err);
+                }
+                cursor.toArray(callback);
+        });
     },
+
+//        getfromLocation : function(req,callback) {
+//        db.collection('userdatabase');
+//        db.bind('userdatabase');
+//        if(req.body.journey==0){
+//            //todo after release
+//            db.userdatabase.distinct("fromLocation1",{"fromLocation1":{$exists:true}},function(err,cursor) {
+//                if(err) {
+//                    return console.log('location error:', err);
+//                }
+//                callback(null,cursor);
+//            });
+//
+//        }  else if(req.body.journey==1) {
+//            db.userdatabase.distinct("fromLocation2",{"fromLocation2":{$exists:true}},function(err,cursor) {
+//                if(err) {
+//                    return console.log('location error:', err);
+//                }
+//                callback(null,cursor);
+//            });
+//
+//        }
+//    },
+//    gettoLocation : function(req,callback) {
+//        db.collection('userdatabase');
+//        db.bind('userdatabase');
+//        if(req.body.journey==0){
+//            db.userdatabase.distinct("toLocation1",{"toLocation1":{$exists:true}},function(err,cursor) {
+//                if(err) {
+//                    return console.log('location error:', err);
+//                }
+//                callback(null,cursor);
+//            });
+//        }    else if(req.body.journey==1) {
+//            db.userdatabase.distinct("toLocation2",{"toLocation2":{$exists:true}},function(err,cursor) {
+//                if(err) {
+//                    return console.log('location error:', err);
+//                }
+//                callback(null,cursor);
+//            });
+//        }
+//    },
 
     getTimedetails : function(req,callback) {
         db.collection('locationDetails');
@@ -273,29 +309,42 @@ module.exports = {
     getNotifications : function(data,callback){
         db.collection('notification');
         db.bind('notification');
-        db.notification.find({$or:[ {to_email:data.email},{from_email:data.email}]},function(err,cursor) {
+        db.notification.find({$or:[{to_email:data.email},{from_email:data.email}]},{},{"sort":"_id"},function(err,cursor) {
               if(err) {
                 return console.log('location error:', err);
             }
             cursor.toArray(callback);
         });
     },
-    updateNotifications: function(data,callback){
+    getNotificationbyID : function(data,callback){
         db.collection('notification');
         db.bind('notification');
-        db.notification.update({from_email:data.email},{$set:{unread:0}},function(err,result){
+        console.log('id id '+data.id);
+        db.notification.find({"_id":db.bson_serializer.ObjectID.createFromHexString(data.id)},function(err,cursor) {
             if(err) {
-                console.log('error occured while updating');
-                callback(err);
-            }else{
-                console.log('---user details update successfull---');
-                callback(null);
-
+                return console.log('location error:', err);
             }
-
+            cursor.toArray(callback);
         });
-
     },
+
+    //notification unread
+//    updateNotifications: function(data,callback){
+//        db.collection('notification');
+//        db.bind('notification');
+//        db.notification.update({from_email:data.email},{$set:{unread:0}},function(err,result){
+//            if(err) {
+//                console.log('error occured while updating');
+//                callback(err);
+//            }else{
+//                console.log('---user details update successfull---');
+//                callback(null);
+//
+//            }
+//
+//        });
+//
+//    },
     viewData: function(data,callback){
         if(data.value=="data"){
 
@@ -342,24 +391,20 @@ module.exports = {
             });
 
         }
-
-
-
     },
-
     deleteData: function(data,callback){
-    if(data.value=="data"){
-        db.collection('locationtimedata');
-        db.bind('locationtimedata');
-        db.locationtimedata.remove({},function(err, cursor) {
-            if(err) {
-                return console.log('login details error:', err);
-            }
-            else {
-                callback("success");
-            }
-        });
-    }
+        if(data.value=="data"){
+            db.collection('locationtimedata');
+            db.bind('locationtimedata');
+            db.locationtimedata.remove({},function(err, cursor) {
+                if(err) {
+                    return console.log('login details error:', err);
+                }
+                else {
+                    callback(null,"success");
+                }
+            });
+        }
         if(data.value=="location"){
             db.collection('locationDetails');
             db.bind('locationDetails');
@@ -368,7 +413,7 @@ module.exports = {
                     return console.log('login details error:', err);
                 }
                 else {
-                    callback("success");
+                    callback(null,"success");
                 }
             });
         }
@@ -380,7 +425,7 @@ module.exports = {
                     return console.log('login details error:', err);
                 }
                 else {
-                    callback("success");
+                    callback(null,"success");
                 }
             });
         }
@@ -392,12 +437,63 @@ module.exports = {
                     return console.log('login details error:', err);
                 }
                 else {
-                    callback("success");
+                    callback(null,"success");
+                }
+            });
+        }
+},
+
+    insertData: function(data,callback){
+        if(data.value=="data"){
+            db.collection('locationtimedata');
+            db.bind('locationtimedata');
+            db.locationtimedata.insert(data.d,function(err, cursor) {
+                if(err) {
+                    return console.log('login details error:', err);
+                }
+                else {
+                    callback(null,"insertion success");
+                }
+            });
+        }
+        if(data.value=="location"){
+            db.collection('locationDetails');
+            db.bind('locationDetails');
+            db.locationDetails.insert(data.d,function(err, cursor) {
+                if(err) {
+                    return console.log('login details error:', err);
+                }
+                else {
+                    callback(null,"insertion success");
+                }
+            });
+        }
+        if(data.value=="user"){
+            db.collection('userdatabase');
+            db.bind('userdatabase');
+            db.userdatabase.insert(data.d,function(err, cursor) {
+                if(err) {
+                    return console.log('login details error:', err);
+                }
+                else {
+                    callback(null,"insertion success");
+                }
+            });
+        }
+        if(data.value=="notification"){
+            db.collection('notification');
+            db.bind('notification');
+            db.notification.remove({},function(err, cursor) {
+                if(err) {
+                    return console.log('login details error:', err);
+                }
+                else {
+                    callback(null,"success");
                 }
             });
         }
 
-}
+    }
 
 
 }
