@@ -6,44 +6,42 @@
  * To change this template use File | Settings | File Templates.
  */
 
-var VC = {
-    //url : "http://vcommute.cloudfoundry.com",
-    url : "http://localhost:3005",
-    socket : io.connect()
-
-};
+var VC = {};
+VC.cloudFoundryUrl = "http://vcommute.cloudfoundry.com";
+VC.url = document.location.host.indexOf("localhost") >= 0 ? "http://" + document.location.host : VC.cloudFoundryUrl;
+VC.socket = io.connect(VC.url);
 
 var USERSTATUS = {
-    NEWUSER : "NEW USER",
-    LOGGEDIN : "ALREADY LOGGED IN",
-    LOGINFAILED : "LOGIN FAILED"
-    };
+    NEWUSER:"NEW USER",
+    LOGGEDIN:"ALREADY LOGGED IN",
+    LOGINFAILED:"LOGIN FAILED"
+};
 
-$("#page-login").bind('pageinit', function() {
-    $("#btnlogin").off('click').on('click',function () {
+$("#page-login").bind('pageinit', function () {
+    $("#btnlogin").off('click').on('click', function () {
         login();
     });
-    $("#txtPassword").keypress(function(e) {
-        if(e.which == 13) {
+    $("#txtPassword").keypress(function (e) {
+        if (e.which == 13) {
             login();
         }
-    } );
+    });
 });
 
 function login() {
     var user = $('#txtUser').val();
     var password = $('#txtPassword').val();
-    if(user != "" && password != "") {
+    if (user != "" && password != "") {
         var email_ext = "@vmware.com";
-        user = user.replace(email_ext,"");
-        $.post(VC.url + '/login', { "user" : user, "password" : password }, function (data) {
-            if(data == USERSTATUS.NEWUSER) {
+        user = user.replace(email_ext, "");
+        $.post(VC.url + '/login', { "user":user, "password":password }, function (data) {
+            if (data == USERSTATUS.NEWUSER) {
                 localStorage.setItem('from_email', user + email_ext);
                 location.replace("index.html#page-profile");
-            } else if(data == USERSTATUS.LOGGEDIN) {
+            } else if (data == USERSTATUS.LOGGEDIN) {
                 localStorage.setItem('from_email', user + email_ext);
                 location.replace("index.html#page-home");
-            } else if(data == USERSTATUS.LOGINFAILED) {
+            } else if (data == USERSTATUS.LOGINFAILED) {
                 alert('Login failed');
             }
         });

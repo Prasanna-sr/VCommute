@@ -4,15 +4,15 @@ var conn;
 var db;
 module.exports = {
     connect: function(dbServiceName) {
-        db = dbUtil.connect('mongodb', dbServiceName,
-            function(err, connection) {
-                if (err || !connection) {
-                    console.log('Could not connect to MongoDB');
-                } else {
-                    console.log('Connected to MongoDB successfully');
-                    conn = connection;
-                }
-            });
+        db = dbUtil.connect('mongodb', dbServiceName);
+        db.open(function(err, connection) {
+            if (err || !connection) {
+                console.log('Could not connect to MongoDB');
+            } else {
+                console.log('Connected to MongoDB successfully');
+                conn = connection;
+            }
+        });
     },
     storeLocationTimedata: function(callback) {
         db.collection('locationtimedata');
@@ -173,10 +173,20 @@ module.exports = {
         });
 
     },
-    persistUserprofiledata : function(data,callback) {
+    persistUserProfileData : function(userProfileData, callback) {
+        var profile, userdetails;
+        try{
+            profile = userProfileData.communities[0].profile;
+            userdetails = {name: profile.name, title : profile.title,
+                contact_info : profile.contact_info, avatars: profile.avatars, profile:0};
+        } catch(e) {
+            console.log("Error: Could not get user's profile");
+            callback(e);
+            return;
+        }
+
         db.collection('userdatabase');
         db.bind('userdatabase');
-        var userdetails = {name:data.communities[0].profile.name, title : data.communities[0].profile.title, contact_info : data.communities[0].profile.contact_info,avatars:data.communities[0].profile.avatars,profile:0};
         db.userdatabase.insert(userdetails, function(err) {
             if(err) {
                 callback(err);
@@ -186,6 +196,7 @@ module.exports = {
             }
         });
     },
+
     persistNotificationData  : function(data, callback) {
         db.collection('notifications');
         db.bind('notifications');
@@ -203,6 +214,7 @@ module.exports = {
     getuserInfo : function(req, callback) {
         db.collection('userdatabase');
         db.bind('userdatabase');
+        debugger;
         db.userdatabase.findOne({"contact_info.email" : req.body.email}, function(err,document) {
             if(err) {
                 callback(err);

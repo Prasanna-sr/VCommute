@@ -6,17 +6,9 @@ var mongodb = require('mongoskin');
 
 module.exports = {
     connect: function(dbType, dbServiceName, callback) {
+        console.log(dbType);
         if (dbType == 'mongodb') {
-            db = mongodb.db(getMongoUrl(dbServiceName),
-                function(err, conn) {
-                    if (err) {
-                        callback(err);
-                    } else {
-                        callback('', conn);
-                    }
-                });
-            console.log("db==="+db);
-            return db;
+            return mongodb.db(getMongoUrl(dbServiceName));
         }
     },
     getMongoUrl: getMongoUrl

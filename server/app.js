@@ -1,6 +1,6 @@
 var express = require('express');
 var host = process.env.VCAP_APP_HOST || "localhost";
-var port = process.env.VCAP_APP_PORT || "3005";
+var port = process.env.VCAP_APP_PORT || "3000";
 
 var app = module.exports = express.createServer();
 
@@ -16,3 +16,5 @@ var sioLib = require("./lib/socketio");
 sioLib(app);
 
 app.listen(port, host);
+
+console.log("app is running at -  " + host + ":" + port);
