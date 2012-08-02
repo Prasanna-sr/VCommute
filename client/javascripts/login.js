@@ -7,43 +7,47 @@
  */
 
 var VC = {
-//    url : "http://vcommute.cloudfoundry.com",
+    //url : "http://vcommute.cloudfoundry.com",
     url : "http://localhost:3005",
-    socket : io.connect(),
-    geturl : function(){return this.url;},
-    getsocket: function(){return this.socket;}
+    socket : io.connect()
 
 };
+
+var USERSTATUS = {
+    NEWUSER : "NEW USER",
+    LOGGEDIN : "ALREADY LOGGED IN",
+    LOGINFAILED : "LOGIN FAILED"
+    };
 
 $("#page-login").bind('pageinit', function() {
     $("#btnlogin").off('click').on('click',function () {
         login();
     });
-    $("#txtPassword").keypress(function(e){
-        if(e.which==13){
+    $("#txtPassword").keypress(function(e) {
+        if(e.which == 13) {
             login();
         }
     } );
 });
 
-function login(){
-    if($('#txtUser').val()!="" && $('#txtPassword').val()!="") {
-        var user = $('#txtUser').val();
-        var password = $('#txtPassword').val();
-        $.post(VC.geturl()+'/login', { "user": user, "password": password }, function (data) {
-            if(data=='0') {
-                localStorage.setItem('from_email', user+'@vmware.com');
+function login() {
+    var user = $('#txtUser').val();
+    var password = $('#txtPassword').val();
+    if(user != "" && password != "") {
+        var email_ext = "@vmware.com";
+        user = user.replace(email_ext,"");
+        $.post(VC.url + '/login', { "user" : user, "password" : password }, function (data) {
+            if(data == USERSTATUS.NEWUSER) {
+                localStorage.setItem('from_email', user + email_ext);
                 location.replace("index.html#page-profile");
-            }
-            if(data=='1'){
-                localStorage.setItem('from_email', user+'@vmware.com');
+            } else if(data == USERSTATUS.LOGGEDIN) {
+                localStorage.setItem('from_email', user + email_ext);
                 location.replace("index.html#page-home");
-            }
-            if(data=='-1'){
+            } else if(data == USERSTATUS.LOGINFAILED) {
                 alert('Login failed');
             }
         });
-    } else{
+    } else {
         alert('User name and Password should not be empty');
     }
 }

@@ -9,49 +9,48 @@
 
 $("#page-details").bind('pagebeforeshow', function() {
     var preference=null;
-    var email = localStorage.getItem('to_email');
-    $.post(VC.geturl()+'/getuserinfo',{"email":email},function(userObj){
+    $.post(VC.url+'/getuserinfo',{"email":USER_INFO.to_email},function(userObj){
 
-        if(userObj[0].NoCar!=null){
-            preference = userObj[0].NoCar;
+        if(userObj.NoCar!=null){
+            preference = userObj.NoCar;
         }
-        if(userObj[0].Car!=null){
+        if(userObj.Car!=null){
             if(preference!=null){
-                preference = preference + ',' + userObj[0].Car;
+                preference = preference + ',' + userObj.Car;
             }
             else{
-                preference = userObj[0].Car;
+                preference = userObj.Car;
             }
         }
-        if(userObj[0].DriveDays!=null){
+        if(userObj.DriveDays!=null){
             if(preference!=null){
-                preference = preference + ','+ userObj[0].DriveDays;
+                preference = preference + ','+ userObj.DriveDays;
             }
             else{
-                preference = userObj[0].DriveDays;
+                preference = userObj.DriveDays;
             }
         }
-        if(userObj[0].DriveWeek!=null){
+        if(userObj.DriveWeek!=null){
             if(preference!=null){
-                preference = preference +','+ userObj[0].DriveWeek;
+                preference = preference +','+ userObj.DriveWeek;
             }
             else{
-                preference = userObj[0].DriveWeek;
+                preference = userObj.DriveWeek;
             }
         }
-        $('#details-name').text(userObj[0].name);
-        $('#aEmail').attr("href",userObj[0].contact_info.email);
-        $('#email').text(userObj[0].contact_info.email);
-        $('#aPhone').attr("href","tel:"+userObj[0].contact_info.cell_phone);
-        $('#mobile').text(userObj[0].contact_info.cell_phone);
-        $('#picture').attr("src",userObj[0].avatars.square140);
-        $('#title').text(userObj[0].title);
-        $('#base-location').text(userObj[0].contact_info.location);
-        $('#base-location').text(userObj[0].contact_info.location);
+        $('#details-name').text(userObj.name);
+        $('#aEmail').attr("href","mailto:"+userObj.contact_info.email);
+        $('#email').text(userObj.contact_info.email);
+        $('#aPhone').attr("href","tel:"+userObj.contact_info.cell_phone);
+        $('#mobile').text(userObj.contact_info.cell_phone);
+        $('#picture').attr("src",userObj.avatars.square140);
+        $('#title').text(userObj.title);
+        $('#base-location').text(userObj.contact_info.location);
+        $('#base-location').text(userObj.contact_info.location);
         $('#details_preference').text(preference);
-        $('#details_landmark').text(userObj[0].landmark);
-        $('#details_cardescription').text(userObj[0].carDesc);
-        $('#details_additional').text(userObj[0].preference);
+        $('#details_landmark').text(userObj.landmark);
+        $('#details_cardescription').text(userObj.carDesc);
+        $('#details_additional').text(userObj.preference);
     });
 
 });

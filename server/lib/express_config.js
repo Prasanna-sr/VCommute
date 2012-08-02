@@ -23,7 +23,7 @@ exports.configure = function(app) {
             layout: false
         });
 
-      app.use(express.static('/Users/prasannasr/Documents/node.js/VCommute/V6/client'));
+      app.use(express.static('/Users/prasannasr/Documents/node.js/VCommute/V7/client'));
         app.use(express.bodyParser());
     });
 

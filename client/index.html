@@ -1,8 +1,8 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
         "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
+<html xmlns="http://www.w3.org/1999/html">
 
+<head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>
@@ -13,58 +13,70 @@
     <script src="javascripts/jquery.mobile-1.0.1.min.js"></script>
     <!--<script src="http://vcommute.cloudfoundry.com/socket.io/socket.io.js"></script>-->
     <script src="http://localhost:3005/socket.io/socket.io.js"></script>
-
 </head>
+
 <body>
 
 <div data-role="page" id="page-login">
     <!--<script src="http://localhost:3005/socket.io/socket.io.js"></script>-->
 
     <script type="text/javascript"  src="javascripts/login.js"></script>
-    <div data-theme="a" data-role="header" data-position="fixed">
-        <h3>
-            VCommute
-        </h3>
-    </div>
+    <!--<div data-theme="a" data-role="header" data-position="fixed">-->
+        <!--<h3>-->
+            <!--VCommute-->
+        <!--</h3>-->
+    <!--</div>-->
+
+
+    <h1 align="center">VCommute</h1>
+    <br>
     <div data-role="content" style="padding: 15px">
         <fieldset data-role="controlgroup">
             <label >
-                <b> Login using your Social cast username and API password(different from sign on password)</b> <br>
+                <b> Login using your Socialcast username and API password (different from vmware password)</b> <br>
             </label>
 
         </fieldset>
 
         <div data-role="fieldcontain">
             <fieldset data-role="controlgroup">
-                <label for="txtUser">User Name</label>
-                <input id="txtUser"  placeholder="" name="user" value=""/>
+                <!--<label for="txtUser">User Name</label>-->
+                <input id="txtUser"  placeholder="User Name" name="user" value=""/>
+
             </fieldset>
         </div>
         <div data-role="fieldcontain">
             <fieldset data-role="controlgroup">
-                <label for="txtPassword">
-                    Password
-                </label>
-                <input id="txtPassword" placeholder="" name="password" value="" type="password"/>
+                <!--<label for="txtPassword">Password</label>-->
+                <input id="txtPassword" placeholder="Password" name="password" value="" type="password"/>
             </fieldset>
         </div>
         <input type="submit" class="btn btn-primary"  id="btnlogin" value="Login"/>
-    </div>
-    <fieldset data-role="controlgroup">
 
-        <ul>
-            <li><b> Don't have an social cast API password ?</b></li>
-            <li>1.Go to <a href="https://vmware-com.socialcast.com/home">Social cast</a></li>
-            <li>2.Click on your name (menu button) found on top right corner</li>
-            <li>3.Select Setting - > Passsword tab and set your API password there</li>
-        </ul>
-    </fieldset>
-
-    <div data-theme="a" data-role="footer" data-position="fixed">
-        <h3>
-            VCommute
-        </h3>
     </div>
+    <!--<h3>Don't have an social cast API password ?</h3>-->
+
+    <div data-role="collapsible">
+        <h3>Instructions to set Socialcast API password</h3>
+        <p>1.Go to <a href="https://vmware-com.socialcast.com/home">Social cast</a></p>
+        <p>2.Click on your name (menu button) found on top right corner</p>
+        <p>3.Select Setting - > Passsword tab and set your API password there</p>
+    </div>
+    <!--<fieldset data-role="controlgroup">-->
+
+        <!--<ul>-->
+            <!--<li><b> Don't have an social cast API password ?</b></li>-->
+            <!--<li>1.Go to <a href="https://vmware-com.socialcast.com/home">Social cast</a></li>-->
+            <!--<li>2.Click on your name (menu button) found on top right corner</li>-->
+            <!--<li>3.Select Setting - > Passsword tab and set your API password there</li>-->
+        <!--</ul>-->
+    <!--</fieldset>-->
+
+    <!--<div data-theme="a" data-role="footer" data-position="fixed">-->
+        <!--<h3>-->
+            <!--VCommute-->
+        <!--</h3>-->
+    <!--</div>-->
 </div>   <!-- page login -->
 
 <div data-role="page" id="page-profile">
@@ -76,61 +88,63 @@
         </h3>
     </div>
     <div data-role="content" style="padding: 15px">
-        <div class="content-primary">
-            <!--<div data-role="fieldcontain">-->
-
-                <ul data-role="listview">
-                    <li>
-                        <img id="profile-picture" /> <h3> <label class="select" name="profileName" id="profile-name"></label></h3>
-                        <p> <label class="select" name="" id="profile-title"></label></p>  <p> <label class="select" name="location" id="profile-base-location"></label></p>
-                    </li>
-                </ul>
-
-            <h4>Onward Journey</h4>
-            <form id='formProfile' method="#">
-                <ul data-role="listview" data-inset="true">
-                    <li><label for="from-location" class="select">From Location:</label>
-                        <select name="fromLocation1" data-mini="true" data-native-menu="false" id="from-location">
-                        </select></li>
-                    <li>  <label for="to-location" class="select">To Location:</label>
-                        <select name="toLocation1" data-mini="true" data-native-menu="false" id="to-location">
-                        </select></li>
-                    <li>
-                        <label for="start-time" class="select">Start Time:</label>
-                        <select name="startTime" data-mini="true" data-native-menu="false" id="start-time">
-                        </select></li>
-                </ul>
 
 
-                <h4>Return Journey</h4>
-                <ul data-role="listview" data-inset="true">
-                    <li> <label for="from-location-2" class="select">From Location:</label>
-                        <select name="fromLocation2" data-mini="true" data-native-menu="false" id="from-location-2">
-                        </select></li>
-                    <li><label for="to-location-2" class="select">To Location:</label>
-                        <select name="toLocation2" data-mini="true" data-native-menu="false" id="to-location-2">
-                        </select></li>
-                    <li><label for="return-time" class="select">Return Time:</label>
-                        <select name="returnTime" data-mini="true" data-native-menu="false" id="return-time">
-                        </select></li>
-                </ul>
+    <ul data-role="listview">
+        <li>
+            <img id="profile-picture" /> <h3> <label class="select" name="profileName" id="profile-name"></label></h3>
+            <p> <label class="select" name="" id="profile-title"></label></p>  <p> <label class="select" name="location" id="profile-base-location"></label></p>
+        </li>
+    </ul>
 
-                <div data-role="fieldcontain">
-                    <fieldset data-role="controlgroup">
-                        <legend>Choose your Preferences:</legend>
-                        <input type="checkbox" name="Car" id="Car" value="I will drive my car" class="custom" />
-                        <label for="Car">I will drive my car</label>
+    <h4>Onward Journey</h4>
+    <form id='formProfile' method="#">
+        <ul data-role="listview" data-inset="true">
+            <li><label for="from-location" class="select">From Location:</label>
+                <select name="fromLocation1" data-mini="true" id="from-location">
+                </select></li>
+            <li>  <label for="to-location" class="select">To Location:</label>
+                <select name="toLocation1" data-mini="true" id="to-location">
+                </select></li>
+            <li>
+                <label for="start-time" class="select">Start Time:</label>
+                <select name="startTime" data-mini="true" id="start-time">
+                </select></li>
+        </ul>
 
-                        <input type="checkbox" name="Nocar" id="Nocar" value="I m a passenger" class="custom" />
-                        <label for="Nocar">I m a passenger</label>
+        <h4>Return Journey</h4>
+        <ul data-role="listview" data-inset="true">
+            <li> <label for="from-location-2" class="select">From Location:</label>
+                <select name="fromLocation2" data-mini="true" id="from-location-2">
+                </select></li>
+            <li><label for="to-location-2" class="select">To Location:</label>
+                <select name="toLocation2" data-mini="true" id="to-location-2">
+                </select></li>
+            <li><label for="return-time" class="select">Return Time:</label>
+                <select name="returnTime" data-mini="true" id="return-time">
+                </select></li>
+        </ul>
 
-                        <input type="checkbox" name="DriveDays" id="DriveDays" value="I will pay for gas & won't drive" class="custom" />
-                        <label for="DriveDays">I will pay for gas & won't drive</label>
+            <!--<label for="profile-preference" class="select">Choose your Preference</label>-->
+            <!--<select name="profile_preference" data-native-menu="false" data-mini="true" id="profile-preference">-->
+                <!--<option value="car">I drive my car</option>-->
+                <!--<option value="nocar">I pay for gas (You drive the car)</option>-->
+                <!--<option value="altdays">I can drive alternate days/weeks</option>-->
+            <!--</select>-->
 
-                        <input type="checkbox" name="DriveWeek" id="DriveWeek" value="I will drive alternate days/weeks" class="custom" />
-                        <label for="DriveWeek">I will drive alternate days/weeks</label>
-                    </fieldset>
-                </div>
+                <!--<div data-role="fieldcontain">-->
+                    <!--<fieldset data-role="controlgroup">-->
+                        <!--<legend>Choose your Preferences:</legend>-->
+                        <!--<input type="checkbox" name="Car" id="Car" value="I drive my car" class="custom" />-->
+                        <!--<label for="Car">I drive my car</label>-->
+
+                        <!--<input type="checkbox" name="DriveDays" id="DriveDays" value="I will pay for gas & won't drive" class="custom" />-->
+                        <!--<label for="DriveDays">I pay for gas (You drive the car)</label>-->
+
+                        <!--<input type="checkbox" name="DriveWeek" id="DriveWeek" value="I will drive alternate days/weeks" class="custom" />-->
+                        <!--<label for="DriveWeek">I can drive alternate days/weeks</label>-->
+                    <!--</fieldset>-->
+                <!--</div>-->
 
                 <fieldset data-role="controlgroup">
                         <label for="profile-mobile">Mobile Number<b><font color="red">*</font></b>:</label>
@@ -151,20 +165,20 @@
 
                 </fieldset>
             </form>
-            <h4>Settings</h4>
+            <h4>App Settings</h4>
 
                     <input type="checkbox" name="hide" id="hide" value="hide" class="custom" />
-                    <label for="hide">Hide me from search results</label>
+                    <label for="hide">I am already car pooling (hide me from search results)</label>
 
                     <input type="checkbox" name="notification" id="notification" value="notification" class="custom" />
-                    <label for="notification">Turn off notification</label>
+                    <label for="notification">Turn off notifications</label>
 
                     <input type="checkbox" name="log_out" checked="true" id="log_out" value="log_out" class="custom" />
                     <label for="log_out">Keep me logged in</label>
 
             <input type="submit" id="btnSubmit" value="Save and Continue"/>
         </div>
-    </div>
+    <!--</div>-->
 
     <div data-role="footer" class="nav-glyphish-example" data-position="fixed">
         <div data-role="navbar" class="nav-glyphish-example" class="ui-grid-b">
@@ -172,7 +186,7 @@
 
                 <li><a href="/index.html#page-home" data-icon="home">Home</a> </li>
                 <li><a href="/index.html#page-notification" data-icon="info">Notification    <span class="notification"><label id="count-profile">0</label></span></a></li>
-                <li> <a href="/index.html#page-profile" data-icon="gear" >Profile</a></li>
+                <li> <a href="/index.html#page-profile" class="ui-btn-active ui-state-persist" data-icon="gear">Profile</a></li>
 
             </ul>
 
@@ -184,39 +198,29 @@
 
     <script type="text/javascript" src="javascripts/home.js"></script>
 
-
     <div data-role="header" data-theme="a" data-position="fixed">
         <h1>VCommute</h1>
     </div><!-- /header -->
-
-
     <div data-role="content" style="padding: 15px">
-
         <fieldset data-role="controlgroup" data-type="horizontal">
             <input type="radio" name="radio-choice-b" id="radio-choice-a" value="on" checked="checked" />
             <label for="radio-choice-a">Onward</label>
             <input type="radio" name="radio-choice-b" id="radio-choice-b" value="off" />
             <label for="radio-choice-b">Return</label>
-
         </fieldset>
-
-
-
         <div data-role="fieldcontain">
-            <label for="from-location-1" class="select">Registered From Locations:</label>
-            <select name="fromLocation1"  data-inline="true"  data-native-menu="false" id="from-location-1">
+            <label for="from-location-1" class="select">From Locations:</label>
+            <select name="fromLocation1"  id="from-location-1">
             </select>
         </div>
-
         <div data-role="fieldcontain">
-            <label for="to-location-1" class="select">Registered To Locations:</label>
-            <select name="toLocation1" data-inline="true" data-native-menu="false" id="to-location-1">
+            <label for="to-location-1" class="select">To Locations:</label>
+            <select name="toLocation1" id="to-location-1">
             </select>
         </div>
-
         <div data-role="fieldcontain">
-            <label for="time" class="select">Time:</label>
-            <select name="time" id="time" data-inline="true" data-native-menu="false">
+            <label for="time" class="select">Time (Number of commuters):</label>
+            <select name="time" id="time">
             </select>
         </div>
         <br>
@@ -230,7 +234,7 @@
     <div data-role="footer" class="nav-glyphish-example" data-position="fixed">
         <div data-role="navbar" class="nav-glyphish-example" class="ui-grid-b" >
             <ul>
-                <li><a href="/index.html#page-home" data-icon="home">Home</a> </li>
+                <li><a href="/index.html#page-home" class="ui-btn-active ui-state-persist" data-icon="home">Home</a> </li>
                 <li><a href="/index.html#page-notification" data-icon="info">Notification<span class="notification"><label id="count-home">0</label></span></a></li>
                 <li> <a href="/index.html#page-profile" data-icon="gear" >Profile</a></li>
             </ul>
@@ -241,11 +245,13 @@
 
 </div> <!-- /page home-->
 
-<div data-role="page" id="page-details">
+<div data-role="page" id="page-details" data-add-back-btn="true">
 
     <script type="text/javascript" src="javascripts/details.js"></script>
 
     <div data-role="header" data-theme="a" data-position="fixed">
+        <!--<a href="index.html#page-home" data-icon="back">back</a>-->
+        <a data-rel="back" data-icon="back">back</a>
 
         <h1>VCommmute</h1>
 
@@ -262,23 +268,32 @@
                 </li>
             </ul>
             <br>
-            <p><label class="select"><b>Details</b></label></p>
+            <h3><label class="select"><b>Details</b></label></p></h3>
 
             <div data-role="fieldcontain">
-                Preferences : <label class="select"  id="details_preference"></label>
+                   <strong>Preferences</strong> <br>
+                    <label class="select"  id="details_preference"></label>
+
             </div>
             <div data-role="fieldcontain">
-                Nearest Landmark :  <label class="select"  id="details_landmark"></label>
+                <strong>Nearest Landmark</strong> <br>
+                <label class="select"  id="details_landmark"></label>
             </div>
             <div data-role="fieldcontain">
-                Car Description :  <label class="select" id="details_cardescription"></label>
+                <Strong>Car Description</strong> <br>
+                <label class="select" id="details_cardescription"></label>
             </div>
             <div data-role="fieldcontain">
-                Additional Preference : <label class="select"  id="details_additional"></label>
+                <strong>Additional Preference</strong> <br>
+                <label class="select"  id="details_additional"></label>
             </div>
 
-            <p><label class="select" id="action"><b>Action</b></label></p>
+            <h3><label class="select" id="action"><b>Actions</b></label></p></h3>
             <ul data-role="listview">
+                <li>
+                    <a id="notify" href="index.html#page-comment">
+                        In App notify<br>  <label class="select" name="mobile" id="In-app-notify"></label>  </a>
+                </li>
                 <li>
                     <a id="aPhone"> <img id="picture1" src="http://blog.solidcactus.com/wp-content/uploads/2011/11/Click-To-Call-Icon.png" width="50" height="50"/>
                         Call Mobile<br>  <label class="select" name="mobile" id="mobile"></label>  </a>
@@ -290,8 +305,6 @@
 
             </ul>
         </div>
-        <br>
-        <a id="contact" data-role="button" data-rel="dialog" href="index.html#page-comment">Contact</a>
         <!--<a data-role="button" data-rel="back" data-theme="c">Back</a>-->
     </div>
 
@@ -327,7 +340,7 @@
         <div data-role="navbar" class="nav-glyphish-example" class="ui-grid-b" >
             <ul>
                 <li><a href="/index.html#page-home" data-icon="home">Home</a> </li>
-                <li><a  data-icon="info" data-icon="info">Notification    <span class="notification"><label id="count-notification">0</label></span></a></li>
+                <li><a  data-icon="info" class="ui-btn-active ui-state-persist" data-icon="info">Notification <span class="notification"><label id="count-notification">0</label></span></a></li>
                 <li> <a href="/index.html#page-profile" data-icon="gear" >Profile</a></li>
             </ul>
         </div>
@@ -411,10 +424,11 @@
             <label id="message"></label> <i><label id="timestamp"></label></i>
         </div>
 
-        <a data-role="button" data-rel="back" data-theme="c">Ok</a>
+        <a data-role="button" href="index.html#page-notification" data-theme="c">Ok</a>
     </div>
 
 </div>   <!-- /page info -->
 
 </body>
+
 </html>

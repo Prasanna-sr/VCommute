@@ -11,16 +11,16 @@ var socketio = require('socket.io');
 
 module.exports = function (app) {
     io = socketio.listen(app);
-//    io.configure(function() {
-//        io.set('log level', 1);
-//        io.set("transports", ["xhr-polling"]);
-//    });
+    io.configure(function() {
+        io.set('log level', 1);
+        io.set("transports", ["xhr-polling"]);
+    });
 
     io.sockets.on('connection', function (socket) {
         console.log('connection established');
-        socket.on('notify',function(data){
-            console.log('-----update-------');
-            io.sockets.emit('update', { email: data });
+        socket.on('notify',function(to_email){
+            console.log('-----update socket-------');
+            io.sockets.emit('update', to_email);
         });
     });
 }

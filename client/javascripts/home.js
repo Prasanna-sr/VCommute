@@ -6,318 +6,194 @@
  * To change this template use File | Settings | File Templates.
  */
 
-$("#page-home").bind('pagebeforeshow',function(){
-    var tempValue_Onward = new Array();
-    var tempTime_Onward = new Array();
-    var tempValue_Return = new Array();
-    var tempTime_Return = new Array();
-    var temp1_Onward;
-    var temp2_Onward;
-    var temp1_Return;
-    var temp2_Return;
+$("#page-home").bind('pagebeforeshow',function() {
     var journey=0;
-    var result=0;
-    var loc;
-    var skip;
-    var i =1;
-     if((new Date().getHours()) < 12){
-         $("#radio-choice-a").attr("checked", true).checkboxradio("refresh");
-         $("#radio-choice-b").attr("checked", false).checkboxradio("refresh");
-         journey = 0;
-         $.post(VC.geturl()+'/getuserinfo',{"email":localStorage.getItem('from_email')},function(userObj){
-             preload1();
-             //localStorage.setItem('name',userObj[0].name);
-             setLocationTime_Onward(userObj);
-             $.post(VC.geturl()+ '/getTimeandCount',{"location":loc},function(timeObj){
-                 setOnwardTime(timeObj);
-                 loadDropDownList3(tempValue_Onward,tempTime_Onward);
-                 generateOnwardData(skip);
-             });
-             $.post(VC.geturl()+'/fromLocationdetails',{"journey":journey},function(fromLocObj){
-                 loadDropDownList1(fromLocObj);
-             });
-             $.post(VC.geturl()+'/toLocationdetails',{"journey":journey},function(toLocObj){
-                loadDropDownList2(toLocObj);
-             });
-         });
-     }
-     else{
+    var email = localStorage.getItem('from_email');
+    //var i = 1;
 
-         $("#radio-choice-a").attr("checked", false).checkboxradio("refresh");
-         $("#radio-choice-b").attr("checked", true).checkboxradio("refresh");
-         journey = 1;
-         $.post(VC.geturl()+'/getuserinfo',{"email":localStorage.getItem('from_email')},function(userObj){
-             preload1();
-             //localStorage.setItem('name',userObj[0].name);
-             setLocationTime_Return(userObj);
-             $.post(VC.geturl()+ '/getTimeandCount',{"location":loc},function(timeObj){
-                 setReturnTime(timeObj);
-                 loadDropDownList3(tempValue_Return,tempTime_Return);
-                 generateReturnData(skip);
-             });
-             $.post(VC.geturl()+'/fromLocationdetails',{"journey":journey},function(fromLocObj){
-                 loadDropDownList1(fromLocObj);
-             });
-             $.post(VC.geturl()+'/toLocationdetails',{"journey":journey},function(toLocObj){
-                 loadDropDownList2(toLocObj);
-
-             });
-         });
-     }
+    if((new Date().getHours()) < 12) {
+        $("#radio-choice-a").attr("checked", true).checkboxradio("refresh");
+        $("#radio-choice-b").attr("checked", false).checkboxradio("refresh");
+        journey = 0;
+        loadPage(0);
+    } else {
+        $("#radio-choice-a").attr("checked", false).checkboxradio("refresh");
+        $("#radio-choice-b").attr("checked", true).checkboxradio("refresh");
+        journey = 1;
+        loadPage(0);
+    }
 
     $("#radio-choice-a").change(function() {
         if ($("#radio-choice-a").attr("checked", true)) {
-            $.post(VC.geturl()+'/getuserinfo',{"email":localStorage.getItem('from_email')},function(userObj){
-                preload1();
-                setLocationTime_Onward(userObj);
-                journey = 0;
-                $.post(VC.geturl() + '/fromLocationdetails',{"journey":journey}, function (fromLocObj) {
-                    loadDropDownList1(fromLocObj);
-                });
-                $.post(VC.geturl() + '/toLocationdetails', {"journey":journey},function (toLocObj) {
-                    loadDropDownList2(toLocObj);
-                    $.post(VC.geturl() + '/getTimeandCount', {"location":loc}, function (timeObj) {
-                        setOnwardTime(timeObj);
-                        loadDropDownList3(tempValue_Onward,tempTime_Onward);
-                        generateOnwardData(skip);
-                    });
-                });
-            });
-        }
+            journey=0;
+        }   loadPage(0);
     });
 
     $("#radio-choice-b").change(function() {
         if ($("#radio-choice-b").attr("checked", true)) {
-            $.post(VC.geturl()+'/getuserinfo',{"email":localStorage.getItem('from_email')},function(userObj){
-                preload1();
-                setLocationTime_Return(userObj);
-                journey = 1;
-                $.post(VC.geturl() + '/toLocationdetails',{"journey":journey}, function (toLocObj) {
-                    loadDropDownList2(toLocObj);
-                });
-                $.post(VC.geturl() + '/fromLocationdetails',{"journey":journey}, function (fromLocObj) {
-                    loadDropDownList1(fromLocObj);
-                    $.post(VC.geturl() + '/getTimeandCount', {"location":loc}, function (timeObj) {
-                        setReturnTime(timeObj);
-                        loadDropDownList3(tempValue_Return,tempTime_Return);
-                        generateReturnData(skip);
-                    });
-                });
-            });
+            journey=1;
+            loadPage(0);
         }
     });
 
-
-
-     $('#to-location-1').on('change',function() {
-         preload2();
-        if(journey==0){
-            $.post(VC.geturl()+ '/getTimeandCount',{"location":loc},function(timeObj){
-                setOnwardTime(timeObj);
-                loadDropDownList3(tempValue_Onward,tempTime_Onward);
-                generateOnwardData(skip);
-            });
-        }else{
-            $.post(VC.geturl()+ '/getTimeandCount',{"location":loc},function(timeObj){
-                setReturnTime(timeObj);
-                loadDropDownList3(tempValue_Return,tempTime_Return);
-                generateReturnData(skip);
-            });
-        }
+    $('#to-location-1').on('change',function() {
+        var selectedValueObj=selectDropDownValues();
+        $.post(VC.url + '/getTimeUserData', {"journey":journey,"location":selectedValueObj.loc,"toLocation":selectedValueObj.toLocation,"fromLocation":selectedValueObj.fromLocation,"time":selectedValueObj.time},function(Obj){
+        createTimeMenu(Obj.timeObj,selectedValueObj.time);
+        generateListData(Obj.listObj);
+        });
     });
 
-     $('#from-location-1').on('change', function() {
-         preload2();
-        if(journey==0){
-            $.post(VC.geturl()+ '/getTimeandCount',{"location":loc},function(timeObj){
-                setOnwardTime(timeObj);
-                loadDropDownList3(tempValue_Onward,tempTime_Onward);
-                generateOnwardData(skip);
-
-            });
-        }
-        else {
-            $.post(VC.geturl()+ '/getTimeandCount',{"location":loc},function(timeObj){
-                setReturnTime(timeObj);
-                loadDropDownList3(tempValue_Return,tempTime_Return);
-                generateReturnData(skip);
-            });
-        }
+    $('#from-location-1').on('change', function() {
+        var selectedValueObj=selectDropDownValues();
+        $.post(VC.url + '/getTimeUserData', {"journey":journey,"location":selectedValueObj.loc,"toLocation":selectedValueObj.toLocation,"fromLocation":selectedValueObj.fromLocation,"time":selectedValueObj.time},function(Obj){
+        createTimeMenu(Obj.timeObj,selectedValueObj.time);
+        generateListData(Obj.listObj);
+        });
     });
 
-     $('#time').off('change').on('change', function() {
-         preload2();
-         if(journey==0) {
-             $.post(VC.geturl()+ '/getTimeandCount',{"location":loc},function(timeObj){
-                 setOnwardTime(timeObj);
-                 loadDropDownList3(tempValue_Onward,tempTime_Onward);
-                 generateOnwardData(skip);
-             });
-         }
-         else{
-             $.post(VC.geturl()+ '/getTimeandCount',{"location":loc},function(timeObj){
-                 setReturnTime(timeObj);
-                 loadDropDownList3(tempValue_Return,tempTime_Return);
-                 generateReturnData(skip);
-             });
-         }
-     });
+    $('#time').on('change', function() {
+        var selectedValueObj=selectDropDownValues();
+        $.post(VC.url + '/getUserDetails', {"journey":journey,"location":selectedValueObj.loc,"toLocation":selectedValueObj.toLocation,"fromLocation":selectedValueObj.fromLocation,"time":selectedValueObj.time},function(Obj){
+         generateListData(Obj);
+        });
+       // $('#time').selectmenu("refresh");
+    });
 
-    function preload1(){
+    function loadDropDownList(ID,ObjLoc) {
+        for(var i=0;i<ObjLoc.length;i++){
+            $(ID).append(new Option(ObjLoc[i],ObjLoc[i]));
+        }
+    }
+
+
+    function loadPage(skip) {
+        $.post(VC.url+'/getinfo',{"email":email,"journey":journey,"skip":skip}, function(Obj) {
+            clearAllList();
+            var selectedValueObj = setLocationTime(Obj.userObj);
+            createTimeMenu(Obj.timeObj,selectedValueObj.time);
+            generateListData(Obj.listObj);
+            loadLocationDropDown(Obj,selectedValueObj.fromLocation,selectedValueObj.toLocation);
+        });
+    }
+
+    function clearAllList() {
         $("#list1 li").remove();
-        $('#more-results').remove();
+        $('#list-next').remove();
         $('#list1').listview('refresh');
         $('#to-location-1 > option').remove();
         $('#from-location-1 > option').remove();
-        skip=0;
     }
 
-    function preload2(){
+    function selectDropDownValues() {
+        var fromLocation;
+        var toLocation;
+        var time;
+        var loc;
         $("#list1 li").remove();
-        $('#more-results').remove();
-        $('#list1').listview('refresh');
-
-        startTime= $("#time  option:selected").val();
-        returnTime = $("#time  option:selected").val();
-        if(journey==0){
+        $('#list-next').remove();
+        time = $("#time  option:selected").val();
+        if(journey == 0){
             fromLocation = $("#from-location-1  option:selected").text();
             toLocation = $("#to-location-1  option:selected").text();
-            loc = fromLocation + "_" + toLocation;
 
-        }else{
-//            toLocation = $("#from-location-1  option:selected").text();
-//            fromLocation = $("#to-location-1  option:selected").text();
+        } else {
             fromLocation = $("#from-location-1  option:selected").text();
             toLocation = $("#to-location-1  option:selected").text();
-            loc = toLocation + "_" + fromLocation;
 
         }
         loc = fromLocation + "_" + toLocation;
 
-    }
-    function setLocationTime_Onward(userObj){
-
-        fromLocation=userObj[0].fromLocation1;
-        toLocation=userObj[0].toLocation1;
-        startTime=userObj[0].startTime;
-        loc = fromLocation + "_"+ toLocation;
+        return {"loc":loc,"fromLocation":fromLocation,"toLocation":toLocation,"time":time};
     }
 
-    function setLocationTime_Return(userObj){
-
-        fromLocation=userObj[0].fromLocation2;
-        toLocation=userObj[0].toLocation2;
-        returnTime=userObj[0].departTime;
-        loc = fromLocation + "_"+ toLocation;
-    }
-
-     function generateOnwardData(skip){
-         $("#list1").append('<li style="text-align: center"> No commuters found ! </li>');
-         $('#list1').listview('refresh');
-         $.post(VC.geturl()+ '/getUserDetails',{"fromLocation":fromLocation,"toLocation":toLocation,"time":startTime,"skip":skip,"type":1},function(userObj){
-             if(userObj.length>0) {
-                 //to clear "no commuters" tag
-                 $("#list1 li").remove();
-                 $('#list1').listview('refresh');
-
-                 for(var i =0;i<userObj.length;i++){
-                     $("#list1").append(getList(userObj[i]));
-                 }
-                 if(userObj.length>2){
-                     $("#list1").append('<a href="#" data-role="link" id="more-results">More Results</a>');
-                 }
-                 $('#list1').listview('refresh');
-             }
-         });
-     }
-
-     function generateReturnData(skip){
-         $("#list1").append('<li style="text-align: center"> No commuters found ! </li>');
-         $('#list1').listview('refresh');
-         $.post(VC.geturl()+ '/getUserDetails',{"fromLocation":fromLocation,"toLocation":toLocation,"time":returnTime,"skip":skip,"type":2},function(userObj){
-             if(userObj.length>0){
-                 //to clear "no commuters" tag
-                 $("#list1 li").remove();
-                 $('#list1').listview('refresh');
-                 for(var i =0;i<userObj.length;i++){
-
-                     $("#list1").append(getList(userObj[i]));
-                     $('#list1').listview('refresh');
-                 }
-                 if(userObj.length>2){
-                     $("#list1").append('<a href="#" data-role="link" id="more-results">More Results</a>');
-                 }
-             } else{
-                 $("#list1").append('<li style="text-align: center"> No commuters found ! </li>');
-                 $('#list1').listview('refresh');
-             }
-         });
-     }
-
-     $('#more-results').live('click',function(){
-         fromLocation = $("#from-location-1  option:selected").text();
-         toLocation = $("#to-location-1  option:selected").text();
-         $("#list1 li").remove();
-         $('#more-results').remove();
-         if(journey==0){
-           startTime= $("#time  option:selected").val();
-           generateOnwardData(i);
-           i++;
-         }
-         else{
-           returnTime= $("#time  option:selected").val();
-           generateReturnData(i);
-           i++;
-         }
-     });
-
-    function loadDropDownList1(fromLocObj){
-        for(var i=0;i<fromLocObj.length;i++){
-           $('#from-location-1').append(new Option(fromLocObj[i],fromLocObj[i]));
+    function setLocationTime(userObj) {
+        var fromLocation;
+        var toLocation;
+        var time;
+        if(journey == 0) {
+            fromLocation = userObj.fromLocation1;
+            toLocation = userObj.toLocation1;
+            time = userObj.startTime;
+        } else if(journey == 1) {
+            fromLocation = userObj.fromLocation2;
+            toLocation = userObj.toLocation2;
+            time  = userObj.departTime;
         }
-        $('#from-location-1').val(fromLocation);
-        $('#from-location-1').selectmenu("refresh");
+        loc = fromLocation + "_"+ toLocation;
+        return {'fromLocation':fromLocation,'toLocation':toLocation,'time':time};
     }
-    function loadDropDownList2(toLocObj){
 
-        for(var i=0;i<toLocObj.length;i++){
-            $('#to-location-1').append(new Option(toLocObj[i],toLocObj[i]));
+    function loadLocationDropDown(Obj,fromLocation,toLocation) {
+        var fromLocObj = new Array();
+        fromLocObj = Obj.LocObj.allLocation.split(",");
+        var toLocObj = new Array();
+        toLocObj = Obj.LocObj.officeLocation.split(",");
+        if(journey == 0){
+            loadDropDownList("#to-location-1",toLocObj);
+            loadDropDownList("#from-location-1",fromLocObj);
+        } else {
+            loadDropDownList("#from-location-1",toLocObj);
+            loadDropDownList("#to-location-1",fromLocObj);
         }
-        $('#to-location-1').val(toLocation);
-        $('#to-location-1').selectmenu("refresh");
-
+        $("#from-location-1").val(fromLocation);
+        $("#to-location-1").val(toLocation);
+        $("#from-location-1").selectmenu("refresh");
+        $("#to-location-1").selectmenu("refresh");
     }
 
-     function loadDropDownList3(tempValue_Onward,tempTime_Onward){
-         $('#time > option').remove();
-         for(var i=0;i<tempTime_Onward.length;i++){
-             var temp=   '<b>'+tempValue_Onward[i]+'</b>';
-             $('#time').append(new Option(tempTime_Onward[i]+'('+tempValue_Onward[i]+')',tempTime_Onward[i]));
+
+
+    function generateListData(listObj) {
+        $("#list1").append('<li style="text-align: center"> No commuters found ! </li>');
+        if(listObj.length > 0) {
+            //to clear "no commuters" tag
+            $("#list1 li").remove();
+            for(var i = 0; i < listObj.length; i ++) {
+                $("#list1").append(getList(listObj[i]));
+            }
+            if(listObj.length > 1) {
+                $("#list1").append('<a href="#" id="list-next" data-inline="true" data-role="button" data-icon="arrow-r" >Next</a>');
+                $('#list-next').button();
+            }
+        }
+        $('#list1').listview('refresh');
+    }
+
+    $('#list-next').live('click',function() {
+
+        //var selectedValues = selectDropDownValues();
+        $("#list1 li").remove();
+        $('#list-next').remove();
+        //$('#list-next').button();
+        $.post(VC.url+'/getinfo',{"email":email,"journey":journey,"skip":1}, function(obj) {
+            generateListData(obj.listObj)
+        });
+
+        });
+
+    function createTimeMenu(timeObj, timeToDisplay) {
+        $('#time > option').remove();
+        for(var time in timeObj.time){
+            $('#time').append(new Option(time +' (' + timeObj.time[time]+ ')', time));
+        }
+        $('#time').val(timeToDisplay);
+        $('#time').selectmenu("refresh");
+    }
+
+    function loadDropDownList3(tempValue,tempTime) {
+         if(tempValue != null){
+             $('#time > option').remove();
+             for(var i=0; i<tempTime.length; i++){
+                 var temp=   '<b>' +tempValue[i]+ '</b>';
+                 $('#time').append(new Option(tempTime[i]+' ('+tempValue[i]+')', tempTime[i]));
+             }
+             $('#time').val(timeToDisplay);
+             $('#time').selectmenu("refresh");
+         }  else {
+
          }
-           if(journey==0){
-         $('#time').val(startTime);
-           }else{
-               $('#time').val(returnTime);
-           }
-         $('#time').selectmenu("refresh");
-     }
 
-    function setOnwardTime(timeObj){
-
-
-        temp1_Onward = timeObj[0].t06_00AM+","+timeObj[0].t07_00AM+","+timeObj[0].t08_00AM+","+timeObj[0].t09_00AM+","+timeObj[0].t10_00AM+","+timeObj[0].t11_00AM+","+timeObj[0].t12_00PM;
-        temp2_Onward = "06:00AM,07:00AM,08:00AM,09:00AM,10:00AM,11:00AM,12:00PM";
-        tempValue_Onward = temp1_Onward.split(",");
-        tempTime_Onward= temp2_Onward.split(",");
-    }
-
-    function setReturnTime(timeObj){
-        var i = "t12_00PM";
-        tempval = timeObj[0][i];
-        temp1_Return = timeObj[0].t12_00PM+","+timeObj[0].t01_00PM+","+timeObj[0].t02_00PM+","+timeObj[0].t03_00PM+","+timeObj[0].t04_00PM+","+timeObj[0].t05_00PM+","+timeObj[0].t06_00PM+","+timeObj[0].t07_00PM+","+timeObj[0].t08_00PM;
-        temp2_Return = "12:00PM,01:00PM,02:00PM,03:00PM,04:00PM,05:00PM,06:00PM,07:00PM,08:00PM";
-        tempValue_Return = temp1_Return.split(",");
-        tempTime_Return= temp2_Return.split(",");
     }
 
     function getList(userObj) {
@@ -328,8 +204,7 @@ $("#page-home").bind('pagebeforeshow',function(){
         if(userObj.Car!=null){
             if(preference!=null){
                 preference = preference + ',' + userObj.Car;
-            }
-            else{
+            } else {
                 preference = userObj.Car;
             }
         }
@@ -349,14 +224,14 @@ $("#page-home").bind('pagebeforeshow',function(){
                 preference = userObj.DriveWeek;
             }
         }
-        return '<li><a href="#" id="list_details" title="'+userObj.contact_info.email+'"><image width="100" height="100" src=\"'
+        return '<li><a href="#" id="list_details" data-identity="'+userObj.contact_info.email+'"><image width="100" height="100" src=\"'
             + userObj.avatars.square140 +'\"><h3>'
             + userObj.name +'</h3><p><strong>'
             + userObj.title +'</strong></p></a></li>';
     }
 
     $('#list_details').live('click', function() {
-        localStorage.setItem('to_email',$(this).attr('title'));
+        USER_INFO.to_email = $(this).attr('data-identity');
         location.replace("index.html#page-details");
     });
 });

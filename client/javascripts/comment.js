@@ -8,15 +8,18 @@
 
 
 $("#page-comment").bind('pagebeforeshow', function () {
+    var email = localStorage.getItem('from_email');
     $('#btnsendMessage').off('click').on('click', function () {
-        $.post(VC.geturl() + '/saveNotifications', {"fromEmail":localStorage.getItem('from_email'), "fromName":localStorage.getItem('name'),
-            "toEmail":localStorage.getItem('to_email'), "toName":$('#details-name').text(), "message":$('#txtMessage').val()},
-            function (data) {
-            notify(localStorage.getItem('to_email'));
+        $.post(VC.url + '/saveNotifications', {"fromEmail":email, "fromName":USER_INFO.name,
+            "toEmail":USER_INFO.to_email, "toName":$('#details-name').text(), "message":$('#txtMessage').val()},
+            function () {
+            notify(USER_INFO.to_email);
         });
     });
 });
 
-function notify(data) {
-    socket.emit('notify', data);
+function notify(to_email) {
+    VC.socket.emit('notify', to_email);
+    alert("Message Sent !");
+
 }
