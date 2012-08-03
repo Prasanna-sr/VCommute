@@ -21,6 +21,8 @@ module.exports = function routes(app) {
 
     // profile page
     app.get('/getlocationtimedata', function (req, res) {
+        //todo remove this in production
+        res.header('Access-Control-Allow-Origin', '*');
         res.send(config);
     });
 
@@ -76,63 +78,52 @@ module.exports = function routes(app) {
                             console.log(err);
                         }
                         else {
-                            mongoLib.getLocation(req, function (err, LocObj) {
-                                if (err) {
-                                    console.log(err);
-                                }
-                                else {
-                                    if (LocObj != null) {
-
-                                        if (req.body.journey == 0) {
-                                            req.body.fromLocation = userObj.fromLocation1;
-                                            req.body.toLocation = userObj.toLocation1;
-                                            req.body.time = userObj.startTime;
-                                            mongoLib.getUserDetails1(req, function (err, listObj) {
-                                                if (err) {
-                                                    console.log(err);
-                                                }
-                                                else {
-                                                    if (listObj != "") {
-                                                        var obj = {
-                                                            "userObj":userObj,
-                                                            "timeObj":timeObj,
-                                                            "LocObj":LocObj,
-                                                            "listObj":listObj
-                                                        }
-                                                        //todo remove this in production
-                                                        res.header('Access-Control-Allow-Origin', '*');
-                                                        res.send(obj);
-                                                    }
-                                                }
-                                            });
-
-                                        } else if (req.body.journey == 1) {
-                                            req.body.fromLocation = userObj.fromLocation2;
-                                            req.body.toLocation = userObj.toLocation2;
-                                            req.body.time = userObj.departTime;
-                                            mongoLib.getUserDetails2(req, function (err, listObj) {
-                                                if (err) {
-                                                    console.log(err);
-                                                }
-                                                else {
-                                                    if (listObj != "") {
-                                                        var obj = {
-                                                            "userObj":userObj,
-                                                            "timeObj":timeObj,
-                                                            "LocObj":LocObj,
-                                                            "listObj":listObj
-                                                        }
-                                                        //todo remove this in production
-                                                        res.header('Access-Control-Allow-Origin', '*');
-                                                        res.send(obj);
-                                                    }
-                                                }
-                                            });
+                            if (req.body.journey == 0) {
+                                req.body.fromLocation = userObj.fromLocation1;
+                                req.body.toLocation = userObj.toLocation1;
+                                req.body.time = userObj.startTime;
+                                mongoLib.getUserDetails1(req, function (err, listObj) {
+                                    if (err) {
+                                        console.log(err);
+                                    }
+                                    else {
+                                        if (listObj != "") {
+                                            var obj = {
+                                                "userObj":userObj,
+                                                "timeObj":timeObj,
+                                                "LocObj":config,
+                                                "listObj":listObj
+                                            }
+                                            //todo remove this in production
+                                            res.header('Access-Control-Allow-Origin', '*');
+                                            res.send(obj);
                                         }
                                     }
+                                });
 
-                                }
-                            });
+                            } else if (req.body.journey == 1) {
+                                req.body.fromLocation = userObj.fromLocation2;
+                                req.body.toLocation = userObj.toLocation2;
+                                req.body.time = userObj.departTime;
+                                mongoLib.getUserDetails2(req, function (err, listObj) {
+                                    if (err) {
+                                        console.log(err);
+                                    }
+                                    else {
+                                        if (listObj != "") {
+                                            var obj = {
+                                                "userObj":userObj,
+                                                "timeObj":timeObj,
+                                                "LocObj":config,
+                                                "listObj":listObj
+                                            }
+                                            //todo remove this in production
+                                            res.header('Access-Control-Allow-Origin', '*');
+                                            res.send(obj);
+                                        }
+                                    }
+                                });
+                            }
                         }
                     });
 
