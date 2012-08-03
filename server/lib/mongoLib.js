@@ -1,4 +1,6 @@
 var dbUtil = require('./cloudFoundryUtil');
+var config =require('./config');
+
 var conn;
 var db;
 module.exports = {
