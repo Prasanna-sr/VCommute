@@ -2,6 +2,8 @@
 
 var mongoLib = require('./mongoLib');
 var request = require('request');
+var config =require('./config');
+
 mongoLib.connect('mongodb-1');
 
 module.exports = function routes(app) {
@@ -19,17 +21,7 @@ module.exports = function routes(app) {
 
     // profile page
     app.get('/getlocationtimedata', function (req, res) {
-        //todo one time storage data
-        mongoLib.getLocationTimedata(function (err, data) {
-            if (err) {
-                console.log(err);
-            }
-            else {
-                //todo remove this in production
-                res.header('Access-Control-Allow-Origin', '*');
-                res.send(data);
-            }
-        });
+        res.send(config);
     });
 
     app.get('/getuserProfile', function (req, res) {
@@ -447,7 +439,7 @@ module.exports = function routes(app) {
                     //todo remove this in production
                     res.header('Access-Control-Allow-Origin', '*');
                     res.send('INTERNAL SERVER ERROR');
-                } else if (!userObj || (userObj && user.profile == 0)) {
+                } else if (!userObj || (userObj && userObj.profile == 0)) {
                     console.log(JSON.parse(socialcastData));
                     persistUserProfileAndRespond(JSON.parse(socialcastData), res);
                 } else if (userObj.profile == 1) {

@@ -1,5 +1,4 @@
 var dbUtil = require('./cloudFoundryUtil');
-var config =require('./config');
 var conn;
 var db;
 module.exports = {
@@ -11,31 +10,6 @@ module.exports = {
             } else {
                 console.log('Connected to MongoDB successfully');
                 conn = connection;
-            }
-        });
-    },
-    storeLocationTimedata: function(callback) {
-        db.collection('locationtimedata');
-        db.bind('locationtimedata');
-        db.locationtimedata.insert({officeLocation:config.officeLocation, allLocation:config.allLocation,
-                startTime:config.startTime, returnTime:config.returnTime},
-            function(err) {
-                if(err) {
-                    callback(err);
-                } else {
-                    callback(null,"Success !");
-                }
-            });
-    },
-
-    getLocationTimedata: function(callback) {
-        db.collection('locationtimedata');
-        db.bind('locationtimedata');
-        db.locationtimedata.findOne({}, function(err, document) {
-            if(err) {
-                callback(err);
-            } else {
-                callback(null,document);
             }
         });
     },
