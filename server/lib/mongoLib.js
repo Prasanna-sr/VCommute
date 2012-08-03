@@ -112,15 +112,15 @@ module.exports = {
     getTimedetails : function(req, callback) {
         db.collection('locationdetails');
         db.bind('locationdetails');
-        db.locationdetails.findOne({"name":req.body.location},{"name":false,"_id":false},function(err,document) {
+        db.locationdetails.findOne({"name":req.body.location},{"name":false, "_id":false},function(err, document) {
             if(err) {
                 callback(err);
             } else {
                 if(document!=null){
-                    callback(null,document);
+                    callback(null, document);
                 } else {
                     // to show time with no commuters
-                    db.locationdetails.findOne({},{"name":false,"_id":false},function(err,document) {
+                    db.locationdetails.findOne({},{"name":false,"_id":false},function(err, document) {
                         if(err) {
                             callback('location error:', err);
                         } else {
