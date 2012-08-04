@@ -70,7 +70,8 @@
     }
     $('#li-notification').live('click', function () {
         var param1 = encodeURIComponent($('a[data-role="link"]', this).attr('data-identity'));
-        location.replace("index.html?param=" + param1 + "#page-info");
+        location.replace("index.html?param1="+ param1 +"#page-info");
+        //$.mobile.changePage("/index.html",{dataUrl:"?param1=asdf#page-info", changeHash: false});
         // $.post(VC.geturl()+'/updateNotifications',{"email":$('#notification-email').val()},function(data){
         // });
     });

@@ -9,7 +9,6 @@
 $("#page-home").bind('pagebeforeshow',function() {
     var journey=0;
     var email = localStorage.getItem('from_email');
-    //var i = 1;
 
     if((new Date().getHours()) < 12) {
         $("#radio-choice-a").attr("checked", true).checkboxradio("refresh");
@@ -66,7 +65,6 @@ $("#page-home").bind('pagebeforeshow',function() {
         }
     }
 
-
     function loadPage(skip) {
         $.post(VC.url+'/getinfo',{"email":email,"journey":journey,"skip":skip}, function(Obj) {
             clearAllList();
@@ -78,7 +76,7 @@ $("#page-home").bind('pagebeforeshow',function() {
     }
 
     function clearAllList() {
-        $("#list1 li").remove();
+       // $("#list1 li").remove();
         $('#list-next').remove();
         $('#list1').listview('refresh');
         $('#to-location-1 > option').remove();
@@ -90,13 +88,11 @@ $("#page-home").bind('pagebeforeshow',function() {
         var toLocation;
         var time;
         var loc;
-        $("#list1 li").remove();
         $('#list-next').remove();
         time = $("#time  option:selected").val();
         if(journey == 0){
             fromLocation = $("#from-location-1  option:selected").text();
             toLocation = $("#to-location-1  option:selected").text();
-
         } else {
             fromLocation = $("#from-location-1  option:selected").text();
             toLocation = $("#to-location-1  option:selected").text();
@@ -142,31 +138,25 @@ $("#page-home").bind('pagebeforeshow',function() {
         $("#to-location-1").selectmenu("refresh");
     }
 
-
-
     function generateListData(listObj) {
-        $("#list1").append('<li style="text-align: center"> No commuters found ! </li>');
+        $("#list1 li").remove();
+        $('#list-next').remove();
         if(listObj.length > 0) {
-            //to clear "no commuters" tag
-            $("#list1 li").remove();
             for(var i = 0; i < listObj.length; i ++) {
                 $("#list1").append(getList(listObj[i]));
             }
             if(listObj.length > 1) {
-                $("#list1").append('<a href="#" id="list-next" data-inline="true" data-role="button" data-icon="arrow-r" >Next</a>');
+                $("#list1").append('<a href="#" id="list-next"  data-role="button" data-icon="arrow-r" >More</a>');
                 $('#list-next').button();
             }
+        } else {
+            $("#list1").append('<li style="text-align: center"> No commuters found ! </li>');
         }
         $('#list1').listview('refresh');
     }
 
     $('#list-next').live('click',function() {
-
-        //var selectedValues = selectDropDownValues();
-        $("#list1 li").remove();
-        $('#list-next').remove();
-        //$('#list-next').button();
-        $.post(VC.url+'/getinfo',{"email":email,"journey":journey,"skip":1}, function(obj) {
+        $.post(VC.url+'/getinfo',{"email" : email, "journey" : journey, "skip" : 1}, function(obj) {
             generateListData(obj.listObj)
         });
 
@@ -197,33 +187,6 @@ $("#page-home").bind('pagebeforeshow',function() {
     }
 
     function getList(userObj) {
-        var preference=null;
-        if(userObj.NoCar!=null){
-            preference = userObj.NoCar;
-        }
-        if(userObj.Car!=null){
-            if(preference!=null){
-                preference = preference + ',' + userObj.Car;
-            } else {
-                preference = userObj.Car;
-            }
-        }
-        if(userObj.DriveDays!=null){
-            if(preference!=null){
-                preference = preference + ','+ userObj.DriveDays;
-            }
-            else{
-                preference = userObj.DriveDays;
-            }
-        }
-        if(userObj.DriveWeek!=null){
-            if(preference!=null){
-                preference = preference +','+ userObj.DriveWeek;
-            }
-            else{
-                preference = userObj.DriveWeek;
-            }
-        }
         return '<li><a href="#" id="list_details" data-identity="'+userObj.contact_info.email+'"><image width="100" height="100" src=\"'
             + userObj.avatars.square140 +'\"><h3>'
             + userObj.name +'</h3><p><strong>'
@@ -232,7 +195,7 @@ $("#page-home").bind('pagebeforeshow',function() {
 
     $('#list_details').live('click', function() {
         USER_INFO.to_email = $(this).attr('data-identity');
-        location.replace("index.html#page-details");
+        $.mobile.changePage("#page-details");
     });
 });
 

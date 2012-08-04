@@ -1,6 +1,5 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-        "http://www.w3.org/TR/html4/loose.dtd">
-<html xmlns="http://www.w3.org/1999/html">
+<!DOCTYPE html>
+<html>
 
 <head>
     <meta charset="utf-8"/>
@@ -18,10 +17,6 @@
 
 <div data-role="page" id="page-login">
 
-    <script type="text/javascript"  src="javascripts/login.js"></script>
-
-
-
     <h1 align="center">VCommute</h1>
     <br>
     <div data-role="content" style="padding: 15px">
@@ -34,37 +29,24 @@
 
         <div data-role="fieldcontain">
             <fieldset data-role="controlgroup">
-                <!--<label for="txtUser">User Name</label>-->
                 <input id="txtUser"  placeholder="User Name" name="user" value=""/>
 
             </fieldset>
         </div>
         <div data-role="fieldcontain">
             <fieldset data-role="controlgroup">
-                <!--<label for="txtPassword">Password</label>-->
                 <input id="txtPassword" placeholder="Password" name="password" value="" type="password"/>
             </fieldset>
         </div>
         <input type="submit" class="btn btn-primary"  id="btnlogin" value="Login"/>
-
     </div>
     <!--<h3>Don't have an social cast API password ?</h3>-->
-
     <div data-role="collapsible">
         <h3>Instructions to set Socialcast API password</h3>
         <p>1.Go to <a href="https://vmware-com.socialcast.com/home">Social cast</a></p>
         <p>2.Click on your name (menu button) found on top right corner</p>
         <p>3.Select Setting - > Passsword tab and set your API password there</p>
     </div>
-    <!--<fieldset data-role="controlgroup">-->
-
-        <!--<ul>-->
-            <!--<li><b> Don't have an social cast API password ?</b></li>-->
-            <!--<li>1.Go to <a href="https://vmware-com.socialcast.com/home">Social cast</a></li>-->
-            <!--<li>2.Click on your name (menu button) found on top right corner</li>-->
-            <!--<li>3.Select Setting - > Passsword tab and set your API password there</li>-->
-        <!--</ul>-->
-    <!--</fieldset>-->
 
     <!--<div data-theme="a" data-role="footer" data-position="fixed">-->
         <!--<h3>-->
@@ -75,7 +57,6 @@
 
 <div data-role="page" id="page-profile">
 
-    <script type="text/javascript" src="javascripts/profile.js"></script>
     <div data-theme="a" data-role="header" data-position="fixed">
         <h3>
             VCommute
@@ -83,96 +64,94 @@
     </div>
     <div data-role="content" style="padding: 15px">
 
-
-    <ul data-role="listview">
-        <li>
-            <img id="profile-picture" /> <h3> <label class="select" name="profileName" id="profile-name"></label></h3>
-            <p> <label class="select" name="" id="profile-title"></label></p>  <p> <label class="select" name="location" id="profile-base-location"></label></p>
-        </li>
-    </ul>
-
-    <h4>Onward Journey</h4>
-    <form id='formProfile' method="#">
-        <ul data-role="listview" data-inset="true">
-            <li><label for="from-location" class="select">From Location:</label>
-                <select name="fromLocation1" data-mini="true" id="from-location">
-                </select></li>
-            <li>  <label for="to-location" class="select">To Location:</label>
-                <select name="toLocation1" data-mini="true" id="to-location">
-                </select></li>
+        <ul data-role="listview">
             <li>
-                <label for="start-time" class="select">Start Time:</label>
-                <select name="startTime" data-mini="true" id="start-time">
-                </select></li>
+                <img id="profile-picture" /> <h3> <label class="select" name="profileName" id="profile-name"></label></h3>
+                <p> <label class="select" name="" id="profile-title"></label></p>  <p> <label class="select" name="location" id="profile-base-location"></label></p>
+            </li>
         </ul>
 
-        <h4>Return Journey</h4>
-        <ul data-role="listview" data-inset="true">
-            <li> <label for="from-location-2" class="select">From Location:</label>
-                <select name="fromLocation2" data-mini="true" id="from-location-2">
-                </select></li>
-            <li><label for="to-location-2" class="select">To Location:</label>
-                <select name="toLocation2" data-mini="true" id="to-location-2">
-                </select></li>
-            <li><label for="return-time" class="select">Return Time:</label>
-                <select name="returnTime" data-mini="true" id="return-time">
-                </select></li>
-        </ul>
+        <h4>Onward Journey</h4>
+        <form id='formProfile' method="#">
+            <ul data-role="listview" data-inset="true">
+                <li><label for="from-location" class="select">From Location:</label>
+                    <select name="fromLocation1" data-mini="true" id="from-location">
+                    </select></li>
+                <li>  <label for="to-location" class="select">To Location:</label>
+                    <select name="toLocation1" data-mini="true" id="to-location">
+                    </select></li>
+                <li>
+                    <label for="start-time" class="select">Start Time:</label>
+                    <select name="startTime" data-mini="true" id="start-time">
+                    </select></li>
+            </ul>
+
+            <h4>Return Journey</h4>
+            <ul data-role="listview" data-inset="true">
+                <li> <label for="from-location-2" class="select">From Location:</label>
+                    <select name="fromLocation2" data-mini="true" id="from-location-2">
+                    </select></li>
+                <li><label for="to-location-2" class="select">To Location:</label>
+                    <select name="toLocation2" data-mini="true" id="to-location-2">
+                    </select></li>
+                <li><label for="return-time" class="select">Return Time:</label>
+                    <select name="returnTime" data-mini="true" id="return-time">
+                    </select></li>
+            </ul>
 
             <!--<label for="profile-preference" class="select">Choose your Preference</label>-->
             <!--<select name="profile_preference" data-native-menu="false" data-mini="true" id="profile-preference">-->
-                <!--<option value="car">I drive my car</option>-->
-                <!--<option value="nocar">I pay for gas (You drive the car)</option>-->
-                <!--<option value="altdays">I can drive alternate days/weeks</option>-->
+            <!--<option value="car">I drive my car</option>-->
+            <!--<option value="nocar">I pay for gas (You drive the car)</option>-->
+            <!--<option value="altdays">I can drive alternate days/weeks</option>-->
             <!--</select>-->
 
-                <!--<div data-role="fieldcontain">-->
-                    <!--<fieldset data-role="controlgroup">-->
-                        <!--<legend>Choose your Preferences:</legend>-->
-                        <!--<input type="checkbox" name="Car" id="Car" value="I drive my car" class="custom" />-->
-                        <!--<label for="Car">I drive my car</label>-->
+            <!--<div data-role="fieldcontain">-->
+            <!--<fieldset data-role="controlgroup">-->
+            <!--<legend>Choose your Preferences:</legend>-->
+            <!--<input type="checkbox" name="Car" id="Car" value="I drive my car" class="custom" />-->
+            <!--<label for="Car">I drive my car</label>-->
 
-                        <!--<input type="checkbox" name="DriveDays" id="DriveDays" value="I will pay for gas & won't drive" class="custom" />-->
-                        <!--<label for="DriveDays">I pay for gas (You drive the car)</label>-->
+            <!--<input type="checkbox" name="DriveDays" id="DriveDays" value="I will pay for gas & won't drive" class="custom" />-->
+            <!--<label for="DriveDays">I pay for gas (You drive the car)</label>-->
 
-                        <!--<input type="checkbox" name="DriveWeek" id="DriveWeek" value="I will drive alternate days/weeks" class="custom" />-->
-                        <!--<label for="DriveWeek">I can drive alternate days/weeks</label>-->
-                    <!--</fieldset>-->
-                <!--</div>-->
+            <!--<input type="checkbox" name="DriveWeek" id="DriveWeek" value="I will drive alternate days/weeks" class="custom" />-->
+            <!--<label for="DriveWeek">I can drive alternate days/weeks</label>-->
+            <!--</fieldset>-->
+            <!--</div>-->
 
-                <fieldset data-role="controlgroup">
-                        <label for="profile-mobile">Mobile Number<b><font color="red">*</font></b>:</label>
-                        <input type="text" name="mobile" id="profile-mobile" value=""  />
+            <fieldset data-role="controlgroup">
+                <label for="profile-mobile">Mobile Number<b><font color="red">*</font></b>:</label>
+                <input type="text" name="mobile" id="profile-mobile" value=""  />
 
-                        <label for="landmark">Nearest Landmark/Business Area<b><font color="red">*</font></b>:</label>
-                        <input type="text" name="landmark" id="landmark" value=""  />
+                <label for="landmark">Nearest Landmark/Business Area<b><font color="red">*</font></b>:</label>
+                <input type="text" name="landmark" id="landmark" value=""  />
 
-                        <label for="car-desc">Car Description:</label>
-                        <textarea cols="40" rows="8" name="carDesc" id="car-desc"></textarea>
+                <label for="car-desc">Car Description:</label>
+                <textarea cols="40" rows="8" name="carDesc" id="car-desc"></textarea>
 
-                        <label for="preference">Additional Preference:</label>
-                        <textarea cols="40" rows="8" name="preference" id="preference"></textarea>
+                <label for="preference">Additional Preference:</label>
+                <textarea cols="40" rows="8" name="preference" id="preference"></textarea>
 
-                        <input type="hidden" id="txtTemp" name="temp"/>
-                        <input type="hidden" id="txtTemptime" name="temptime"/>
-                        <input type="hidden" id="txtEmail" name="from_email"/>
+                <input type="hidden" id="txtTemp" name="temp"/>
+                <input type="hidden" id="txtTemptime" name="temptime"/>
+                <input type="hidden" id="txtEmail" name="from_email"/>
 
-                </fieldset>
-            </form>
-            <h4>App Settings</h4>
+            </fieldset>
+        </form>
+        <h4>App Settings</h4>
 
-                    <input type="checkbox" name="hide" id="hide" value="hide" class="custom" />
-                    <label for="hide">I am already car pooling (hide me from search results)</label>
+        <input type="checkbox" name="hide" id="hide" value="hide" class="custom" />
+        <label for="hide">I am already car pooling (hide me from search results)</label>
 
-                    <input type="checkbox" name="notification" id="notification" value="notification" class="custom" />
-                    <label for="notification">Turn off notifications</label>
+        <input type="checkbox" name="notification" id="notification" value="notification" class="custom" />
+        <label for="notification">Turn off notifications</label>
 
-                    <input type="checkbox" name="log_out" checked="true" id="log_out" value="log_out" class="custom" />
-                    <label for="log_out">Keep me logged in</label>
+        <input type="checkbox" name="log_out" checked="true" id="log_out" value="log_out" class="custom" />
+        <label for="log_out">Keep me logged in</label>
 
-            <input type="submit" id="btnSubmit" value="Save" data-transition="none"/>
-        </div>
-    <!--</div>-->
+        <input type="submit" id="btnSubmit" value="Save" data-transition="none"/>
+    </div>
 
     <div data-role="footer" class="nav-glyphish-example" data-position="fixed">
         <div data-role="navbar" class="nav-glyphish-example" class="ui-grid-b">
@@ -190,10 +169,9 @@
 
 <div data-role="page" class="type-interior" id="page-home">
 
-    <script type="text/javascript" src="javascripts/home.js"></script>
-
     <div data-role="header" data-theme="a" data-position="fixed">
-        <h1>VCommute</h1>
+
+    <h1>VCommute</h1>
     </div><!-- /header -->
     <div data-role="content" style="padding: 15px">
         <fieldset data-role="controlgroup" data-type="horizontal">
@@ -241,16 +219,13 @@
 
 <div data-role="page" id="page-details" data-add-back-btn="true">
 
-    <script type="text/javascript" src="javascripts/details.js"></script>
 
     <div data-role="header" data-theme="a" data-position="fixed">
-        <!--<a href="index.html#page-home" data-icon="back">back</a>-->
-        <a data-rel="back" data-icon="back">back</a>
-
+        <a href="index.html#page-home" data-icon="back">back</a>
+        <!--below line not working in android phone-->
+        <!--<a data-rel="back" data-icon="back">back</a>-->
         <h1>VCommmute</h1>
-
     </div>
-
     <div data-role="content" data-theme="c">
 
         <div data-role="fieldcontain">
@@ -299,7 +274,6 @@
 
             </ul>
         </div>
-        <!--<a data-role="button" data-rel="back" data-theme="c">Back</a>-->
     </div>
 
     <div data-role="footer" class="nav-glyphish-example" data-position="fixed">
@@ -328,7 +302,6 @@
 
         <ul id="list-notifications" data-role="listview">
         </ul>
-        <script type="text/javascript" src="javascripts/notifications.js"></script>
     </div>
     <div data-role="footer" class="nav-glyphish-example" data-position="fixed">
         <div data-role="navbar" class="nav-glyphish-example" class="ui-grid-b" >
@@ -343,7 +316,6 @@
 
 <div data-role="page"  id="page-comment" >
 
-    <script type="text/javascript" src="javascripts/comment.js"></script>
 
     <div data-role="header" data-theme="d">
 
@@ -366,7 +338,6 @@
 
 <div data-role="dialog" id="page-info">
 
-    <script type="text/javascript" src="javascripts/info.js"></script>
     <div data-role="header" data-theme="a">
 
         <h1>VCommute</h1>
@@ -422,6 +393,14 @@
     </div>
 
 </div>   <!-- /page info -->
+
+<script type="text/javascript"  src="javascripts/login.js"></script>
+<script type="text/javascript" src="javascripts/profile.js"></script>
+<script type="text/javascript" src="javascripts/home.js"></script>
+<script type="text/javascript" src="javascripts/details.js"></script>
+<script type="text/javascript" src="javascripts/comment.js"></script>
+<script type="text/javascript" src="javascripts/info.js"></script>
+<script type="text/javascript" src="javascripts/notifications.js"></script>
 
 </body>
 

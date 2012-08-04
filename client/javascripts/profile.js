@@ -12,10 +12,8 @@ var USER_INFO = {"name": "",
 $("#page-profile").bind('pagebeforeshow', function() {
 
     var email =  localStorage.getItem('from_email');
-    var loc = new Array();
-    var loc1 = new Array();
-    var startTime = new Array();
-    var returnTime = new Array();
+
+    // is used for business logic
     $('#txtEmail').attr('value', email);
 
     $.get(VC.url + '/getlocationtimedata', function(obj) {
@@ -27,7 +25,7 @@ $("#page-profile").bind('pagebeforeshow', function() {
 
     function populateUserData() {
         $.post(VC.url + '/getuserInfo', {"email" : email}, function(userObj) {
-            //to use in commments page
+            //USER_INFO is used in commments page
             USER_INFO.name=userObj.name;
             var userLocation = userObj.contact_info.location;
             if((userLocation).indexOf("San Francisco") != -1) {
@@ -62,15 +60,15 @@ $("#page-profile").bind('pagebeforeshow', function() {
     function loadAllDropDowns(obj) {
         loadDropDown("#to-location", obj.officeLocation);
         loadDropDown("#from-location-2", obj.officeLocation);
-        loadDropDown("#to-location-2", obj.allLocation);
         loadDropDown("#from-location", obj.allLocation);
+        loadDropDown("#to-location-2", obj.allLocation);
         loadDropDown("#start-time", obj.startTime);
         loadDropDown("#return-time",  obj.returnTime);
     }
 
     function loadDropDown(id, dataStr) {
         var value = dataStr.split(',');
-        for(var i = 0; i<value.length; i++){
+        for(var i = 0; i < value.length; i++){
             $(id).append(new Option(value[i], value[i]));
         }
     }
@@ -90,23 +88,6 @@ $("#page-profile").bind('pagebeforeshow', function() {
             $('#return-time').val(userObj.departTime);
             $('#txtTemp').attr("value", userObj.fromLocation1 + "_" + userObj.toLocation1 + "," + userObj.fromLocation2 + "_" + userObj.toLocation2);
             $('#txtTemptime').attr("value", userObj.startTime + "," + userObj.departTime);
-            $('#from-location').val(userObj.Car);
-            //for checkboxes
-//            if(userObj.Car != null){
-//                $('#Car').attr("checked",true);
-//            }
-//            if(userObj.NoCar != null){
-//                $('#Nocar').attr("checked",true);
-//            }
-//            if(userObj.DriveDays != null){
-//                $('#DriveDays').attr("checked",true);
-//            }
-//            if(userObj.DriveWeek != null){
-//                $('#DriveWeek').attr("checked",true);
-//            }
-//            if(userObj.hide != null){
-//                $('#hide').attr("checked",true);
-//            }
         }
     }
 

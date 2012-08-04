@@ -7,13 +7,21 @@
  */
 
 var VC = {};
-VC.cloudFoundryUrl = "http://vcommute.cloudfoundry.com:80";
-var href = document.location.href;
-VC.url = VC.cloudFoundryUrl;
-if(href.indexOf("cloudfoundry") == -1 || href.indexOf("file") == -1)  {
-   VC.url = document.location.host;
-}
+//VC.cloudFoundryUrl = "http://vcommute.cloudfoundry.com:80";
+//var href = document.location.href;
+//VC.url = VC.cloudFoundryUrl;
+//if(href.indexOf("cloudfoundry") == -1 || href.indexOf("file") != -1)  {
+//    VC.url = document.location.host;
+//}
+//VC.url = "http://" + document.location.host;
+
+VC.url = "http://vcommute.cloudfoundry.com:80";
+//VC.url = "http://" + document.location.host;
+
 VC.socket = io.connect(VC.url);
+
+ //alert("1");
+
 
 var USERSTATUS = {
     NEWUSER:"NEW USER",
@@ -41,10 +49,12 @@ function login() {
         $.post(VC.url + '/login', { "user":user, "password":password }, function (data) {
             if (data == USERSTATUS.NEWUSER) {
                 localStorage.setItem('from_email', user + email_ext);
-                location.replace("index.html#page-profile");
+               $.mobile.changePage("#page-profile");
+               // location.replace("index.html#page-profile");
+
             } else if (data == USERSTATUS.LOGGEDIN) {
                 localStorage.setItem('from_email', user + email_ext);
-                location.replace("index.html#page-home");
+                $.mobile.changePage("#page-home");
             } else if (data == USERSTATUS.LOGINFAILED) {
                 alert('Login failed');
             }
