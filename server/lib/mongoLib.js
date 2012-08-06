@@ -75,6 +75,7 @@ module.exports = {
         }
     },
     getUserDetails1 : function(req, callback){
+
         db.collection('userdatabase');
         db.bind('userdatabase');
         db.userdatabase.find({"fromLocation1":req.body.fromLocation, "toLocation1":req.body.toLocation, "startTime":req.body.time, "Hide":null}, function(err, cursor) {
@@ -124,11 +125,14 @@ module.exports = {
                         if(err) {
                             callback('location error:', err);
                         } else {
-                            // assign all times to zero
-                            for(var i in document.time){
-                                document.time[i] = 0;
+                            if(document != null) {
+                                // assign all times to zero
+                                for(var i in document.time){
+                                    document.time[i] = 0;
+                                }
+                                callback(null, document);
                             }
-                            callback(null, document);
+
                         }
                     });
                 }
@@ -190,7 +194,6 @@ module.exports = {
     getuserInfo : function(req, callback) {
         db.collection('userdatabase');
         db.bind('userdatabase');
-        debugger;
         db.userdatabase.findOne({"contact_info.email" : req.body.email}, function(err,document) {
             if(err) {
                 callback(err);
@@ -240,103 +243,6 @@ module.exports = {
 //    },
     //todo
     //for testing purpose
-    viewData: function(data,callback){
-        if(data.value=="data"){
-
-            db.collection('locationtimedata');
-            db.bind('locationtimedata');
-            db.locationtimedata.find({},function(err, cursor) {
-                if(err) {
-                    return console.log('login details error:', err);
-                }
-                cursor.toArray(callback);
-            });
-        }
-        if(data.value=="location"){
-            db.collection('locationdetails');
-            db.bind('locationdetails');
-            db.locationdetails.find({},function(err, cursor) {
-                if(err) {
-                    return console.log('login details error:', err);
-                }
-                cursor.toArray(callback);
-            });
-
-        }
-
-        if(data.value=="user"){
-            db.collection('userdatabase');
-            db.bind('userdatabase');
-            db.userdatabase.find({},function(err, cursor) {
-                if(err) {
-                    return console.log('login details error:', err);
-                }
-                cursor.toArray(callback);
-            });
-
-        }
-        if(data.value=="notifications"){
-            db.collection('notifications');
-            db.bind('notifications');
-            db.notifications.find({},function(err, cursor) {
-                if(err) {
-                    return console.log('login details error:', err);
-                }
-                cursor.toArray(callback);
-            });
-
-        }
-    },
-    deleteData: function(data,callback){
-        if(data.value=="data"){
-            db.collection('locationtimedata');
-            db.bind('locationtimedata');
-            db.locationtimedata.remove({},function(err, cursor) {
-                if(err) {
-                    return console.log('login details error:', err);
-                }
-                else {
-                    callback(null,"success");
-                }
-            });
-        }
-        if(data.value=="location"){
-            db.collection('locationdetails');
-            db.bind('locationdetails');
-            db.locationdetails.remove({},function(err, cursor) {
-                if(err) {
-                    return console.log('login details error:', err);
-                }
-                else {
-                    callback(null,"success");
-                }
-            });
-        }
-        if(data.value=="user"){
-            db.collection('userdatabase');
-            db.bind('userdatabase');
-            db.userdatabase.remove({},function(err, cursor) {
-                if(err) {
-                    return console.log('login details error:', err);
-                }
-                else {
-                    callback(null,"success");
-                }
-            });
-        }
-        if(data.value=="notifications"){
-            db.collection('notifications');
-            db.bind('notifications');
-            db.notifications.remove({},function(err, cursor) {
-                if(err) {
-                    return console.log('login details error:', err);
-                }
-                else {
-                    callback(null,"success");
-                }
-            });
-        }
-    },
 
     insertData: function(data,callback){
         if(data.value=="data"){
