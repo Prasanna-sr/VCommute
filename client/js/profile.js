@@ -17,33 +17,38 @@ $("#page-profile").bind('pagebeforeshow', function() {
     $('#txtEmail').attr('value', email);
 
     $.get(VC.url + '/getlocationtimedata', function(obj) {
-        $('select >option').remove();
-        loadAllDropDowns(obj);
-        setDefaultTimeValues();
-        populateUserData();
+            $('select >option').remove();
+            loadAllDropDowns(obj);
+            setDefaultValues();
+            populateUserData();
     });
 
     function populateUserData() {
-        $.post(VC.url + '/getuserInfo', {"email" : email}, function(userObj) {
-            //USER_INFO is used in commments page
-            USER_INFO.name=userObj.name;
-            var userLocation = userObj.contact_info.location;
-            if((userLocation).indexOf("San Francisco") != -1) {
-                $('#to-location').val("San Francisco Stevenson Street");
-                $('#from-location-2').val("San Francisco Stevenson Street");
+        $.post(VC.url + '/getuserinfo', {"email" : email}, function(userObj) {
+            if(userObj.error == null) {
+                //USER_INFO is used in commments page
+                USER_INFO.name=userObj.name;
+                var userLocation = userObj.contact_info.location;
+                if((userLocation).indexOf("San Francisco") > 0) {
+                    $('#to-location').val("San Francisco Stevenson Street");
+                    $('#from-location-2').val("San Francisco Stevenson Street");
+                }
+                $('#profile-name').text(userObj.name);
+                $('#profile-mobile').val(userObj.contact_info.cell_phone);
+                $('#landmark').val(userObj.landmark);
+                $('#preference').val(userObj.preference);
+                $('#car-desc').val(userObj.carDesc);
+                $('#profile-picture').attr("src",userObj.avatars.square70);
+                $('#profile-title').text(userObj.title);
+                $('#profile-base-location').text(userObj.contact_info.location);
+                $('#txtTemp').attr("value",null);
+                $('#txtTemptime').attr("value",null);
+                populateUserPreferenceData(userObj);
+                refreshElements();
+            } else {
+                alert("Internal Server Error. Please try after some time");
             }
-            $('#profile-name').text(userObj.name);
-            $('#profile-mobile').val(userObj.contact_info.cell_phone);
-            $('#landmark').val(userObj.landmark);
-            $('#preference').val(userObj.preference);
-            $('#car-desc').val(userObj.carDesc);
-            $('#profile-picture').attr("src",userObj.avatars.square70);
-            $('#profile-title').text(userObj.title);
-            $('#profile-base-location').text(userObj.contact_info.location);
-            $('#txtTemp').attr("value",null);
-            $('#txtTemptime').attr("value",null);
-            populateUserPreferenceData(userObj);
-            refreshElements();
+
         });
     }
 
@@ -55,6 +60,7 @@ $("#page-profile").bind('pagebeforeshow', function() {
         $('#to-location-2').selectmenu("refresh");
         $('#start-time').selectmenu("refresh");
         $('#return-time').selectmenu("refresh");
+        $('#profile_preference').selectmenu("refresh");
     }
 
     function loadAllDropDowns(obj) {
@@ -64,6 +70,8 @@ $("#page-profile").bind('pagebeforeshow', function() {
         loadDropDown("#to-location-2", obj.allLocation);
         loadDropDown("#start-time", obj.startTime);
         loadDropDown("#return-time",  obj.returnTime);
+        loadDropDown("#profile_preference", obj.drivingPreference);
+
     }
 
     function loadDropDown(id, dataStr) {
@@ -73,7 +81,7 @@ $("#page-profile").bind('pagebeforeshow', function() {
         }
     }
 
-    function setDefaultTimeValues() {
+    function setDefaultValues() {
         $('#start-time').val('08:00');
         $('#return-time').val('17:00');
     }
@@ -86,7 +94,9 @@ $("#page-profile").bind('pagebeforeshow', function() {
             $('#to-location-2').val(userObj.toLocation2);
             $('#start-time').val(userObj.startTime);
             $('#return-time').val(userObj.departTime);
-            $('#txtTemp').attr("value", userObj.fromLocation1 + "_" + userObj.toLocation1 + "," + userObj.fromLocation2 + "_" + userObj.toLocation2);
+            $('#profile_preference').val(userObj.Car);
+            $('#txtTemp').attr("value", userObj.fromLocation1 + "_" + userObj.toLocation1 +
+                "," + userObj.fromLocation2 + "_" + userObj.toLocation2);
             $('#txtTemptime').attr("value", userObj.startTime + "," + userObj.departTime);
         }
     }
@@ -96,8 +106,12 @@ $("#page-profile").bind('pagebeforeshow', function() {
         if($("#landmark").val() != "") {
             if ($("#profile-mobile").val() != "") {
                 if(!expression.test($("#profile-mobile").val())) {
-                    $.post(VC.url + '/saveProfile', $("#formProfile").serialize(), function(data) {
-                        location.replace('index.html#page-home');
+                    $.post(VC.url + '/saveprofile', $("#formProfile").serialize(), function(data) {
+                        if(data == "Success") {
+                           $.mobile.changePage('#page-home');
+                        } else {
+                            alert("Internal Server Error. Please try after some time");
+                        }
                     });
                 } else {
                     alert("Mobile number is invalid");

@@ -142,11 +142,12 @@ $("#page-home").bind('pagebeforeshow',function() {
         $("#list1 li").remove();
         $('#list-next').remove();
         if(listObj.length > 0) {
+            listObj.count = listObj.count - listObj.length;
             for(var i = 0; i < listObj.length; i ++) {
                 $("#list1").append(getList(listObj[i]));
             }
-            if(listObj.length > 1) {
-                $("#list1").append('<a href="#" id="list-next"  data-role="button" data-icon="arrow-r" >More</a>');
+            if(listObj.length > 2) {
+                $("#list1").append('<a href="#" id="list-next" data-role="button">More</a>');
                 $('#list-next').button();
             }
         } else {
@@ -157,6 +158,7 @@ $("#page-home").bind('pagebeforeshow',function() {
 
     $('#list-next').live('click',function() {
         $.post(VC.url+'/getinfo',{"email" : email, "journey" : journey, "skip" : 1}, function(obj) {
+
             generateListData(obj.listObj)
         });
 

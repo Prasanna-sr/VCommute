@@ -14,7 +14,7 @@
 
 .notification{
     background: #FF0000;
-    display: inline-block;
+    display: none;
     width:16px;
     height:16px;
     /*-webkit-border-radius: 9px; -moz-border-radius: 1px;*/

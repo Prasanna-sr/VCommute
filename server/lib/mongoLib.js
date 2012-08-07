@@ -15,93 +15,103 @@ module.exports = {
             }
         });
     },
+     //function for login page
+    getUserInfo : function(email, callback) {
+        db.collection('userdetails');
+        db.bind('userdetails');
+        db.userdetails.findOne({"contact_info.email" : email}, function(err, document) {
+            if(err) {
+                callback(err);
+            } else {
+                callback(null, document);
+            }
+        });
 
-    updateLocationCounter: function(req, callback) {
-        var tempLoc=new Array();
-        var time = new Array();
-        var locationName1 = req.body.fromLocation1 + '_' + req.body.toLocation1;
-        var locationName2 = req.body.fromLocation2 + '_' + req.body.toLocation2;
-        var time1 =req.body.startTime;
-        var time2 =req.body.returnTime;
-        tempLoc = (req.body.temp).split(",");
-        var locationTemp1=tempLoc[0] || null;
-        var locationTemp2=tempLoc[1] || null;
+    },
+    updateLocationCounter: function(obj, callback) {
 
-        time = (req.body.temptime).split(",");
-        var start = time[0] || null;
-        var ret  = time[1] || null;
-        var incObj1 = {$inc:{}};
-        incObj1["$inc"]["time."+time1] = 1;
-        var incObj2 = {$inc: {}};
-        incObj2["$inc"]["time."+time2] = 1;
-        //$inc:{time:1}
         db.collection('locationdetails');
         db.bind('locationdetails');
+        var locationdetailsOnward = { name : obj.locationCurrentOnward, time : config.time }
+        var locationdetailsReturn = { name : obj.locationCurrentReturn, time : config.time }
 
-        var locationdetails1 = { name : locationName1, time : config.time }
-        var locationdetails2 = { name : locationName2, time : config.time }
-        if(locationName1 != locationTemp1 || time1!=start) {
-            updatelocation(locationName1,locationdetails1,incObj1);
-            var decObj1 = {$inc: {}};
-            decObj1["$inc"]["time."+start] = -1;
-            db.locationdetails.update({name:locationTemp1},decObj1);
+        if(obj.locationCurrentOnward != obj.locationPreviousOnward || obj.timeCurrentStart != obj.timePrevStart) {
+            updatelocation(obj.locationCurrentOnward, locationdetailsOnward, obj.incObjStart);
+            db.locationdetails.update({name : obj.locationPreviousOnward}, obj.decObjStart);
         }
-        if(locationName2 != locationTemp2 || time2!=ret) {
-            updatelocation(locationName2,locationdetails2,incObj2);
-            var decObj2 = {$inc: {}};
-            decObj2["$inc"]["time."+ret] = -1;
-            db.locationdetails.update({name:locationTemp2},decObj2);
+        if(obj.locationCurrentReturn != obj.locationPreviousReturn || obj.timeCurrentReturn != obj.timePrevReturn) {
+            updatelocation(obj.locationCurrentReturn, locationdetailsReturn, obj.incObjReturn);
+            db.locationdetails.update({name : obj.locationPreviousReturn}, obj.decObjReturn);
         }
+         callback(null,"Success");
         function updatelocation(locationName, locationdetails, incObj) {
-            db.locationdetails.find({name : locationName},function(err, cursor) {
+            db.locationdetails.find({name : locationName}, function(err, cursor) {
                 if(err) {
                     callback(err);
+                }  else {
+                    cursor.toArray(function(err, locationList) {
+                        if(locationList != "") {
+                            db.locationdetails.update({name : locationName}, incObj);
+                        }
+                        else {
+                            db.locationdetails.insert(locationdetails, function(err) {
+                                if(err) {
+                                    callback(err);
+                                } else {
+                                    console.log('location details inserted !');
+                                }
+                            });
+                            db.locationdetails.update({name : locationName}, incObj);
+                        }
+                    });
                 }
-                cursor.toArray(function(err, json) {
-                    if(json != "") {
-                        db.locationdetails.update({name : locationName}, incObj);
-                    }
-                    else {
-                        db.locationdetails.insert(locationdetails, function(err) {
-                            if(err) { console.log(err);
-                            } else {
-                                console.log('location details inserted 1 successfully');
-                            }
-                        });
-                        db.locationdetails.update({name:locationName}, incObj);
-                    }
-                });
             });
         }
     },
     getUserDetails1 : function(req, callback){
-
-        db.collection('userdatabase');
-        db.bind('userdatabase');
-        db.userdatabase.find({"fromLocation1":req.body.fromLocation, "toLocation1":req.body.toLocation, "startTime":req.body.time, "Hide":null}, function(err, cursor) {
+        db.collection('userdetails');
+        db.bind('userdetails');
+        db.userdetails.find({"fromLocation1":req.body.fromLocation, "toLocation1":req.body.toLocation,
+            "startTime":req.body.time, "Hide":null}, function(err, cursor) {
             if(err) {
                 callback(err);
+            } else {
+               // cursor.skip(parseInt(req.body.skip)).limit(config.limitResults);
+                cursor.limit(config.limitResults + parseInt(req.body.skip));
+                cursor.toArray(function(err, items) {
+                   callback(null, items);
+                });
             }
-            cursor.skip(parseInt(req.body.skip)).limit(3);
-            cursor.toArray(callback);
+
         });
 
     },
     getUserDetails2 : function(req, callback) {
-        db.collection('userdatabase');
-        db.bind('userdatabase');
-        db.userdatabase.find({"fromLocation2":req.body.fromLocation,"toLocation2":req.body.toLocation,"departTime":req.body.time,"Hide":null},function(err, cursor) {
+        db.collection('userdetails');
+        db.bind('userdetails');
+        db.userdetails.find({"fromLocation2":req.body.fromLocation,"toLocation2":req.body.toLocation,
+            "departTime":req.body.time,"Hide":null},function(err, cursor) {
             if(err) {
                 callback('find login error:', err);
+            } else {
+                var count;
+                cursor.count(function(err, value) {
+                   count = value;
+                });
+                //cursor.skip(parseInt(req.body.skip)).limit(config.limitResults);
+                cursor.limit(config.limitResults + parseInt(req.body.skip));
+                cursor.toArray(function(err, items) {
+                    //items["results"] = count;
+                    callback(null, items);
+                });
             }
-            cursor.skip(parseInt(req.body.skip)).limit(3);
-            cursor.toArray(callback);
+
         });
     },
     getLocation : function(req, callback) {
         db.collection('locationtimedata');
         db.bind('locationtimedata');
-        db.locationtimedata.findOne({},{"officeLocation":true, "allLocation":true}, function(err, document) {
+        db.locationtimedata.findOne({}, { "officeLocation":true, "allLocation":true }, function(err, document) {
             if(err) {
                 callback(err);
             } else{
@@ -117,7 +127,7 @@ module.exports = {
             if(err) {
                 callback(err);
             } else {
-                if(document!=null){
+                if(document!=null) {
                     callback(null, document);
                 } else {
                     // to show time with no commuters
@@ -127,7 +137,7 @@ module.exports = {
                         } else {
                             if(document != null) {
                                 // assign all times to zero
-                                for(var i in document.time){
+                                for(var i in document.time) {
                                     document.time[i] = 0;
                                 }
                                 callback(null, document);
@@ -139,13 +149,18 @@ module.exports = {
             }
         });
     },
-    updateUserdetails: function(req, callback){
-        db.collection('userdatabase');
-        db.bind('userdatabase');
-        db.userdatabase.update({"contact_info.email":req.body.from_email},{$set:{profile:1,"contact_info.cell_phone":req.body.mobile,landmark:req.body.landmark,preference:req.body.preference,location:req.body.location,fromLocation1:req.body.fromLocation1,toLocation1:req.body.toLocation1,startTime:req.body.startTime,fromLocation2:req.body.fromLocation2,toLocation2:req.body.toLocation2,departTime:req.body.returnTime,Car:req.body.profile_preference,NoCar:req.body.Nocar,DriveDays:req.body.DriveDays,DriveWeek:req.body.DriveWeek,hide:req.body.hide,carDesc:req.body.carDesc,notify:req.body.notify,logout:req.body.log_out,date:new Date().toString()}},function(err,result){
-            if(err)       {
+    updateUserDetails: function(data, callback){
+        db.collection('userdetails');
+        db.bind('userdetails');
+        db.userdetails.update({"contact_info.email" : data.from_email}, {$set : {profile : 1,
+            "contact_info.cell_phone" : data.mobile, landmark : data.landmark,preference : data.preference,
+            location : data.location, fromLocation1 : data.fromLocation1, toLocation1 : data.toLocation1,
+            startTime : data.startTime, fromLocation2 : data.fromLocation2, toLocation2 : data.toLocation2,
+            departTime : data.returnTime, Car : data.profile_preference, hide : data.hide,
+            carDesc : data.carDesc, notify : data.notify,
+            logout : data.log_out, date:new Date().toString()}}, function(err, result) {
+            if(err) {
                 callback(err);
-
             } else {
                 callback(null);
             }
@@ -165,9 +180,9 @@ module.exports = {
             return;
         }
 
-        db.collection('userdatabase');
-        db.bind('userdatabase');
-        db.userdatabase.insert(userdetails, function(err) {
+        db.collection('userdetails');
+        db.bind('userdetails');
+        db.userdetails.insert(userdetails, function(err) {
             if(err) {
                 callback(err);
             }
@@ -191,17 +206,7 @@ module.exports = {
             }
         });
     },
-    getuserInfo : function(req, callback) {
-        db.collection('userdatabase');
-        db.bind('userdatabase');
-        db.userdatabase.findOne({"contact_info.email" : req.body.email}, function(err,document) {
-            if(err) {
-                callback(err);
-            }
-            callback(null, document);
-        });
 
-    },
     getNotifications : function(data,callback) {
         db.collection('notifications');
         db.bind('notifications');
@@ -209,8 +214,9 @@ module.exports = {
             function(err, cursor) {
             if(err) {
                 callback(err);
+            } else{
+                cursor.toArray(callback);
             }
-            cursor.toArray(callback);
         });
     },
     getNotificationbyID : function(data, callback) {
@@ -219,8 +225,9 @@ module.exports = {
         db.notifications.find({"_id" : db.bson_serializer.ObjectID.createFromHexString(data.id)}, function(err, cursor) {
             if(err) {
                 callback(err);
+            } else{
+                cursor.toArray(callback);
             }
-            cursor.toArray(callback);
         });
     },
 
@@ -270,9 +277,9 @@ module.exports = {
             });
         }
         if(data.value=="user"){
-            db.collection('userdatabase');
-            db.bind('userdatabase');
-            db.userdatabase.insert(data.d,function(err, cursor) {
+            db.collection('userdetails');
+            db.bind('userdetails');
+            db.userdetails.insert(data.d,function(err, cursor) {
                 if(err) {
                     return console.log('login details error:', err);
                 }

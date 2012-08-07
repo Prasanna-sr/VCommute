@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>
     </title>
-    <link rel="stylesheet" href="stylesheets/jquery.mobile-1.1.0.min.css"/>
-    <link rel="stylesheet" href="stylesheets/my.css"/>
-    <script src="javascripts/jquery-1.7.2.min.js"></script>
-    <script src="javascripts/jquery.mobile-1.0.1.min.js"></script>
-    <script src=  "javascripts/socket.io.js"></script>
+    <link rel="stylesheet" href="css/jquery.mobile-1.1.0.min.css"/>
+    <link rel="stylesheet" href="css/my.css"/>
+    <script src="js/jquery-1.7.2.min.js"></script>
+    <script src="js/jquery.mobile-1.0.1.min.js"></script>
+    <script src=  "js/socket.io.js"></script>
 </head>
 
 <body>
@@ -29,7 +29,7 @@
 
         <div data-role="fieldcontain">
             <fieldset data-role="controlgroup">
-                <input id="txtUser"  placeholder="User Name" name="user" value=""/>
+                <input id="txtUser"  placeholder="Username" name="user" value=""/>
 
             </fieldset>
         </div>
@@ -43,9 +43,9 @@
     <!--<h3>Don't have an social cast API password ?</h3>-->
     <div data-role="collapsible">
         <h3>Instructions to set Socialcast API password</h3>
-        <p>1.Go to <a href="https://vmware-com.socialcast.com/home">Social cast</a></p>
+        <p>1.Go to <a href="https://vmware-com.socialcast.com/home">SocialCast</a></p>
         <p>2.Click on your name (menu button) found on top right corner</p>
-        <p>3.Select Setting - > Passsword tab and set your API password there</p>
+        <p>3.Select Setting | Passsword tab and set your API password there</p>
     </div>
 
     <!--<div data-theme="a" data-role="footer" data-position="fixed">-->
@@ -57,20 +57,18 @@
 
 <div data-role="page" id="page-profile">
 
-    <div data-theme="a" data-role="header" data-position="fixed">
+    <div data-theme="a" data-role="header" data-tap-toggle="false"  data-position="fixed">
         <h3>
             VCommute
         </h3>
     </div>
     <div data-role="content" style="padding: 15px">
-
         <ul data-role="listview">
             <li>
                 <img id="profile-picture" /> <h3> <label class="select" name="profileName" id="profile-name"></label></h3>
                 <p> <label class="select" name="" id="profile-title"></label></p>  <p> <label class="select" name="location" id="profile-base-location"></label></p>
             </li>
         </ul>
-
         <h4>Onward Journey</h4>
         <form id='formProfile' method="#">
             <ul data-role="listview" data-inset="true">
@@ -85,7 +83,6 @@
                     <select name="startTime" data-mini="true" id="start-time">
                     </select></li>
             </ul>
-
             <h4>Return Journey</h4>
             <ul data-role="listview" data-inset="true">
                 <li> <label for="from-location-2" class="select">From Location:</label>
@@ -98,27 +95,11 @@
                     <select name="returnTime" data-mini="true" id="return-time">
                     </select></li>
             </ul>
-
-            <!--<label for="profile-preference" class="select">Choose your Preference</label>-->
-            <!--<select name="profile_preference" data-native-menu="false" data-mini="true" id="profile-preference">-->
-            <!--<option value="car">I drive my car</option>-->
-            <!--<option value="nocar">I pay for gas (You drive the car)</option>-->
-            <!--<option value="altdays">I can drive alternate days/weeks</option>-->
-            <!--</select>-->
-
-            <!--<div data-role="fieldcontain">-->
-            <!--<fieldset data-role="controlgroup">-->
-            <!--<legend>Choose your Preferences:</legend>-->
-            <!--<input type="checkbox" name="Car" id="Car" value="I drive my car" class="custom" />-->
-            <!--<label for="Car">I drive my car</label>-->
-
-            <!--<input type="checkbox" name="DriveDays" id="DriveDays" value="I will pay for gas & won't drive" class="custom" />-->
-            <!--<label for="DriveDays">I pay for gas (You drive the car)</label>-->
-
-            <!--<input type="checkbox" name="DriveWeek" id="DriveWeek" value="I will drive alternate days/weeks" class="custom" />-->
-            <!--<label for="DriveWeek">I can drive alternate days/weeks</label>-->
-            <!--</fieldset>-->
-            <!--</div>-->
+            <ul data-role="listview" data-inset="true">
+                <li><label for="profile_preference" class="select">Choose your Preference</label>
+                    <select name="profile_preference" data-mini="true" id="profile_preference"></select>
+                </li>
+            </ul>
 
             <fieldset data-role="controlgroup">
                 <label for="profile-mobile">Mobile Number<b><font color="red">*</font></b>:</label>
@@ -153,12 +134,12 @@
         <input type="submit" id="btnSubmit" value="Save" data-transition="none"/>
     </div>
 
-    <div data-role="footer" class="nav-glyphish-example" data-position="fixed">
+    <div data-role="footer" class="nav-glyphish-example" data-tap-toggle="false"  data-position="fixed" data-tap-toggle="true">
         <div data-role="navbar" class="nav-glyphish-example" class="ui-grid-b">
             <ul>
 
                 <li><a href="/index.html#page-home" data-icon="home" data-transition="none">Home</a> </li>
-                <li><a href="/index.html#page-notification" data-icon="info" data-transition="none">Notifications<span class="notification"><label id="count-profile">0</label></span></a></li>
+                <li><a href="/index.html#page-notification" data-icon="info" data-transition="none">Notifications<label class="notification" id="count-profile"></label></a></li>
                 <li> <a href="/index.html#page-profile" class="ui-btn-active ui-state-persist" data-icon="gear">Profile</a></li>
 
             </ul>
@@ -169,17 +150,22 @@
 
 <div data-role="page" class="type-interior" id="page-home">
 
-    <div data-role="header" data-theme="a" data-position="fixed">
+    <div data-role="header" data-theme="a" data-tap-toggle="false" data-position="fixed">
 
     <h1>VCommute</h1>
     </div><!-- /header -->
     <div data-role="content" style="padding: 15px">
-        <fieldset data-role="controlgroup" data-type="horizontal">
-            <input type="radio" name="radio-choice-b" id="radio-choice-a" value="on" checked="checked" />
-            <label for="radio-choice-a">Onward</label>
-            <input type="radio" name="radio-choice-b" id="radio-choice-b" value="off" />
-            <label for="radio-choice-b">Return</label>
-        </fieldset>
+        <table width="100%">
+            <tr><td width="33%"></td>
+                <td><fieldset data-role="controlgroup" data-type="horizontal">
+                    <input type="radio" name="radio-choice-b" id="radio-choice-a" value="on" checked="checked" />
+                    <label for="radio-choice-a">Onward</label>
+                    <input type="radio" name="radio-choice-b" id="radio-choice-b" value="off" />
+                    <label for="radio-choice-b">Return</label>
+                </fieldset></td>
+                <td></td></tr>
+        </table>
+
         <div data-role="fieldcontain">
             <label for="from-location-1" class="select">From Locations:</label>
             <select name="fromLocation1"  id="from-location-1">
@@ -203,11 +189,11 @@
         <br>
     </div><!-- /content -->
 
-    <div data-role="footer" class="nav-glyphish-example" data-position="fixed">
+    <div data-role="footer" class="nav-glyphish-example" data-tap-toggle="false" data-position="fixed">
         <div data-role="navbar" class="nav-glyphish-example" class="ui-grid-b" >
             <ul>
                 <li><a href="/index.html#page-home" class="ui-btn-active ui-state-persist" data-icon="home" data-transition="none">Home</a> </li>
-                <li><a href="/index.html#page-notification" data-icon="info" data-transition="none">Notifications<span class="notification"><label id="count-home">0</label></span></a></li>
+                <li><a href="/index.html#page-notification" data-icon="info" data-transition="none">Notifications<label class="notification" id="count-home"></label></a></li>
                 <li> <a href="/index.html#page-profile" data-icon="gear" data-transition="none">Profile</a></li>
             </ul>
 
@@ -218,9 +204,7 @@
 </div> <!-- /page home-->
 
 <div data-role="page" id="page-details" data-add-back-btn="true">
-
-
-    <div data-role="header" data-theme="a" data-position="fixed">
+    <div data-role="header" data-theme="a" data-tap-toggle="false" data-position="fixed">
         <a href="index.html#page-home" data-icon="back">back</a>
         <!--below line not working in android phone-->
         <!--<a data-rel="back" data-icon="back">back</a>-->
@@ -276,11 +260,11 @@
         </div>
     </div>
 
-    <div data-role="footer" class="nav-glyphish-example" data-position="fixed">
+    <div data-role="footer" class="nav-glyphish-example" data-tap-toggle="false" data-position="fixed">
         <div data-role="navbar" class="nav-glyphish-example" class="ui-grid-b">
             <ul>
                 <li><a href="/index.html#page-home" data-icon="home" data-transition="none">Home</a> </li>
-                <li><a href="/index.html#page-notification" data-icon="info" data-transition="none">Notifications<span class="notification"><label id="count-details">0</label></span></a></li>
+                <li><a href="/index.html#page-notification" data-icon="info" data-transition="none">Notifications<label class="notification" id="count-details"></label></a></li>
                 <li> <a href="/index.html#page-profile" data-icon="gear" data-transition="none">Profile</a></li>
 
             </ul>
@@ -292,7 +276,7 @@
 
 <div data-role="page" id="page-notification">
 
-    <div data-theme="a" data-role="header" data-position="fixed">
+    <div data-theme="a" data-role="header" data-tap-toggle="false" data-position="fixed">
         <h3>
             VCommute
         </h3>
@@ -303,11 +287,11 @@
         <ul id="list-notifications" data-role="listview">
         </ul>
     </div>
-    <div data-role="footer" class="nav-glyphish-example" data-position="fixed">
+    <div data-role="footer" class="nav-glyphish-example" data-tap-toggle="false" data-position="fixed">
         <div data-role="navbar" class="nav-glyphish-example" class="ui-grid-b" >
             <ul>
                 <li><a href="/index.html#page-home" data-icon="home" data-transition="none">Home</a> </li>
-                <li><a  data-icon="info" class="ui-btn-active ui-state-persist" data-icon="info" data-transition="none">Notifications <span class="notification"><label id="count-notification">0</label></span></a></li>
+                <li><a  data-icon="info" class="ui-btn-active ui-state-persist" data-icon="info" data-transition="none">Notifications <label id="count-notification" class="notification"></label></a></li>
                 <li> <a href="/index.html#page-profile" data-icon="gear" data-transition="none">Profile</a></li>
             </ul>
         </div>
@@ -317,7 +301,7 @@
 <div data-role="page"  id="page-comment" >
 
 
-    <div data-role="header" data-theme="d">
+    <div data-role="header"  data-theme="d">
 
         <h1>VComment</h1>
 
@@ -394,13 +378,13 @@
 
 </div>   <!-- /page info -->
 
-<script type="text/javascript"  src="javascripts/login.js"></script>
-<script type="text/javascript" src="javascripts/profile.js"></script>
-<script type="text/javascript" src="javascripts/home.js"></script>
-<script type="text/javascript" src="javascripts/details.js"></script>
-<script type="text/javascript" src="javascripts/comment.js"></script>
-<script type="text/javascript" src="javascripts/info.js"></script>
-<script type="text/javascript" src="javascripts/notifications.js"></script>
+<script type="text/javascript"  src="js/login.js"></script>
+<script type="text/javascript" src="js/profile.js"></script>
+<script type="text/javascript" src="js/home.js"></script>
+<script type="text/javascript" src="js/details.js"></script>
+<script type="text/javascript" src="js/comment.js"></script>
+<script type="text/javascript" src="js/info.js"></script>
+<script type="text/javascript" src="js/notifications.js"></script>
 
 </body>
 

@@ -42,14 +42,16 @@ module.exports = function routes(app) {
     });
 
     app.post('/getuserinfo', function (req, res) {
-        mongoLib.getuserInfo(req, function (err, userObj) {
+        mongoLib.getUserInfo(req.body.email, function (err, userObj) {
             if (err) {
-                console.log(err);
+                console.log("error at getuserinfo"+ err);
+                res.send({"error":err});
             }
             else {
                 if (userObj != "") {
                     //todo remove this in production
                     res.header('Access-Control-Allow-Origin', '*');
+                    userObj.error=null;
                     res.send(userObj);
                 }
             }
@@ -59,7 +61,7 @@ module.exports = function routes(app) {
     app.post('/getinfo', function (req, res) {
         var loc;
         var obj = req.body;
-        mongoLib.getuserInfo(req, function (err, userObj) {
+        mongoLib.getUserInfo(req, function (err, userObj) {
             if (err) {
                 console.log(err);
             }
@@ -72,7 +74,6 @@ module.exports = function routes(app) {
                         loc = userObj.fromLocation2 + "_" + userObj.toLocation2;
                     }
                     req.body.location = loc;
-
                     mongoLib.getTimedetails(req, function (err, timeObj) {
                         if (err) {
                             console.log(err);
@@ -134,17 +135,33 @@ module.exports = function routes(app) {
     });
 
 
-    app.post('/saveProfile', validatePreferenceDetails,
-        function (req, res) {
-            //todo remove this in production
-            res.header('Access-Control-Allow-Origin', '*');
-            res.send('successfull');
-            //res.redirect('/mainPage');
-            console.log('save completed');
+    app.post('/saveprofile', function (req, res) {
+        mongoLib.updateUserDetails(req.body, function (err) {
+            if (err) {
+                console.log("Error at save profile"+ err);
+                res.header('Access-Control-Allow-Origin', '*');
+                res.send('Error'+ err);
+            }  else {
+                //update location document
+                var obj = getLocationDetails(req);
+                mongoLib.updateLocationCounter(obj, function (err, result) {
+                    if (err) {
+                        console.log("Error at save profile"+ err);
+                        res.header('Access-Control-Allow-Origin', '*');
+                        res.send('Error'+ err);
+                    } else {
+                        console.log('profile data saved successfully !')
+                        //todo remove this in production
+                        res.header('Access-Control-Allow-Origin', '*');
+                        res.send(result);
+                    }
+                });
+            }
         });
 
-    //Notifications
+    });
 
+    //Notifications
     app.post('/saveNotifications',
         function (req, res) {
             mongoLib.persistNotificationData(req.body, function (err, json) {
@@ -289,20 +306,6 @@ module.exports = function routes(app) {
     //todo
     //for development purpose
     //  to view data in mongodb
-    app.post('/viewdata',
-        function (req, res) {
-
-            mongoLib.viewData(req.body, function (err, data) {
-                if (err) {
-                    console.log(err);
-                }
-                else {
-                    res.header('Access-Control-Allow-Origin', '*');
-                    res.send(JSON.stringify(data));
-
-                }
-            });
-        });
     app.post('/insertdata', function (req, res) {
         mongoLib.insertData(req.body, function (err, json) {
             if (err) {
@@ -315,47 +318,39 @@ module.exports = function routes(app) {
             }
         });
     });
-    app.post('/deletedata',
-        function (req, res) {
-            mongoLib.deleteData(req.body, function (err, json) {
-                if (err) {
-                    console.log(err);
-                }
-                else {
-                    console.log('Data deleted successfully !');
-                    res.header('Access-Control-Allow-Origin', '*');
-                    res.send(JSON.stringify(json));
-
-                }
-
-            });
-        });
 
 
-    function validatePreferenceDetails(req, res, next) {
-        var mobile = req.body.mobile;
-        //update user details document
-        mongoLib.updateUserdetails(req, function (err) {
-            if (err) {
-                console.log(err);
-            }
-            else {
-                console.log('hey user sucess ');
-            }
-        });
-        //update location document
-        mongoLib.updateLocationCounter(req, function (err) {
-            if (err) {
-                console.log(err);
-            }
-            else {
-                console.log(' location success ');
-            }
-        });
-        console.log('main page');
-        next();
+    function getLocationDetails(req) {
+        var locationPrevious = new Array();
+        var timePrevious = new Array();
+
+        var locationCurrentOnward = req.body.fromLocation1 + '_' + req.body.toLocation1;
+        var locationCurrentReturn = req.body.fromLocation2 + '_' + req.body.toLocation2;
+        var timeCurrentStart = req.body.startTime;
+        var timeCurrentReturn = req.body.returnTime;
+
+        locationPrevious = (req.body.temp).split(",");
+        var locationPreviousOnward = locationPrevious[0] || null;
+        var locationPreviousReturn = locationPrevious[1] || null;
+
+        timePrevious = (req.body.temptime).split(",");
+        var timePrevStart = timePrevious[0] || null;
+        var timePrevReturn  = timePrevious[1] || null;
+
+        var incObjStart = {$inc:{}};
+        incObjStart["$inc"]["time." + timeCurrentStart] = 1;
+        var incObjReturn = {$inc: {}};
+        incObjReturn["$inc"]["time." + timeCurrentReturn] = 1;
+        var decObjStart = {$inc: {}};
+        decObjStart["$inc"]["time." + timePrevStart] = -1;
+        var decObjReturn = {$inc: {}};
+        decObjReturn["$inc"]["time." + timePrevReturn] = -1;
+
+        return {"locationCurrentOnward" : locationCurrentOnward, "locationCurrentReturn" : locationCurrentReturn,
+            "timeCurrentStart" : timeCurrentStart, "timeCurrentReturn" : timeCurrentReturn, "locationPreviousOnward" : locationPreviousOnward,
+            "locationPreviousReturn" : locationPreviousReturn, "timePrevStart" : timePrevStart, "timePrevReturn" : timePrevReturn,
+        "incObjStart":incObjStart, "incObjReturn" : incObjReturn, "decObjStart" : decObjStart,"decObjReturn" : decObjReturn }
     }
-
 
     //home page functions
     function getuserPreferencedetails(req, res) {
@@ -368,7 +363,6 @@ module.exports = function routes(app) {
                     //todo remove this in production
                     res.header('Access-Control-Allow-Origin', '*');
                     res.send(userObj);
-
                 }
             }
         });
@@ -419,12 +413,12 @@ module.exports = function routes(app) {
     }
 
     function getSocialcastAuthObj (body) {
-       return  {url:'https://vmware-com.socialcast.com/api/authentication.json', body:'email=' + body.user + '@vmware.com&password=' + body.password};
+       return  { url:'https://vmware-com.socialcast.com/api/authentication.json', body:'email=' + body.user + '@vmware.com&password=' + body.password };
     }
 
     function handleSocialcastSuccess(req, res, socialcastError, socialcastResponse, socialcastData) {
-            req.body.email = req.body.user + '@vmware.com';
-            mongoLib.getuserInfo(req, function (err, userObj) {
+            email = (req.body.user).toLowerCase() + '@vmware.com';
+            mongoLib.getUserInfo(email, function (err, userObj) {
                 if (err) {
                     console.log('INTERNAL SERVER ERROR ' + err);
                     //todo remove this in production

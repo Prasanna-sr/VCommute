@@ -13,28 +13,22 @@
         //todo
         //if statement commented for testing purpose
         //if (localStorage.getItem('from_email') == to_email) {
-            count++;
-            $('#count-notification').text(count);
-            $('#count-details').text(count);
-            $('#count-home').text(count);
-            $('#count-profile').text(count);
-       // }
+        count++;
+        setNotificationBarStyles(count, "inline-block");
+
     });
 
     $("#page-notification").live('pagebeforeshow', function () {
         count = 0;
         var email = localStorage.getItem('from_email');
-        $('#count-notification').text(count);
-        $('#count-details').text(count);
-        $('#count-home').text(count);
-        $('#count-profile').text(count);
+        setNotificationBarStyles(count, "none");
         $('#list-notifications li').remove();
-        $.post(VC.url + '/getNotifications', {"email":email}, function (data) {
+        $.post(VC.url + '/getNotifications', {"email" : email}, function (data) {
             for (i = 0; i < data.length; i++) {
                 var  userObj = data[i];
                 var time = calculateTime(userObj);
                 if (userObj.from_email == email) {
-                    $("#list-notifications").append('<li id="li-notification"><a data-role="link" ' +
+                    $("#list-notifications").append('<li id = "li-notification"><a data-role = "link" ' +
                         'data-identity="' + userObj.to_email + ',' + userObj._id + '" <h3>' + userObj.to_name + '</h3><table><tr><td><p><strong>' +
                         'Sent:' + userObj.message + '</p></strong></td><td align="right"><p><i>&nbsp;&nbsp;&nbsp;&nbsp;'
                         + time + '</i></p></td></tr></table></a></li>');
@@ -52,6 +46,13 @@
 
     });
 
+    function setNotificationBarStyles(count,displayValue) {
+        $('#count-notification').text(count).css("display", displayValue);
+        $('#count-details').text(count).css("display", displayValue);
+        $('#count-home').text(count).css("display", displayValue);
+        $('#count-profile').text(count).css("display", displayValue);
+    }
+
     function calculateTime(userObj) {
         var one_min = 1000 * 60;
         var current_time = new Date().getTime();
@@ -68,6 +69,7 @@
         }
         return time;
     }
+
     $('#li-notification').live('click', function () {
         var param1 = encodeURIComponent($('a[data-role="link"]', this).attr('data-identity'));
         location.replace("index.html?param1="+ param1 +"#page-info");

@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-var VC = {};
+var VC = {"domain" : "@vmware.com"};
 //VC.cloudFoundryUrl = "http://vcommute.cloudfoundry.com:80";
 //var href = document.location.href;
 //VC.url = VC.cloudFoundryUrl;
@@ -15,12 +15,11 @@ var VC = {};
 //}
 //VC.url = "http://" + document.location.host;
 
-VC.url = "http://vcommute.cloudfoundry.com:80";
-//VC.url = "http://" + document.location.host;
 
+//VC.url = "http://vcommute.cloudfoundry.com:80";
+VC.url = "http://" + document.location.host;
 VC.socket = io.connect(VC.url);
 
- //alert("1");
 
 
 var USERSTATUS = {
@@ -44,19 +43,18 @@ function login() {
     var user = $('#txtUser').val();
     var password = $('#txtPassword').val();
     if (user != "" && password != "") {
-        var email_ext = "@vmware.com";
-        user = user.replace(email_ext, "");
+        user = user.replace(VC.domain, "");
         $.post(VC.url + '/login', { "user":user, "password":password }, function (data) {
             if (data == USERSTATUS.NEWUSER) {
-                localStorage.setItem('from_email', user + email_ext);
+                localStorage.setItem('from_email', user + VC.domain);
                $.mobile.changePage("#page-profile");
-               // location.replace("index.html#page-profile");
-
             } else if (data == USERSTATUS.LOGGEDIN) {
-                localStorage.setItem('from_email', user + email_ext);
+                localStorage.setItem('from_email', user + VC.domain);
                 $.mobile.changePage("#page-home");
             } else if (data == USERSTATUS.LOGINFAILED) {
                 alert('Login failed');
+            } else {
+                alert(data);
             }
         });
     } else {
