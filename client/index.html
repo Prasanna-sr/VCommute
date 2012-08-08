@@ -4,8 +4,6 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>
-    </title>
     <link rel="stylesheet" href="css/jquery.mobile-1.1.0.min.css"/>
     <link rel="stylesheet" href="css/my.css"/>
     <script src="js/jquery-1.7.2.min.js"></script>
@@ -46,7 +44,7 @@
     <!--<h3>Don't have an social cast API password ?</h3>-->
     <div data-role="collapsible">
         <h3>Instructions to set Socialcast API password</h3>
-        <p>1.Go to <a href="https://vmware-com.socialcast.com/home">SocialCast</a></p>
+        <p>1.Go to <a href="https://vmware-com.socialcast.com/home">Socialcast</a></p>
         <p>2.Click on your name (menu button) found on top right corner</p>
         <p>3.Select Setting | Passsword tab and set your API password there</p>
     </div>
@@ -58,7 +56,7 @@
     <!--</div>-->
 </div>   <!-- page login -->
 
-<div data-role="page" id="page-profile">
+<div data-role="dialog" id="page-profile">
 
     <div data-theme="a" data-role="header" data-tap-toggle="false"  data-position="fixed">
         <h3>
@@ -136,26 +134,13 @@
 
         <input type="submit" id="btnSubmit" value="Save" data-theme="b" data-transition="none"/>
     </div>
-
-    <div data-role="footer" class="nav-glyphish-example" data-tap-toggle="false"  data-position="fixed" data-tap-toggle="true">
-        <div data-role="navbar" class="nav-glyphish-example" class="ui-grid-b">
-            <ul>
-
-                <li><a href="/index.html#page-home" data-icon="home" data-transition="none">Home</a> </li>
-                <li><a href="/index.html#page-notification" data-icon="info" data-transition="none">Notifications<label class="notification" id="count-profile"></label></a></li>
-                <li> <a href="/index.html#page-profile" class="ui-btn-active ui-state-persist" data-icon="gear">Profile</a></li>
-
-            </ul>
-
-        </div>
-    </div>
 </div>      <!-- page profile -->
 
 <div data-role="page" class="type-interior" id="page-home">
 
     <div data-role="header" data-theme="a" data-tap-toggle="false" data-position="fixed">
-
     <h1>VCommute</h1>
+    <a href="/index.html#page-profile" data-icon="gear" class="ui-btn-right" data-transition="none">Settings</a>
     </div><!-- /header -->
     <div data-role="content" style="padding: 15px">
         <table width="100%">
@@ -197,7 +182,6 @@
             <ul>
                 <li><a href="/index.html#page-home" class="ui-btn-active ui-state-persist" data-icon="home" data-transition="none">Home</a> </li>
                 <li><a href="/index.html#page-notification" data-icon="info" data-transition="none">Notifications<label class="notification" id="count-home"></label></a></li>
-                <li> <a href="/index.html#page-profile" data-icon="gear" data-transition="none">Profile</a></li>
             </ul>
 
         </div>
@@ -247,7 +231,7 @@
             <h3><label class="select" id="action"><b>Actions</b></label></p></h3>
             <ul data-role="listview">
                 <li>
-                    <a id="notify" href="index.html#page-comment"><img src="http://www.iphonejd.com/.a/6a010535fde333970c011168ff4c31970c-800wi" width="50" height="50"/>
+                    <a id="notify" href="index.html#page-comment" data-transition="none"><img src="http://www.iphonejd.com/.a/6a010535fde333970c011168ff4c31970c-800wi" width="50" height="50"/>
                         In App notify<br>  <label class="select" name="mobile" id="In-app-notify"></label>  </a>
                 </li>
                 <li>
@@ -268,8 +252,6 @@
             <ul>
                 <li><a href="/index.html#page-home" data-icon="home" data-transition="none">Home</a> </li>
                 <li><a href="/index.html#page-notification" data-icon="info" data-transition="none">Notifications<label class="notification" id="count-details"></label></a></li>
-                <li> <a href="/index.html#page-profile" data-icon="gear" data-transition="none">Profile</a></li>
-
             </ul>
 
         </div>
@@ -280,9 +262,8 @@
 <div data-role="page" id="page-notification">
 
     <div data-theme="a" data-role="header" data-tap-toggle="false" data-position="fixed">
-        <h3>
-            VCommute
-        </h3>
+        <h3>VCommute</h3>
+        <a href="/index.html#page-profile" data-icon="gear" class="ui-btn-right" data-transition="none">Settings</a>
     </div>
 
     <div data-role="content" style="padding: 15px">
@@ -295,15 +276,12 @@
             <ul>
                 <li><a href="/index.html#page-home" data-icon="home" data-transition="none">Home</a> </li>
                 <li><a  data-icon="info" class="ui-btn-active ui-state-persist" data-icon="info" data-transition="none">Notifications <label id="count-notification" class="notification"></label></a></li>
-                <li> <a href="/index.html#page-profile" data-icon="gear" data-transition="none">Profile</a></li>
             </ul>
         </div>
     </div>
 </div>  <!-- /page notification -->
 
 <div data-role="page"  id="page-comment" >
-
-
     <div data-role="header"  data-theme="d">
 
         <h1>VComment</h1>
@@ -376,7 +354,7 @@
             <label id="message"></label> <i><label id="timestamp"></label></i>
         </div>
 
-        <a data-role="button" href="index.html#page-notification" data-theme="c">Ok</a>
+        <a data-role="button" href="index.html#page-notification" data-theme="c">OK</a>
     </div>
 
 </div>   <!-- /page info -->

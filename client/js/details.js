@@ -18,7 +18,7 @@ $("#page-details").bind('pagebeforeshow', function() {
         $('#title').text(userObj.title);
         $('#base-location').text(userObj.contact_info.location);
         $('#base-location').text(userObj.contact_info.location);
-        $('#details_preference').text(preference);
+        $('#details_preference').text(userObj.Car);
         $('#details_landmark').text(userObj.landmark);
         $('#details_cardescription').text(userObj.carDesc);
         $('#details_additional').text(userObj.preference);

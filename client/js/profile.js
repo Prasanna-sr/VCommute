@@ -103,12 +103,12 @@ $("#page-profile").bind('pagebeforeshow', function() {
 
     $('#btnSubmit').off('click').on('click', function() {
         var expression = /[^0-9\s-]/;
-        if($("#landmark").val() != "") {
-            if ($("#profile-mobile").val() != "") {
+        if ($("#profile-mobile").val() != "") {
+            if ($("#landmark").val() != "") {
                 if(!expression.test($("#profile-mobile").val())) {
                     $.post(VC.url + '/saveprofile', $("#formProfile").serialize(), function(data) {
                         if(data == "Success") {
-                           $.mobile.changePage('#page-home');
+                           $.mobile.changePage('#page-home', {transition : "none"});
                         } else {
                             alert("Internal Server Error. Please try after some time");
                         }
@@ -118,11 +118,11 @@ $("#page-profile").bind('pagebeforeshow', function() {
                 }
             }
             else {
-                alert("Mobile number is mandatory");
+                alert("Landmark field is mandatory");
             }
         }
         else {
-            alert("Landmark field is mandatory");
+            alert("Mobile number is mandatory");
         }
     });
 

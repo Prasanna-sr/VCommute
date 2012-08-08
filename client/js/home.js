@@ -202,7 +202,7 @@ $("#page-home").bind('pagebeforeshow',function() {
 
     $('#list_details').live('click', function() {
         USER_INFO.to_email = $(this).attr('data-identity');
-        $.mobile.changePage("#page-details");
+        $.mobile.changePage("#page-details", {transition : "none"});
     });
 });
 
