@@ -156,7 +156,7 @@ $("#page-home").bind('pagebeforeshow',function() {
                 $('#list-next').button();
             }
         } else {
-            $("#list1").append('<li style="text-align: center"> No commuters found ! </li>');
+            $("#list1").append('<li style="text-align: center"> No commuters found. </li>');
         }
         $('#list1').listview('refresh');
     }

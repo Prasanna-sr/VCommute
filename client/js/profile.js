@@ -25,7 +25,7 @@ $("#page-profile").bind('pagebeforeshow', function() {
 
     function populateUserData() {
         $.post(VC.url + '/getuserinfo', {"email" : email}, function(userObj) {
-            if(userObj.error == null) {
+            if(userObj && !userObj.error) {
                 //USER_INFO is used in commments page
                 USER_INFO.name=userObj.name;
                 var userLocation = userObj.contact_info.location;

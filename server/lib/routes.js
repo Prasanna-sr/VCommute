@@ -311,11 +311,11 @@ module.exports = function routes(app) {
     }
 
     function getSocialcastAuthObj (body) {
-       return  { url:'https://vmware-com.socialcast.com/api/authentication.json', body:'email=' + body.user + '@vmware.com&password=' + body.password };
+       return  { url:'https://vmware-com.socialcast.com/api/authentication.json', body:'email=' + body.user + '&password=' + body.password };
     }
 
     function handleSocialcastSuccess(req, res, socialcastError, socialcastResponse, socialcastData) {
-            email = (req.body.user).toLowerCase() + '@vmware.com';
+            email = (req.body.user).toLowerCase();
             mongoLib.getUserInfo(email, function (err, userObj) {
                 if (err) {
                     console.log('INTERNAL SERVER ERROR ' + err);
