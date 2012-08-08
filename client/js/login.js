@@ -42,7 +42,7 @@ function login() {
                 localStorage.setItem('from_email', email);
                 $.mobile.changePage("#page-home");
             } else if (data == USERSTATUS.LOGINFAILED) {
-                alert('Login failed');
+                alert('Login failed.');
             } else {
                 alert(data);
             }
