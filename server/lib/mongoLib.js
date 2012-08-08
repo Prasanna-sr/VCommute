@@ -68,29 +68,28 @@ module.exports = {
             });
         }
     },
-    getUserDetails1 : function(req, callback){
+    getUserDetailsOnward : function(userObj, callback){
         db.collection('userdetails');
         db.bind('userdetails');
-        db.userdetails.find({"fromLocation1":req.body.fromLocation, "toLocation1":req.body.toLocation,
-            "startTime":req.body.time, "Hide":null}, function(err, cursor) {
+        db.userdetails.find({"fromLocation1":userObj.fromLocation, "toLocation1":userObj.toLocation,
+            "startTime":userObj.time, "Hide":null}, function(err, cursor) {
             if(err) {
                 callback(err);
             } else {
                // cursor.skip(parseInt(req.body.skip)).limit(config.limitResults);
-                cursor.limit(config.limitResults + parseInt(req.body.skip));
+                cursor.limit(config.limitResults + parseInt(userObj.skip));
                 cursor.toArray(function(err, items) {
-                   callback(null, items);
+                callback(null, items);
                 });
             }
-
         });
 
     },
-    getUserDetails2 : function(req, callback) {
+    getUserDetailsReturn : function(userObj, callback) {
         db.collection('userdetails');
         db.bind('userdetails');
-        db.userdetails.find({"fromLocation2":req.body.fromLocation,"toLocation2":req.body.toLocation,
-            "departTime":req.body.time,"Hide":null},function(err, cursor) {
+        db.userdetails.find({"fromLocation2" : userObj.fromLocation, "toLocation2" : userObj.toLocation,
+            "departTime" : userObj.time, "Hide" : null}, function(err, cursor) {
             if(err) {
                 callback('find login error:', err);
             } else {
@@ -99,31 +98,17 @@ module.exports = {
                    count = value;
                 });
                 //cursor.skip(parseInt(req.body.skip)).limit(config.limitResults);
-                cursor.limit(config.limitResults + parseInt(req.body.skip));
+                cursor.limit(config.limitResults + parseInt(userObj.skip));
                 cursor.toArray(function(err, items) {
-                    //items["results"] = count;
-                    callback(null, items);
+                callback(null, items);
                 });
             }
-
         });
     },
-    getLocation : function(req, callback) {
-        db.collection('locationtimedata');
-        db.bind('locationtimedata');
-        db.locationtimedata.findOne({}, { "officeLocation":true, "allLocation":true }, function(err, document) {
-            if(err) {
-                callback(err);
-            } else{
-                callback(null, document);
-            }
-        });
-    },
-
-    getTimedetails : function(req, callback) {
+    getTimeDetails : function(location, callback) {
         db.collection('locationdetails');
         db.bind('locationdetails');
-        db.locationdetails.findOne({"name":req.body.location},{"name":false, "_id":false},function(err, document) {
+        db.locationdetails.findOne({"name": location},{"name":false, "_id":false},function(err, document) {
             if(err) {
                 callback(err);
             } else {
@@ -142,7 +127,6 @@ module.exports = {
                                 }
                                 callback(null, document);
                             }
-
                         }
                     });
                 }
@@ -164,15 +148,13 @@ module.exports = {
             } else {
                 callback(null);
             }
-
         });
-
     },
     persistUserProfileData : function(userProfileData, callback) {
         var profile, userdetails;
         try{
             profile = userProfileData.communities[0].profile;
-            userdetails = {name: profile.name, title : profile.title,
+            userdetails = {name: profile.name, title : profile.custom_fields[0].value,
                 contact_info : profile.contact_info, avatars: profile.avatars, profile:0};
         } catch(e) {
             console.log("Error: Could not get user's profile");
@@ -191,7 +173,6 @@ module.exports = {
             }
         });
     },
-
     persistNotificationData  : function(data, callback) {
         db.collection('notifications');
         db.bind('notifications');
@@ -206,7 +187,6 @@ module.exports = {
             }
         });
     },
-
     getNotifications : function(data,callback) {
         db.collection('notifications');
         db.bind('notifications');
@@ -229,7 +209,7 @@ module.exports = {
                 cursor.toArray(callback);
             }
         });
-    },
+    }
 
     //notifications unread
 //    updateNotifications: function(data,callback){
@@ -248,60 +228,5 @@ module.exports = {
 //        });
 //
 //    },
-    //todo
-    //for testing purpose
-
-    insertData: function(data,callback){
-        if(data.value=="data"){
-            db.collection('locationtimedata');
-            db.bind('locationtimedata');
-            db.locationtimedata.insert(data.d,function(err, cursor) {
-                if(err) {
-                    return console.log('login details error:', err);
-                }
-                else {
-                    callback(null,"insertion success");
-                }
-            });
-        }
-        if(data.value=="location"){
-            db.collection('locationdetails');
-            db.bind('locationdetails');
-            db.locationdetails.insert(data.d,function(err, cursor) {
-                if(err) {
-                    return console.log('login details error:', err);
-                }
-                else {
-                    callback(null,"insertion success");
-                }
-            });
-        }
-        if(data.value=="user"){
-            db.collection('userdetails');
-            db.bind('userdetails');
-            db.userdetails.insert(data.d,function(err, cursor) {
-                if(err) {
-                    return console.log('login details error:', err);
-                }
-                else {
-                    callback(null,"insertion success");
-                }
-            });
-        }
-        if(data.value=="notifications"){
-            db.collection('notifications');
-            db.bind('notifications');
-            db.notifications.remove({},function(err, cursor) {
-                if(err) {
-                    return console.log('login details error:', err);
-                }
-                else {
-                    callback(null,"success");
-                }
-            });
-        }
-
-    }
-
 
 }

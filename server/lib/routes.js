@@ -19,28 +19,7 @@ module.exports = function routes(app) {
         });
     });
 
-    // profile page
-    app.get('/getlocationtimedata', function (req, res) {
-        //todo remove this in production
-        res.header('Access-Control-Allow-Origin', '*');
-        res.send(config);
-    });
-
-    app.get('/getuserProfile', function (req, res) {
-        mongoLib.getuserProfile(req, function (err, userObj) {
-            if (err) {
-                console.log(err);
-            }
-            else {
-                if (userObj != "") {
-                    //todo remove this in production
-                    res.header('Access-Control-Allow-Origin', '*');
-                    res.send(userObj);
-                }
-            }
-        });
-    });
-
+    // profile, details & info Page
     app.post('/getuserinfo', function (req, res) {
         mongoLib.getUserInfo(req.body.email, function (err, userObj) {
             if (err) {
@@ -51,96 +30,25 @@ module.exports = function routes(app) {
                 if (userObj != "") {
                     //todo remove this in production
                     res.header('Access-Control-Allow-Origin', '*');
-                    userObj.error=null;
+                    //userObj.error = "";
                     res.send(userObj);
                 }
             }
         });
     });
-
-    app.post('/getinfo', function (req, res) {
-        var loc;
-        var obj = req.body;
-        mongoLib.getUserInfo(req, function (err, userObj) {
-            if (err) {
-                console.log(err);
-            }
-            else {
-                if (userObj != "") {
-                    if (obj.journey == 0) {
-                        loc = userObj.fromLocation1 + "_" + userObj.toLocation1;
-
-                    } else if (obj.journey == 1) {
-                        loc = userObj.fromLocation2 + "_" + userObj.toLocation2;
-                    }
-                    req.body.location = loc;
-                    mongoLib.getTimedetails(req, function (err, timeObj) {
-                        if (err) {
-                            console.log(err);
-                        }
-                        else {
-                            if (req.body.journey == 0) {
-                                req.body.fromLocation = userObj.fromLocation1;
-                                req.body.toLocation = userObj.toLocation1;
-                                req.body.time = userObj.startTime;
-                                mongoLib.getUserDetails1(req, function (err, listObj) {
-                                    if (err) {
-                                        console.log(err);
-                                    }
-                                    else {
-                                        if (listObj != "") {
-                                            var obj = {
-                                                "userObj":userObj,
-                                                "timeObj":timeObj,
-                                                "LocObj":config,
-                                                "listObj":listObj
-                                            }
-                                            //todo remove this in production
-                                            res.header('Access-Control-Allow-Origin', '*');
-                                            res.send(obj);
-                                        }
-                                    }
-                                });
-
-                            } else if (req.body.journey == 1) {
-                                req.body.fromLocation = userObj.fromLocation2;
-                                req.body.toLocation = userObj.toLocation2;
-                                req.body.time = userObj.departTime;
-                                mongoLib.getUserDetails2(req, function (err, listObj) {
-                                    if (err) {
-                                        console.log(err);
-                                    }
-                                    else {
-                                        if (listObj != "") {
-                                            var obj = {
-                                                "userObj":userObj,
-                                                "timeObj":timeObj,
-                                                "LocObj":config,
-                                                "listObj":listObj
-                                            }
-                                            //todo remove this in production
-                                            res.header('Access-Control-Allow-Origin', '*');
-                                            res.send(obj);
-                                        }
-                                    }
-                                });
-                            }
-                        }
-                    });
-
-                }
-            }
-        });
-
+    // profile page
+    app.get('/getlocationtimedata', function (req, res) {
+        //todo remove this in production
+        res.header('Access-Control-Allow-Origin', '*');
+        res.send(config);
     });
-
 
     app.post('/saveprofile', function (req, res) {
         mongoLib.updateUserDetails(req.body, function (err) {
             if (err) {
                 console.log("Error at save profile"+ err);
                 res.header('Access-Control-Allow-Origin', '*');
-                res.send('Error'+ err);
+                res.send({"error":err});
             }  else {
                 //update location document
                 var obj = getLocationDetails(req);
@@ -160,7 +68,76 @@ module.exports = function routes(app) {
         });
 
     });
+    //for home page
+    app.post('/getinfo', function (req, res) {
+        mongoLib.getUserInfo(req.body.email, function (err, userObj) {
+            if (err) {
+                console.log("Error at getuserinfo" + err);
+                res.send({"error":err});
+            }
+            else {
+                if(userObj) {
+                if (req.body.journey == 0) {
+                    userObj.fromLocation =  userObj.fromLocation1;
+                    userObj.toLocation = userObj.toLocation1;
+                    userObj.time = userObj.startTime;
+                    userObj.location = userObj.fromLocation1 + "_" + userObj.toLocation1;
+                }else if (req.body.journey == 1) {
+                    userObj.fromLocation =  userObj.fromLocation2;
+                    userObj.toLocation = userObj.toLocation2;
+                    userObj.time = userObj.departTime;
+                    userObj.location = userObj.fromLocation2 + "_" + userObj.toLocation2;
+                }
+                userObj.skip = req.body.skip;
+                getTimeDetails(req, res, userObj);
+                } else {
+                    console.log("Error at getinfo. No users found in DB");
+                    res.send({"error":"Internal Server Error"});
 
+                }
+
+            }
+        });
+    });
+    app.post('/gettimeuserdata',
+        function (req, res) {
+            var userObj = req.body;
+            userObj.skip=0;
+            getTimeDetails(req, res, userObj);
+        });
+
+    app.post('/getuserlist', function (req, res) {
+        var userObj = req.body;
+        userObj.skip=0;
+        if (userObj.journey == 0) {
+            mongoLib.getUserDetailsOnward(userObj, function (err, userObj) {
+                if (err) {
+                    console.log("Error at getuserlist" +err);
+                    res.send({"error" : err});
+                }
+                else {
+                    //todo remove this in production
+                    res.header('Access-Control-Allow-Origin', '*');
+                    userObj.error=null;
+                    res.send(userObj);
+                }
+            });
+
+        } else {
+            mongoLib.getUserDetailsReturn(userObj, function (err, userObj) {
+                if (err) {
+                    console.log("Error at getuserlist" +err);
+                    res.send({"error" : err});
+                }
+                else {
+                    //todo remove this in production
+                    res.header('Access-Control-Allow-Origin', '*');
+                    userObj.error=null;
+                    res.send(userObj);
+                }
+            });
+        }
+    });
     //Notifications
     app.post('/saveNotifications',
         function (req, res) {
@@ -177,7 +154,7 @@ module.exports = function routes(app) {
             res.send('successfull');
         });
 
-    app.post('/getNotifications', function (req, res) {
+    app.post('/getnotifications', function (req, res) {
         mongoLib.getNotifications(req.body, function (err, json) {
             if (err) {
                 console.log(err);
@@ -191,6 +168,7 @@ module.exports = function routes(app) {
 
     });
 
+    //Info page
     app.post('/getNotificationbyID', function (req, res) {
         mongoLib.getNotificationbyID(req.body, function (err, json) {
             if (err) {
@@ -203,104 +181,6 @@ module.exports = function routes(app) {
             }
         });
 
-    });
-
-    //unread
-//    app.post('/updateNotifications', function (req, res) {
-//        mongoLib.updateNotifications(req.body, function (err, json) {
-//            if (err) {
-//                console.log(err);
-//            }
-//            else {
-//                //todo remove this in production
-//                res.header('Access-Control-Allow-Origin', '*');
-//                res.send(json);
-//
-//            }
-//
-//        });
-//
-//    });
-
-    app.post('/Locationdetails',
-        function (req, res) {
-            mongoLib.getLocation(req, function (err, LocObj) {
-                if (err) {
-                    console.log(err);
-                }
-                else {
-                    if (LocObj != null) {
-                        //todo remove this in production
-                        res.header('Access-Control-Allow-Origin', '*');
-                        res.send(LocObj);
-                    }
-
-                }
-            });
-        });
-
-    app.post('/getTimeUserData',
-        function (req, res) {
-            mongoLib.getTimedetails(req, function (err, timeObj) {
-                if (err) {
-                    console.log(err);
-                }
-                else {
-                    if (req.body.journey == 0) {
-                        mongoLib.getUserDetails1(req, function (err, listObj) {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                var obj = {"listObj":listObj,
-                                    "timeObj":timeObj};
-
-                                //todo remove this in production
-                                res.header('Access-Control-Allow-Origin', '*');
-                                res.send(obj);
-                            }
-                        });
-                    } else {
-                        mongoLib.getUserDetails2(req, function (err, listObj) {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                var obj = {"listObj":listObj,
-                                    "timeObj":timeObj};
-
-                                //todo remove this in production
-                                res.header('Access-Control-Allow-Origin', '*');
-                                res.send(obj);
-                            }
-                        });
-                    }
-
-                }
-            });
-        });
-
-    app.post('/getUserDetails',
-        function (req, res) {
-            getUserDetails(req, res);
-        });
-
-    app.get('/getPreferenceDetails',
-        function (req, res) {
-            getuserPreferencedetails(req, res);
-        });
-
-
-    //todo
-    //store data
-    app.get('/storedata', function (req, res) {
-        mongoLib.storeLocationTimedata(function (err, data) {
-            if (err) {
-                console.log(err);
-            } else {
-                res.header('Access-Control-Allow-Origin', '*');
-                res.send(JSON.stringify(data));
-
-            }
-        });
     });
 
     //todo
@@ -319,6 +199,54 @@ module.exports = function routes(app) {
         });
     });
 
+    function getTimeDetails(req, res, userObj) {
+        var location;
+        if (userObj) {
+
+            mongoLib.getTimeDetails(userObj.location, function (err, timeObj) {
+                if (err) {
+                    console.log("error at gettimedetails" + err);
+                    res.send({"error":err});
+                }
+                else {
+                    getUserDetails(req, res, userObj, timeObj);
+                }
+            });
+
+        } else {
+            res.send({"error":"No users found"});
+        }
+    }
+
+    function getUserDetails(req, res, userObj, timeObj) {
+        if (req.body.journey == 0) {
+            mongoLib.getUserDetailsOnward(userObj, function (err, listObj) {
+                if (err) {
+                    console.log("Error at get all onward user details" + err);
+                    res.send({"error":err});
+                }
+                else {
+                    var obj = { "userObj":userObj, "timeObj":timeObj, "LocObj":config, "listObj":listObj,"error" : null}
+                    //todo remove this in production
+                    res.header('Access-Control-Allow-Origin', '*');
+                    res.send(obj);
+                }
+            });
+        } else if (req.body.journey == 1) {
+            mongoLib.getUserDetailsReturn(userObj, function (err, listObj) {
+                if (err) {
+                    console.log("Error at get all return user details" + err);
+                    res.send({"error":err});
+                }
+                else {
+                    var obj = { "userObj":userObj, "timeObj":timeObj, "LocObj":config, "listObj":listObj,"error" : null}
+                    //todo remove this in production
+                    res.header('Access-Control-Allow-Origin', '*');
+                    res.send(obj);
+                }
+            });
+        }
+    }
 
     function getLocationDetails(req) {
         var locationPrevious = new Array();
@@ -369,36 +297,6 @@ module.exports = function routes(app) {
 
     }
 
-    function getUserDetails(req, res) {
-
-        if (req.body.journey == 0) {
-            mongoLib.getUserDetails1(req, function (err, userObj) {
-                if (err) {
-                    console.log(err);
-                }
-                else {
-                    //todo remove this in production
-                    res.header('Access-Control-Allow-Origin', '*');
-                    res.send(userObj);
-                }
-            });
-
-        } else {
-            mongoLib.getUserDetails2(req, function (err, userObj) {
-                if (err) {
-                    console.log(err);
-                }
-                else {
-                    //todo remove this in production
-                    res.header('Access-Control-Allow-Origin', '*');
-                    res.send(userObj);
-                }
-            });
-        }
-    }
-
-
-
     function persistUserProfileAndRespond(userProfile, res) {
         mongoLib.persistUserProfileData(userProfile, function (err, json) {
             res.header('Access-Control-Allow-Origin', '*');
@@ -425,7 +323,6 @@ module.exports = function routes(app) {
                     res.header('Access-Control-Allow-Origin', '*');
                     res.send('INTERNAL SERVER ERROR');
                 } else if (!userObj || (userObj && userObj.profile == 0)) {
-                    console.log(JSON.parse(socialcastData));
                     persistUserProfileAndRespond(JSON.parse(socialcastData), res);
                 } else if (userObj.profile == 1) {
                     //todo remove this in production
@@ -439,4 +336,5 @@ module.exports = function routes(app) {
         res.header('Access-Control-Allow-Origin', '*');
         res.send('LOGIN FAILED');
     }
-};
+
+}
