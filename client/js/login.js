@@ -8,21 +8,9 @@
 
 var VC = {"domain" : "@vmware.com"};
 
-//todo REMOVE THIS
-//VC.cloudFoundryUrl = "http://vcommute.cloudfoundry.com:80";
-//var href = document.location.href;
-//VC.url = VC.cloudFoundryUrl;
-//if(href.indexOf("cloudfoundry") == -1 || href.indexOf("file") != -1)  {
-//    VC.url = document.location.host;
-//}
-//VC.url = "http://" + document.location.host;
-
-
 VC.url = "http://vcommute.cloudfoundry.com:80";
 //VC.url = "http://" + document.location.host;
 VC.socket = io.connect(VC.url);
-
-
 
 var USERSTATUS = {
     NEWUSER:"NEW USER",
