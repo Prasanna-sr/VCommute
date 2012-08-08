@@ -12,6 +12,8 @@ VC.url = "http://vcommute.cloudfoundry.com:80";
 //VC.url = "http://" + document.location.host;
 VC.socket = io.connect(VC.url);
 
+//comment from raja
+
 var USERSTATUS = {
     NEWUSER:"NEW USER",
     LOGGEDIN:"ALREADY LOGGED IN",
