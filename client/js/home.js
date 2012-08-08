@@ -37,7 +37,7 @@ $("#page-home").bind('pagebeforeshow',function() {
 
     $('#to-location-1').on('change',function() {
         var selectedValueObj=selectDropDownValues();
-        $.post(VC.url + '/getTimeUserData', {"journey":journey,"location":selectedValueObj.loc,"toLocation":selectedValueObj.toLocation,"fromLocation":selectedValueObj.fromLocation,"time":selectedValueObj.time},function(Obj){
+        $.post(VC.url + '/gettimeuserdata', {"journey":journey,"location":selectedValueObj.loc,"toLocation":selectedValueObj.toLocation,"fromLocation":selectedValueObj.fromLocation,"time":selectedValueObj.time},function(Obj){
         createTimeMenu(Obj.timeObj,selectedValueObj.time);
         generateListData(Obj.listObj);
         });
@@ -45,7 +45,7 @@ $("#page-home").bind('pagebeforeshow',function() {
 
     $('#from-location-1').on('change', function() {
         var selectedValueObj=selectDropDownValues();
-        $.post(VC.url + '/getTimeUserData', {"journey":journey,"location":selectedValueObj.loc,"toLocation":selectedValueObj.toLocation,"fromLocation":selectedValueObj.fromLocation,"time":selectedValueObj.time},function(Obj){
+        $.post(VC.url + '/gettimeuserdata', {"journey":journey, "location":selectedValueObj.loc, "toLocation":selectedValueObj.toLocation, "fromLocation":selectedValueObj.fromLocation, "time":selectedValueObj.time},function(Obj){
         createTimeMenu(Obj.timeObj,selectedValueObj.time);
         generateListData(Obj.listObj);
         });
@@ -53,7 +53,7 @@ $("#page-home").bind('pagebeforeshow',function() {
 
     $('#time').on('change', function() {
         var selectedValueObj=selectDropDownValues();
-        $.post(VC.url + '/getUserDetails', {"journey":journey,"location":selectedValueObj.loc,"toLocation":selectedValueObj.toLocation,"fromLocation":selectedValueObj.fromLocation,"time":selectedValueObj.time},function(Obj){
+        $.post(VC.url + '/getuserlist', {"journey":journey, "toLocation":selectedValueObj.toLocation, "fromLocation":selectedValueObj.fromLocation,"time":selectedValueObj.time},function(Obj){
          generateListData(Obj);
         });
        // $('#time').selectmenu("refresh");
@@ -67,11 +67,16 @@ $("#page-home").bind('pagebeforeshow',function() {
 
     function loadPage(skip) {
         $.post(VC.url+'/getinfo',{"email":email,"journey":journey,"skip":skip}, function(Obj) {
-            clearAllList();
-            var selectedValueObj = setLocationTime(Obj.userObj);
-            createTimeMenu(Obj.timeObj,selectedValueObj.time);
-            generateListData(Obj.listObj);
-            loadLocationDropDown(Obj,selectedValueObj.fromLocation,selectedValueObj.toLocation);
+            if(!Obj.error) {
+                clearAllList();
+                var selectedValueObj = setLocationTime(Obj.userObj);
+                createTimeMenu(Obj.timeObj,selectedValueObj.time);
+                generateListData(Obj.listObj);
+                loadLocationDropDown(Obj,selectedValueObj.fromLocation,selectedValueObj.toLocation);
+            } else {
+                alert("Internal server error");
+            }
+
         });
     }
 

@@ -16,8 +16,11 @@
 <body>
 
 <div data-role="page" id="page-login">
-
-    <h1 align="center">VCommute</h1>
+    <div data-theme="a" data-role="header" data-tap-toggle="false"  data-position="fixed">
+        <h3>
+            VCommute
+        </h3>
+    </div>
     <br>
     <div data-role="content" style="padding: 15px">
         <fieldset data-role="controlgroup">
@@ -73,31 +76,31 @@
         <form id='formProfile' method="#">
             <ul data-role="listview" data-inset="true">
                 <li><label for="from-location" class="select">From Location:</label>
-                    <select name="fromLocation1" data-mini="true" id="from-location">
+                    <select name="fromLocation1" id="from-location">
                     </select></li>
                 <li>  <label for="to-location" class="select">To Location:</label>
-                    <select name="toLocation1" data-mini="true" id="to-location">
+                    <select name="toLocation1" id="to-location">
                     </select></li>
                 <li>
                     <label for="start-time" class="select">Start Time:</label>
-                    <select name="startTime" data-mini="true" id="start-time">
+                    <select name="startTime" id="start-time">
                     </select></li>
             </ul>
             <h4>Return Journey</h4>
             <ul data-role="listview" data-inset="true">
                 <li> <label for="from-location-2" class="select">From Location:</label>
-                    <select name="fromLocation2" data-mini="true" id="from-location-2">
+                    <select name="fromLocation2" id="from-location-2">
                     </select></li>
                 <li><label for="to-location-2" class="select">To Location:</label>
-                    <select name="toLocation2" data-mini="true" id="to-location-2">
+                    <select name="toLocation2" id="to-location-2">
                     </select></li>
                 <li><label for="return-time" class="select">Return Time:</label>
-                    <select name="returnTime" data-mini="true" id="return-time">
+                    <select name="returnTime" id="return-time">
                     </select></li>
             </ul>
             <ul data-role="listview" data-inset="true">
                 <li><label for="profile_preference" class="select">Choose your Preference</label>
-                    <select name="profile_preference" data-mini="true" id="profile_preference"></select>
+                    <select name="profile_preference" id="profile_preference"></select>
                 </li>
             </ul>
 
@@ -131,7 +134,7 @@
         <input type="checkbox" name="log_out" checked="true" id="log_out" value="log_out" class="custom" />
         <label for="log_out">Keep me logged in</label>
 
-        <input type="submit" id="btnSubmit" value="Save" data-transition="none"/>
+        <input type="submit" id="btnSubmit" value="Save" data-theme="b" data-transition="none"/>
     </div>
 
     <div data-role="footer" class="nav-glyphish-example" data-tap-toggle="false"  data-position="fixed" data-tap-toggle="true">
@@ -244,7 +247,7 @@
             <h3><label class="select" id="action"><b>Actions</b></label></p></h3>
             <ul data-role="listview">
                 <li>
-                    <a id="notify" href="index.html#page-comment">
+                    <a id="notify" href="index.html#page-comment"><img src="http://www.iphonejd.com/.a/6a010535fde333970c011168ff4c31970c-800wi" width="50" height="50"/>
                         In App notify<br>  <label class="select" name="mobile" id="In-app-notify"></label>  </a>
                 </li>
                 <li>

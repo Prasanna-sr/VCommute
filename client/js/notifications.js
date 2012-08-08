@@ -23,7 +23,7 @@
         var email = localStorage.getItem('from_email');
         setNotificationBarStyles(count, "none");
         $('#list-notifications li').remove();
-        $.post(VC.url + '/getNotifications', {"email" : email}, function (data) {
+        $.post(VC.url + '/getnotifications', {"email" : email}, function (data) {
             for (i = 0; i < data.length; i++) {
                 var  userObj = data[i];
                 var time = calculateTime(userObj);
