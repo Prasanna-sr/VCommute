@@ -16,8 +16,8 @@ var VC = {"domain" : "@vmware.com"};
 //VC.url = "http://" + document.location.host;
 
 
-//VC.url = "http://vcommute.cloudfoundry.com:80";
-VC.url = "http://" + document.location.host;
+VC.url = "http://vcommute.cloudfoundry.com:80";
+//VC.url = "http://" + document.location.host;
 VC.socket = io.connect(VC.url);
 
 
