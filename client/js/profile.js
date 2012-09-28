@@ -6,8 +6,6 @@
  * To change this template use File | Settings | File Templates.
  */
 
-var USER_INFO = {"name": "",
-                 "to_email":""};
 
 $("#page-profile").bind('pagebeforeshow', function() {
 
@@ -27,7 +25,7 @@ $("#page-profile").bind('pagebeforeshow', function() {
         $.post(VC.url + '/getuserinfo', {"email" : email}, function(userObj) {
             if(userObj && !userObj.error) {
                 //USER_INFO is used in commments page
-                USER_INFO.name=userObj.name;
+               // USER_INFO.name=userObj.name;
                 var userLocation = userObj.contact_info.location;
                 if((userLocation).indexOf("San Francisco") > 0) {
                     $('#to-location').val("San Francisco Stevenson Street");
@@ -95,6 +93,12 @@ $("#page-profile").bind('pagebeforeshow', function() {
             $('#start-time').val(userObj.startTime);
             $('#return-time').val(userObj.departTime);
             $('#profile_preference').val(userObj.Car);
+            if(userObj.hide == "hide") {
+            	$('#hide').attr("checked", true);
+            }
+            if(userObj.notify == "notification") {
+            	$('#notification').attr("checked", true);
+            }
             $('#txtTemp').attr("value", userObj.fromLocation1 + "_" + userObj.toLocation1 +
                 "," + userObj.fromLocation2 + "_" + userObj.toLocation2);
             $('#txtTemptime').attr("value", userObj.startTime + "," + userObj.departTime);
@@ -106,6 +110,7 @@ $("#page-profile").bind('pagebeforeshow', function() {
         if ($("#profile-mobile").val() != "") {
             if ($("#landmark").val() != "") {
                 if(!expression.test($("#profile-mobile").val())) {
+                	setCheckboxesValue();
                     $.post(VC.url + '/saveprofile', $("#formProfile").serialize(), function(data) {
                         if(data == "Success") {
                            $.mobile.changePage('#page-home', {transition : "none"});
@@ -125,6 +130,15 @@ $("#page-profile").bind('pagebeforeshow', function() {
             alert("Mobile number is mandatory");
         }
     });
+    
+    function setCheckboxesValue() {
+    	if($('#hide').attr("checked")) {
+    		$('#hide').attr("value","hide");
+    	}
+    	if($('#notification').attr("checked")) {
+    		$('#notification').attr("value","notification");
+    	}
+    }
 
     $('#from-location').off('click').on('change', function() {
         $("#to-location-2").val($("#from-location option:selected").text());

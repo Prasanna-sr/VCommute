@@ -7,7 +7,9 @@
  */
 
 $("#page-home").bind('pagebeforeshow',function() {
-    var journey=0;
+    var journey = 0;
+    var limitResults = 0;
+    var totalLimitResults = 1;
     var email = localStorage.getItem('from_email');
 
     if((new Date().getHours()) < 12) {
@@ -24,13 +26,13 @@ $("#page-home").bind('pagebeforeshow',function() {
 
     $("#radio-choice-a").change(function() {
         if ($("#radio-choice-a").attr("checked", true)) {
-            journey=0;
+            journey = 0;
         }   loadPage(0);
     });
 
     $("#radio-choice-b").change(function() {
         if ($("#radio-choice-b").attr("checked", true)) {
-            journey=1;
+            journey = 1;
             loadPage(0);
         }
     });
@@ -66,8 +68,11 @@ $("#page-home").bind('pagebeforeshow',function() {
     }
 
     function loadPage(skip) {
-        $.post(VC.url+'/getinfo',{"email":email,"journey":journey,"skip":skip}, function(Obj) {
+        $.post(VC.url+'/getinfo',{"email" : email,"journey" : journey,"skip" : skip}, function(Obj) {
             if(!Obj.error) {
+            	limitResults = Obj.LocObj.limitResults;
+            	totalLimitResults = limitResults;
+            	storeUserDetails(Obj.userObj);
                 clearAllList();
                 var selectedValueObj = setLocationTime(Obj.userObj);
                 createTimeMenu(Obj.timeObj,selectedValueObj.time);
@@ -78,6 +83,11 @@ $("#page-home").bind('pagebeforeshow',function() {
             }
 
         });
+    }
+    
+    function storeUserDetails(userObj) {
+    	$('#lblFromName').attr("value", userObj.name);
+    	$('#lblFromPic').attr("value", userObj.avatars.square45);
     }
 
     function clearAllList() {
@@ -151,8 +161,8 @@ $("#page-home").bind('pagebeforeshow',function() {
             for(var i = 0; i < listObj.length; i ++) {
                 $("#list1").append(getList(listObj[i]));
             }
-            if(listObj.length > 2) {
-                $("#list1").append('<a href="#" id="list-next" data-role="button">More</a>');
+            if(listObj.length >= totalLimitResults) {
+                $("#list1").append('<a href="#" id="list-next" data-role="button" data-theme="b">More</a>');
                 $('#list-next').button();
             }
         } else {
@@ -162,8 +172,8 @@ $("#page-home").bind('pagebeforeshow',function() {
     }
 
     $('#list-next').live('click',function() {
-        $.post(VC.url+'/getinfo',{"email" : email, "journey" : journey, "skip" : 1}, function(obj) {
-
+    	totalLimitResults = totalLimitResults + limitResults;
+        $.post(VC.url+'/getinfo',{"email" : email, "journey" : journey, "skip" : totalLimitResults}, function(obj) {
             generateListData(obj.listObj)
         });
 
@@ -188,9 +198,7 @@ $("#page-home").bind('pagebeforeshow',function() {
              $('#time').val(timeToDisplay);
              $('#time').selectmenu("refresh");
          }  else {
-
          }
-
     }
 
     function getList(userObj) {
@@ -201,7 +209,7 @@ $("#page-home").bind('pagebeforeshow',function() {
     }
 
     $('#list_details').live('click', function() {
-        USER_INFO.to_email = $(this).attr('data-identity');
+    	$('#lbltoEmail').attr('value', $(this).attr('data-identity'))
         $.mobile.changePage("#page-details", {transition : "none"});
     });
 });

@@ -13,8 +13,8 @@
 
 <body>
 
-<div data-role="page" id="page-login">
-    <div data-theme="a" data-role="header" data-tap-toggle="false"  data-position="fixed">
+<div data-role="page" data-theme="d" id="page-login">
+    <div  data-role="header" data-tap-toggle="false"  data-position="fixed">
         <h3>
             VCommute
         </h3>
@@ -39,7 +39,7 @@
                 <input id="txtPassword" placeholder="Socialcast API Password" name="password" value="" type="password"/>
             </fieldset>
         </div>
-        <input type="submit" class="btn btn-primary"  id="btnlogin" value="Login"/>
+        <input type="submit" class="btn btn-primary"  id="btnlogin" data-theme="b" value="Login"/>
     </div>
     <!--<h3>Don't have an social cast API password ?</h3>-->
     <div data-role="collapsible">
@@ -57,7 +57,7 @@
     <!--</div>-->
 </div>   <!-- page login -->
 
-<div data-role="dialog" id="page-profile">
+<div data-role="page" data-theme="d" id="page-profile">
 
     <div data-theme="a" data-role="header" data-tap-toggle="false"  data-position="fixed">
         <h3>
@@ -68,7 +68,7 @@
         <ul data-role="listview">
             <li>
                 <img id="profile-picture" /> <h3> <label class="select" name="profileName" id="profile-name"></label></h3>
-                <p> <label class="select" name="" id="profile-title"></label></p>  <p> <label class="select" name="location" id="profile-base-location"></label></p>
+                <p> <label class="select" name="" id="profile-title"></label></p> <p> <label class="select" name="location" id="profile-base-location"></label></p>
             </li>
         </ul>
         <h4>Onward Journey</h4>
@@ -102,7 +102,6 @@
                     <select name="profile_preference" id="profile_preference"></select>
                 </li>
             </ul>
-
             <fieldset data-role="controlgroup">
                 <label for="profile-mobile">Mobile Number<b><font color="red">*</font></b>:</label>
                 <input type="text" name="mobile" id="profile-mobile" value=""  />
@@ -121,31 +120,34 @@
                 <input type="hidden" id="txtEmail" name="from_email"/>
 
             </fieldset>
-        </form>
-        <h4>App Settings</h4>
+            <h4>App Settings</h4>
 
-        <input type="checkbox" name="hide" id="hide" value="hide" class="custom" />
+        <input type="checkbox" name="hide" id="hide" class="custom" />
         <label for="hide">I am already car pooling (hide me from search results)</label>
 
-        <input type="checkbox" name="notification" id="notification" value="notification" class="custom" />
+        <input type="checkbox" name="notification" id="notification" class="custom" />
         <label for="notification">Turn off notifications</label>
 
         <input type="checkbox" name="log_out" checked="true" id="log_out" value="log_out" class="custom" />
         <label for="log_out">Keep me logged in</label>
+        </form>
+        
 
         <input type="submit" id="btnSubmit" value="Save" data-theme="b" data-transition="none"/>
+        <a data-role="button" href="index.html#page-home" data-transition="none">Cancel</a>
+
     </div>
 </div>      <!-- page profile -->
 
-<div data-role="page" class="type-interior" id="page-home">
+<div data-role="page" class="type-interior" data-theme="d" id="page-home">
 
-    <div data-role="header" data-theme="a" data-tap-toggle="false" data-position="fixed">
+    <div data-role="header" data-tap-toggle="false" data-position="fixed">
     <h1>VCommute</h1>
     <a href="/index.html#page-profile" data-icon="gear" class="ui-btn-right" data-transition="none">Settings</a>
     </div><!-- /header -->
     <div data-role="content" style="padding: 15px">
         <table width="100%">
-            <tr><td width="33%"></td>
+            <tr>
                 <td><fieldset data-role="controlgroup" data-type="horizontal">
                     <input type="radio" name="radio-choice-b" id="radio-choice-a" value="on" checked="checked" />
                     <label for="radio-choice-a">Onward</label>
@@ -176,26 +178,24 @@
         </ul>               `
         <br>
         <br>
+        <input type="hidden" id="lblFromName"/>
+        <input type="hidden" id="lblFromPic"/>
+        <input type="hidden" id="lbltoEmail"/>
     </div><!-- /content -->
-
     <div data-role="footer" class="nav-glyphish-example" data-tap-toggle="false" data-position="fixed">
         <div data-role="navbar" class="nav-glyphish-example" class="ui-grid-b" >
             <ul>
                 <li><a href="/index.html#page-home" class="ui-btn-active ui-state-persist" data-icon="home" data-transition="none">Home</a> </li>
                 <li><a href="/index.html#page-notification" data-icon="info" data-transition="none">Notifications<label class="notification" id="count-home"></label></a></li>
             </ul>
-
         </div>
     </div> <!-- /footer -->
-
-
 </div> <!-- /page home-->
 
-<div data-role="page" id="page-details" data-add-back-btn="true">
+<div data-role="page" id="page-details" data-theme="d" data-add-back-btn="true">
     <div data-role="header" data-theme="a" data-tap-toggle="false" data-position="fixed">
-        <a href="index.html#page-home" data-icon="back">back</a>
-        <!--below line not working in android phone-->
-        <!--<a data-rel="back" data-icon="back">back</a>-->
+        <a href="index.html#page-home" data-icon="back" data-transition="none">back</a>
+
         <h1>VCommmute</h1>
     </div>
     <div data-role="content" data-theme="c">
@@ -203,7 +203,7 @@
         <div data-role="fieldcontain">
             <ul data-role="listview">
                 <li>
-                    <img id="picture" width="150" height="100"/>
+                    <img id="details-picture" width="150" height="100"/>
                     <h3><label class="select" name="profileName" id="details-name"></label></h3>
                     <p><label class="select" name="" id="title"></label></p>
                 </li>
@@ -260,7 +260,7 @@
 
 </div><!-- /page details -->
 
-<div data-role="page" id="page-notification">
+<div data-role="page" data-theme="d" id="page-notification">
 
     <div data-theme="a" data-role="header" data-tap-toggle="false" data-position="fixed">
         <h3>VCommute</h3>
@@ -271,6 +271,7 @@
 
         <ul id="list-notifications" data-role="listview">
         </ul>
+         <input type="hidden" id="lbltoEmail-notification"/>        
     </div>
     <div data-role="footer" class="nav-glyphish-example" data-tap-toggle="false" data-position="fixed">
         <div data-role="navbar" class="nav-glyphish-example" class="ui-grid-b" >
@@ -282,21 +283,37 @@
     </div>
 </div>  <!-- /page notification -->
 
-<div data-role="page"  id="page-comment" >
-    <div data-role="header"  data-theme="d">
+<div data-role="page" data-theme="d" id="page-messages">
+
+    <div data-theme="a" data-role="header" data-tap-toggle="false" data-position="fixed">
+        <h3>VCommute</h3>
+        <a href="/index.html#page-notification" data-icon="back" data-transition="none">Back</a>
+    </div>
+    <div >
+        <span id="messages-detailedlist">
+        <br>
+    </div>
+    
+    <div data-position="fixed" class="ui-body ui-body-d" style="padding: 0px">
+    	<textarea name="textarea" id="txtSend"></textarea>
+		<a data-role="button" id="btnSend-messages" href="/index.html#page-notification" data-theme="b">Send</a> 
+    </div>
+</div>  <!-- /page messages -->
+
+<div data-role="page" data-theme="d"  id="page-comment" >
+    <div data-role="header"  data-theme="a">
 
         <h1>VComment</h1>
 
     </div>
 
     <div data-role="content" data-theme="c">
-        <h1>Message Page</h1>
         <label for="txtMessage">Enter Message:</label>
         <textarea name="textarea" id="txtMessage">
         </textarea>
 
-        <a href="#" data-role="button" data-rel="back" id="btnsendMessage" data-theme="b">Send</a>
-        <a data-role="button" data-rel="back" data-theme="c">Cancel</a>
+        <a href="#" data-role="button" data-rel="back" id="btnsendMessage" data-transition="none" data-theme="b">Send</a>
+        <a data-role="button" data-rel="back" data-transition="none" data-theme="c">Cancel</a>
     </div>
     <!--</div>-->
 
@@ -321,9 +338,7 @@
                     </td>
                 </tr>
                 <tr>
-
                 </tr>
-
                 <tr>
                     <td>
                         <strong> <label class="select" name="profileName" id="profile_name"></label></strong>
@@ -355,7 +370,7 @@
             <label id="message"></label> <i><label id="timestamp"></label></i>
         </div>
 
-        <a data-role="button" href="index.html#page-notification" data-theme="c">OK</a>
+        <a data-role="button" href="index.html#page-notification" data-transition="none" data-theme="c">OK</a>
     </div>
 
 </div>   <!-- /page info -->
@@ -367,6 +382,8 @@
 <script type="text/javascript" src="js/comment.js"></script>
 <script type="text/javascript" src="js/info.js"></script>
 <script type="text/javascript" src="js/notifications.js"></script>
+<script type="text/javascript" src="js/messages.js"></script>
+
 
 </body>
 

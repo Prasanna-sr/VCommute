@@ -13,7 +13,7 @@ module.exports = function routes(app) {
                 console.log('User successfully authenticated against Socialcast');
                 handleSocialcastSuccess(req, res, socialcastError, socialcastResponse, socialcastData);
             } else {
-                console.log('Error response code is ' + socialcastResponse.statusCode);
+                console.log('User authentication failed. Error response code is ' + socialcastResponse.statusCode);
                 handleSocialcastFailure(req, res, socialcastError, socialcastResponse, socialcastData);
             }
         });
@@ -139,7 +139,7 @@ module.exports = function routes(app) {
         }
     });
     //Notifications
-    app.post('/saveNotifications',
+    app.post('/savenotifications',
         function (req, res) {
             mongoLib.persistNotificationData(req.body, function (err, json) {
                 if (err) {
@@ -167,7 +167,38 @@ module.exports = function routes(app) {
         });
 
     });
+    
+      app.post('/updateNotifications', function (req, res) {
+        mongoLib.updateNotifications(req.body, function (err, result) {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                	if(result) {
+                		console.log(result);
+                		res.header('Access-Control-Allow-Origin', '*');
+                		res.send(result);
+                	}
+            }
+        });
 
+    });
+     
+	//messages page 
+	 app.post('/getMessages', function (req, res) {
+        mongoLib.getMessages(req.body, function (err, json) {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                //todo remove this in production
+                res.header('Access-Control-Allow-Origin', '*');
+                res.send(json);
+            }
+        });
+
+    });
+	
     //Info page
     app.post('/getNotificationbyID', function (req, res) {
         mongoLib.getNotificationbyID(req.body, function (err, json) {
@@ -181,22 +212,6 @@ module.exports = function routes(app) {
             }
         });
 
-    });
-
-    //todo
-    //for development purpose
-    //  to view data in mongodb
-    app.post('/insertdata', function (req, res) {
-        mongoLib.insertData(req.body, function (err, json) {
-            if (err) {
-                console.log(err);
-            }
-            else {
-                res.header('Access-Control-Allow-Origin', '*');
-                res.send(JSON.stringify(json));
-
-            }
-        });
     });
 
     function getTimeDetails(req, res, userObj) {
@@ -312,6 +327,7 @@ module.exports = function routes(app) {
 
     function getSocialcastAuthObj (body) {
        return  { url:'https://vmware-com.socialcast.com/api/authentication.json', body:'email=' + body.user + '&password=' + body.password };
+       //return  { url:'https://demo.socialcast.com/api/authentication.json', body:'email=emily@socialcast.com&password=demo' };
     }
 
     function handleSocialcastSuccess(req, res, socialcastError, socialcastResponse, socialcastData) {

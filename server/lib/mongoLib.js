@@ -71,25 +71,29 @@ module.exports = {
     getUserDetailsOnward : function(userObj, callback){
         db.collection('userdetails');
         db.bind('userdetails');
-        db.userdetails.find({"fromLocation1":userObj.fromLocation, "toLocation1":userObj.toLocation,
-            "startTime":userObj.time, "Hide":null}, function(err, cursor) {
+        db.userdetails.find({"fromLocation1" : userObj.fromLocation, "toLocation1" : userObj.toLocation,
+            "startTime" : userObj.time, "hide" : null}, function(err, cursor) {
             if(err) {
                 callback(err);
             } else {
-               // cursor.skip(parseInt(req.body.skip)).limit(config.limitResults);
-                cursor.limit(config.limitResults + parseInt(userObj.skip));
+               // cursor.skip(parseInt(req.body.skip)).limit(config.limitResults)
+               	var limitResults = parseInt(userObj.skip);
+               	if(limitResults != 0) {
+               		 cursor.limit(limitResults);
+               	} else {
+               		 cursor.limit(config.limitResults);
+               	}
                 cursor.toArray(function(err, items) {
                 callback(null, items);
                 });
             }
         });
-
     },
     getUserDetailsReturn : function(userObj, callback) {
         db.collection('userdetails');
         db.bind('userdetails');
         db.userdetails.find({"fromLocation2" : userObj.fromLocation, "toLocation2" : userObj.toLocation,
-            "departTime" : userObj.time, "Hide" : null}, function(err, cursor) {
+            "departTime" : userObj.time, "hide" : null}, function(err, cursor) {
             if(err) {
                 callback('find login error:', err);
             } else {
@@ -98,7 +102,13 @@ module.exports = {
                    count = value;
                 });
                 //cursor.skip(parseInt(req.body.skip)).limit(config.limitResults);
-                cursor.limit(config.limitResults + parseInt(userObj.skip));
+                var limitResults = parseInt(userObj.skip);
+               	if(limitResults != 0) {
+               		 cursor.limit(limitResults);
+               	} else {
+               		 cursor.limit(config.limitResults);
+               	}
+                //cursor.limit(config.limitResults + parseInt(userObj.skip));
                 cursor.toArray(function(err, items) {
                 callback(null, items);
                 });
@@ -136,13 +146,15 @@ module.exports = {
     updateUserDetails: function(data, callback){
         db.collection('userdetails');
         db.bind('userdetails');
+        console.log('data'+JSON.stringify(data));
         db.userdetails.update({"contact_info.email" : data.from_email}, {$set : {profile : 1,
             "contact_info.cell_phone" : data.mobile, landmark : data.landmark,preference : data.preference,
             location : data.location, fromLocation1 : data.fromLocation1, toLocation1 : data.toLocation1,
             startTime : data.startTime, fromLocation2 : data.fromLocation2, toLocation2 : data.toLocation2,
             departTime : data.returnTime, Car : data.profile_preference, hide : data.hide,
-            carDesc : data.carDesc, notify : data.notify,
+            carDesc : data.carDesc, notify : data.notification,
             logout : data.log_out, date:new Date().toString()}}, function(err, result) {
+            	
             if(err) {
                 callback(err);
             } else {
@@ -173,20 +185,38 @@ module.exports = {
             }
         });
     },
-    persistNotificationData  : function(data, callback) {
+    	persistNotificationData  : function(data, callback) {
         db.collection('notifications');
         db.bind('notifications');
-        var row = {from_name : data.fromName, from_email : data.fromEmail, to_name : data.toName,to_email : data.toEmail, message : data.message,
-            unread:1, timestamp:new Date().toString()};
-        db.notifications.insert(row,function(err) {
+        var currentTime = new Date().getTime();
+        var messages = [{"data" : data.message, "ts" : currentTime, "from" : data.fromEmail}];
+        var row = {from_email : data.fromEmail, from_name : data.fromName, from_picture : data.fromPic,
+        	       to_email : data.toEmail, to_name : data.toName,  to_picture : data.toPic, message : data.message, 
+        	       "messages" : messages, unread:1, updated : currentTime};
+        	       
+        db.notifications.findOne(
+        	{$and: 
+        		[{ $or : [ { "from_email" : data.fromEmail } , { "to_email" : data.fromEmail } ] }, 
+  				 { $or : [ { "from_email" : data.toEmail } , { "to_email" : data.toEmail } ] }] },  				 
+  				  function(err, result) {		
+  				  	
+  		if(result) {
+  					updateNotifications(data.message, result, callback);
+  		} else {
+  			  db.notifications.insert(row, function(err) {
             if(err) {
                 callback(err);
             }
             else {
                 callback(null);
-            }
-        });
+            }});
+  		}});		              
     },
+         
+    updateNotifications : function(data,callback) {
+    	var result = updateNotifications(data.message, data, callback);
+    },
+    
     getNotifications : function(data,callback) {
         db.collection('notifications');
         db.bind('notifications');
@@ -199,6 +229,24 @@ module.exports = {
             }
         });
     },
+    
+    getMessages : function(data, callback) {
+    	db.collection('notifications');
+        db.bind('notifications');
+    	db.notifications.findOne(
+        	{$and: 
+        		[{ $or : [ { "from_email" : data.fromEmail } , { "to_email" : data.fromEmail } ] }, 
+  				 { $or : [ { "from_email" : data.toEmail } , { "to_email" : data.toEmail } ] }]
+  			}, function(err, document) {
+  				  	if(err) {
+  				  		callback(err);
+  				  	} else {
+  				  		console.log('document');
+  				  		callback(null, document);
+  				  	}
+  				  });
+    },
+    
     getNotificationbyID : function(data, callback) {
         db.collection('notifications');
         db.bind('notifications');
@@ -209,24 +257,18 @@ module.exports = {
                 cursor.toArray(callback);
             }
         });
+    }       
+   }
+
+    function updateNotifications(message, result, callback) {    	
+    	var currentTime = new Date().getTime();
+    	db.notifications.update({from_email : result.from_email, to_email : result.to_email}, 
+  			  {$set : {"updated" : currentTime, message : message}, 
+  			  $push : {messages : {data : message, ts : currentTime, from : result.from_email}}}, function(err) {	
+         if(err) {
+               	callback(err);
+            } else {
+                callback("notification updated successfully");
+            }
+            });    	
     }
-
-    //notifications unread
-//    updateNotifications: function(data,callback){
-//        db.collection('notifications');
-//        db.bind('notifications');
-//        db.notifications.update({from_email:data.email},{$set:{unread:0}},function(err,result){
-//            if(err) {
-//                console.log('error occured while updating');
-//                callback(err);
-//            }else{
-//                console.log('---user details update successfull---');
-//                callback(null);
-//
-//            }
-//
-//        });
-//
-//    },
-
-}

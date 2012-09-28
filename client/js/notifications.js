@@ -15,36 +15,39 @@
         //if (localStorage.getItem('from_email') == to_email) {
         count++;
         setNotificationBarStyles(count, "inline-block");
-
     });
 
-    $("#page-notification").live('pagebeforeshow', function () {
-        count = 0;
-        var email = localStorage.getItem('from_email');
-        setNotificationBarStyles(count, "none");
-        $('#list-notifications li').remove();
-        $.post(VC.url + '/getnotifications', {"email" : email}, function (data) {
-            for (i = 0; i < data.length; i++) {
-                var  userObj = data[i];
-                var time = calculateTime(userObj);
-                if (userObj.from_email == email) {
-                    $("#list-notifications").append('<li id = "li-notification"><a data-role = "link" ' +
-                        'data-identity="' + userObj.to_email + ',' + userObj._id + '" <h3>' + userObj.to_name + '</h3><table><tr><td><p><strong>' +
-                        'Sent:' + userObj.message + '</p></strong></td><td align="right"><p><i>&nbsp;&nbsp;&nbsp;&nbsp;'
-                        + time + '</i></p></td></tr></table></a></li>');
-                    $('#list-notifications').listview('refresh');
-                }
-                if (userObj.to_email == email) {
-                        $("#list-notifications").append('<li id="li-notification"><a data-role="link" ' +
-                            'data-identity="' + userObj.to_email + ',' + userObj._id + '" <h3>' + userObj.from_name + '</h3><table><tr><td><strong>' +
-                            'Received:' + userObj.message + '</strong></td><td align="right"><p><i>&nbsp;&nbsp;&nbsp;&nbsp;'
-                            + time + '</i></p></td></tr></table></a></li>');
-                        $('#list-notifications').listview('refresh');
-                }
-            }
-        });
+ 
+	$("#page-notification").live('pagebeforeshow', function() {
+		count = 0;
+		var email = localStorage.getItem('from_email');
+		setNotificationBarStyles(count, "none");
+		$('#list-notifications li').remove();
+		$.post(VC.url + '/getnotifications', {"email" : email }, function(listObj) {
+			for ( i = 0; i < listObj.length; i++) {
+					var message = listObj[i].message;
+					var time = calculateTime(listObj[i].updated);
+					if (listObj[i].from_email == email) {
+						$("#list-notifications").append('<li id = "li-notification" data-identity="' + listObj[i].to_email + '"><a data-role = "link" data-identity="'
+						 + listObj[i].to_email + '"><image width="100" height="100" src=\"'
+						 + listObj[i].to_picture + '\"><h3>' 
+						 + listObj[i].to_name + '</h3><p><strong>' 
+						 + listObj[i].message + '</p></strong><p class="ui-li-aside"><i>' 
+						 + time + '</i></p></a></li>');
+					} else {
+						$("#list-notifications").append('<li id = "li-notification" data-identity="'+ listObj[i].from_email + '"><a data-role = "link" data-identity="'
+						 + listObj[i].from_email + '"><image width="100" height="100" src=\"'
+						 + listObj[i].from_picture + '\"><h3>' 
+						 + listObj[i].from_name + '</h3><p><strong>' 
+						 + listObj[i].message + '</p></strong><p class="ui-li-aside"><i>' 
+						 + time + '</i></p></a></li>');
+					}
+					$('#list-notifications').listview('refresh');				
+			}
+		});
 
-    });
+	}); 
+
 
     function setNotificationBarStyles(count,displayValue) {
         $('#count-notification').text(count).css("display", displayValue);
@@ -53,11 +56,10 @@
         $('#count-profile').text(count).css("display", displayValue);
     }
 
-    function calculateTime(userObj) {
+    function calculateTime(time) {
         var one_min = 1000 * 60;
         var current_time = new Date().getTime();
-        var temp = new Date(userObj.timestamp);
-        var minutes = (current_time - temp ) / one_min;
+        var minutes = (current_time - time ) / one_min;
         if (minutes < 60) {
             time = Math.round(minutes) + " minutes ago";
         }
@@ -71,9 +73,8 @@
     }
 
     $('#li-notification').live('click', function () {
-        var param1 = encodeURIComponent($('a[data-role="link"]', this).attr('data-identity'));
-        location.replace("index.html?param1="+ param1 +"#page-info");
-        //$.mobile.changePage("/index.html",{dataUrl:"?param1=asdf#page-info", changeHash: false});
+    	$('#lbltoEmail-notification').attr('value', $(this).attr('data-identity'));
+        $.mobile.changePage("#page-messages", {transition : "none"});
         // $.post(VC.geturl()+'/updateNotifications',{"email":$('#notification-email').val()},function(data){
         // });
     });

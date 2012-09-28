@@ -5,11 +5,23 @@
   text-align: right;
 }
 
+
+
 /** CSS for non-standard jQuery Mobile styles or Codiqa components **/
 .split-wrapper {
   width: 100%;
   min-height: 200px;
   clear: both;
+}
+
+/** message list css**/
+.messages img{
+	width: 60px;
+	height: 60px;
+}
+
+.messages .name{
+	font-weight: bold;
 }
 
 .notification{

@@ -7,8 +7,8 @@
  */
 
 module.exports = {
-    officeLocation: "Palo Alto Building A,Palo Alto Building B,Palo Alto Vmware deer creek,San Francisco Stevenson Street",
-    allLocation: "San Jose,San Mateo,Park Merced,SF Downtown,SunnyVale,Cupertino,Mountain View,Fremont,Red Wood City,Dally City",
+    officeLocation: "VMware Palo Alto HillView, VMware Palo Alto Deer Creek, VMware San Francisco Stevenson Street",
+    allLocation: "Alameda,Albany,American Canyon,Antioch,Atherton,Belmont,Belvedere,Benicia,Berkeley,Brentwood,Brisbane,Burlingame,Calistoga,Campbell,Clayton,Cloverdale,Colma,Concord,Corte Madera,Cotati,Cupertino,Daly City,Danville,Dixon,Dublin,East Palo Alto,El Cerrito,Emeryville,Fairfield,Foster City,Fremont,Gilroy,Half Moon Bay,Hayward,Healdsburg,Hercules,Hillsborough,Lafayette,Larkspur,Livermore,Los Altos Hills,Los Altos,Los Gatos,Martinez,Menlo Park,Mill Valley,Millbrae,Milpitas,Monte Sereno,Moraga,Morgan Hill,Mountain View,Napa,Newark,Novato,Oakland,Oakley,Orinda,Pacifica,Palo Alto,Petaluma,Piedmont,Pinole,Pittsburg,Pleasant Hill,Pleasanton,Portola Valley,Redwood City,Richmond,Rio Vista,Rohnert Park,Ross,St. Helena,San Anselmo,San Carlos,San Francisco,San Jose,San Leandro,San Mateo,San Pablo,San Rafael,San Ramon,Santa Clara,Santa Rosa,Saratoga,Sausalito,Sebastopol,Sonoma,South San Francisco,Suisun City,Sunnyvale,Tiburon,Union City,Vacaville,Vallejo,Walnut Creek,Windsor,Woodside,Yountville",
     startTime :"06:00,07:00,07:30,08:00,08:30,09:00,09:30,10:00,11:00,12:00,13:00",
     returnTime :"14:00,15:00,16:00,17:00,17:30,18:00,18:30,19:00,20:00",
     drivingPreference :"I drive my car,I pay for gas (You drive the car),I can drive alternate days/weeks",

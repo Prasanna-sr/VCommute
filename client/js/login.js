@@ -5,9 +5,8 @@
  * Time: 12:03 PM
  * To change this template use File | Settings | File Templates.
  */
-
+//todo change in prod
 var VC = {"domain" : "@vmware.com"};
-
 VC.url = "http://vcommute.cloudfoundry.com:80";
 //VC.url = "http://" + document.location.host;
 VC.socket = io.connect(VC.url);
@@ -39,12 +38,13 @@ function login() {
         $.post(VC.url + '/login', { "user" : email, "password" : password }, function (data) {
             if (data == USERSTATUS.NEWUSER) {
                 localStorage.setItem('from_email', email);
-               $.mobile.changePage("#page-profile");
+               $.mobile.changePage("#page-profile", { transition: "none"});
             } else if (data == USERSTATUS.LOGGEDIN) {
                 localStorage.setItem('from_email', email);
-                $.mobile.changePage("#page-home");
+                $.mobile.changePage("#page-home", { transition: "none"});
             } else if (data == USERSTATUS.LOGINFAILED) {
-                alert('Login failed.');
+            	 localStorage.setItem('from_email', email);
+                 alert('Login failed.');
             } else {
                 alert(data);
             }

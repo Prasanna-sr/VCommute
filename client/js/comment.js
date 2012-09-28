@@ -8,12 +8,15 @@
 
 
 $("#page-comment").bind('pagebeforeshow', function () {
-    var email = localStorage.getItem('from_email');
+    $('#txtMessage').val('');    
     $('#btnsendMessage').off('click').on('click', function () {
-        $.post(VC.url + '/saveNotifications', {"fromEmail":email, "fromName":USER_INFO.name,
-            "toEmail":USER_INFO.to_email, "toName":$('#details-name').text(), "message":$('#txtMessage').val()},
+    	var from_email = localStorage.getItem('from_email');
+    	var details = {"fromEmail" : from_email, "fromName" : $('#lblFromName').val(), "fromPic" : $('#lblFromPic').val(),
+            "toEmail" : $('#lbltoEmail').val(), "toName" : $('#details-name').text(), "toPic" : $('#details-picture').attr("src"),
+             "message" : $('#txtMessage').val()};
+        $.post(VC.url + '/savenotifications', details,
             function () {
-            notify(USER_INFO.to_email);
+            notify($('#lbltoEmail').val());
         });
     });
 });
