@@ -198,9 +198,7 @@
 
         <h1>VCommmute</h1>
     </div>
-    <div data-role="content" data-theme="c">
-
-        <div data-role="fieldcontain">
+    <div data-role="content">
             <ul data-role="listview">
                 <li>
                     <img id="details-picture" width="150" height="100"/>
@@ -210,30 +208,17 @@
             </ul>
             <br>
             <h3><label class="select"><b>Details</b></label></p></h3>
-
-            <div data-role="fieldcontain">
-                   <strong>Preferences</strong> <br>
-                    <label class="select"  id="details_preference"></label>
-
-            </div>
-            <div data-role="fieldcontain">
-                <strong>Nearest Landmark</strong> <br>
-                <label class="select"  id="details_landmark"></label>
-            </div>
-            <div data-role="fieldcontain">
-                <Strong>Car Description</strong> <br>
-                <label class="select" id="details_cardescription"></label>
-            </div>
-            <div data-role="fieldcontain">
-                <strong>Additional Preference</strong> <br>
-                <label class="select"  id="details_additional"></label>
-            </div>
-
+			<ul data-role="listview" data-inset="true" data-theme="c">
+				<li><h3>Preference</h3> <p><label class="select" id="details_preference"></label></p></li>
+				<li><h3>Nearest Landmark </h3><p><label class="select"  id="details_landmark"></label></p></li>
+				<li><h3>Car Description</h3><p><label class="select" id="details_cardescription"></label></p></li>
+				<li><h3>Additional Preference</h3><p><label class="select"  id="details_additional"></label></p></li>
+			</ul>
             <h3><label class="select" id="action"><b>Actions</b></label></p></h3>
-            <ul data-role="listview">
+            <ul data-role="listview" data-inset="true">
                 <li>
                     <a id="notify" href="index.html#page-comment" data-transition="none"><img src="http://www.iphonejd.com/.a/6a010535fde333970c011168ff4c31970c-800wi" width="50" height="50"/>
-                        In App notify<br>  <label class="select" name="mobile" id="In-app-notify"></label>  </a>
+                        In-App notify<br>  <label class="select" name="mobile" id="In-app-notify"></label>  </a>
                 </li>
                 <li>
                     <a id="aPhone"> <img id="picture1" src="http://blog.solidcactus.com/wp-content/uploads/2011/11/Click-To-Call-Icon.png" width="50" height="50"/>
@@ -245,19 +230,7 @@
                 </li>
 
             </ul>
-        </div>
     </div>
-
-    <div data-role="footer" class="nav-glyphish-example" data-tap-toggle="false" data-position="fixed">
-        <div data-role="navbar" class="nav-glyphish-example" class="ui-grid-b">
-            <ul>
-                <li><a href="/index.html#page-home" data-icon="home" data-transition="none">Home</a> </li>
-                <li><a href="/index.html#page-notification" data-icon="info" data-transition="none">Notifications<label class="notification" id="count-details"></label></a></li>
-            </ul>
-
-        </div>
-    </div>
-
 </div><!-- /page details -->
 
 <div data-role="page" data-theme="d" id="page-notification">
@@ -269,7 +242,7 @@
 
     <div data-role="content" style="padding: 15px">
 
-        <ul id="list-notifications" data-role="listview">
+        <ul id="list-notifications" data-role="listview" data-theme="d">
         </ul>
          <input type="hidden" id="lbltoEmail-notification"/>        
     </div>

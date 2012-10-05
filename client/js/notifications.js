@@ -10,11 +10,10 @@
 (function () {
     var count = 0;
     VC.socket.on('update', function (to_email) {
-        //todo
-        //if statement commented for testing purpose
-        //if (localStorage.getItem('from_email') == to_email) {
+        if (localStorage.getItem('from_email') == to_email) {
         count++;
         setNotificationBarStyles(count, "inline-block");
+        }
     });
 
  
@@ -42,8 +41,12 @@
 						 + listObj[i].message + '</p></strong><p class="ui-li-aside"><i>' 
 						 + time + '</i></p></a></li>');
 					}
-					$('#list-notifications').listview('refresh');				
 			}
+				// $("ul li:eq(1)").attr("data-theme","a");
+				$('#list-notifications').attr("data-theme","a");
+				$('#list-notifications').listview('refresh');
+								
+
 		});
 
 	}); 

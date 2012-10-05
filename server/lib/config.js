@@ -14,5 +14,5 @@ module.exports = {
     drivingPreference :"I drive my car,I pay for gas (You drive the car),I can drive alternate days/weeks",
     time : {"06:00":0,"07:00":0,"07:30":0,"08:00":0,"08:30":0,"09:00":0,"09:30":0,"10:00":0,"11:00":0,"12:00":0,"13:00":0,"14:00":0,
         "15:00":0,"16:00":0,"17:00":0,"17:30":0,"18:00":0,"18:30":0,"19:00":0,"20:00":0} ,
-    limitResults : 2
+    limitResults : 10
 }
